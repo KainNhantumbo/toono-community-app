@@ -19,3 +19,7 @@ export const metadata = {
     { name: 'E-mail', icon: MailCheckIcon, url: `mailto:${Package.author.email}` }
   ]
 };
+
+
+export const ALLOWED_MIMETYPES: string[] = ['image/png', 'image/jpeg', 'image/jpg'];
+

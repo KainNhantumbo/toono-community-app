@@ -1,7 +1,7 @@
 import { metadata } from '@/shared/constants';
 import { Link } from 'react-router-dom';
 
-export default function NotFoundPage() {
+export const NotFoundPage = () => {
   return (
     <main className='w-full h-[100vh] grid place-content-center place-items-center'>
       <section className='logo-container'>
@@ -27,4 +27,4 @@ export default function NotFoundPage() {
       </section>
     </main>
   );
-}
+};
