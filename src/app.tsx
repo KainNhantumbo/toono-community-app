@@ -1,10 +1,11 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Loader } from './components/loader';
+import NotFoundPage from './router/404';
 
 type RouteType = { path: string; element: React.JSX.ElementType };
 
-const routes: RouteType[] = [];
+const routes: RouteType[] = [{ element: NotFoundPage, path: '*' }];
 
 export default function AppRouter() {
   return (
