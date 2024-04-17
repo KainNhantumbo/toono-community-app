@@ -3,6 +3,23 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Toono Developer Community Website",
+  "websiteName": "Toono Community",
+  "url": "",
+  "author": {
+    "name": "Kain Nhantumbo",
+    "email": "nhantumbok@gmail.com",
+    "portfolio": "https://codenut-dev.vercel.app",
+    "github": "https://github.com/KainNhantumbo",
+    "linkedin": "https://www.linkedin.com/in/kain-nhantumbo?locale=en_US",
+    "donate": "https://www.buymeacoffee.com/nhantumbokU"
+  },
+  "metadata": {
+    "name": "Palletone",
+    "copyright_notice": "© 2023 Toono Community | All Rights Reserved."
+  },
+  "license": "Apache License Version 2.0",
+  "repository": "https://github.com/KainNhantumbo/.git",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
