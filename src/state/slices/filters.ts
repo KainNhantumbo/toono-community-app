@@ -1,19 +1,14 @@
+import type { Filters } from "@/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export type FilterSliceType = {
-  search: string;
-  offset: string;
-  limit: string;
-  sort: string;
-};
 
-const initialState: FilterSliceType = { search: "", sort: "", limit: "", offset: "" };
+const initialState: Filters = { search: "", sort: "", limit: "", offset: "" };
 
 const filtersSlice = createSlice({
   initialState,
   name: "filters-slice",
   reducers: {
-    updateFilters: (state, action: PayloadAction<FilterSliceType>) => {
+    updateFilters: (state, action: PayloadAction<Filters>) => {
       state = action.payload;
       return state;
     }
