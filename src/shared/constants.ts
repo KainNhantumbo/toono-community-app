@@ -24,3 +24,27 @@ export const metadata = {
 export const ALLOWED_MIMETYPES: string[] = ['image/png', 'image/jpeg', 'image/jpg'];
 
 export const DEFAULT_ERROR_MESSAGE = "Oops! Something went wrong. Please try again later.";
+
+
+export const LOADING_SCREEN_MESSAGES = [
+  "Loading awesomeness... 🚀",
+  "Revving up the engines... 🛠️",
+  "Gathering stardust for your experience... ✨",
+  "Patience, we're crafting magic... 🎩✨",
+  "Loading dreams into reality... 💭💡",
+  "Brewing creativity... ☕🎨",
+  "Preparing pixels for perfection... 🖥️🔍",
+  "Loading brilliance... 💎✨",
+  "Cooking up something special... 🍳👩‍🍳",
+  "Synchronizing thoughts and bytes... 🔄💭",
+  "Putting the 'awe' in 'awesome'... 😎👌",
+  "Strapping in for an epic journey... 🌌🚀",
+  "Brace yourself, innovation incoming... 🛡️💡",
+  "Cranking up the creativity dial... 🔊🎨",
+  "Loading your next big adventure... 🗺️🔍",
+  "Spinning up the digital playground... 🌀🎮",
+  "One moment, weaving wonders... 🧵✨",
+  "Stay tuned, masterpiece loading... 🎵🎨",
+  "Fueling up with inspiration... ⛽💡",
+  "Constructing the bridge to imagination... 🌉🌌"
+];

@@ -39,7 +39,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
       console.error(message || error);
     }
   };
-  
+
   const client = <T = unknown, S = AxiosRequestConfig>(config: S) => {
     httpClient.interceptors.response.use(undefined, (error): Promise<never> => {
       const status = (error as AxiosError).response?.status as number;
