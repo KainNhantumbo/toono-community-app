@@ -1,3 +1,4 @@
+import type { AxiosError } from "axios";
 import type { ChangeEvent, FormEvent } from "react";
 import * as React from "react";
 
@@ -19,3 +20,5 @@ export type Auth = {
   email: string;
   profile_image: string;
 };
+
+export type HttpError = AxiosError<{ message: string; code?: string; status: number }>;

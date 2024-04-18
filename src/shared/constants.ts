@@ -23,3 +23,4 @@ export const metadata = {
 
 export const ALLOWED_MIMETYPES: string[] = ['image/png', 'image/jpeg', 'image/jpg'];
 
+export const DEFAULT_ERROR_MESSAGE = "Oops! Something went wrong. Please try again later.";
