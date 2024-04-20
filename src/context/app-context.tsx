@@ -30,7 +30,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
     try {
       const { data } = await httpClient<Auth>({
         method: "get",
-        url: "/api/v1/auth/refresh",
+        url: "/api/v1/auth/revalidate",
         withCredentials: true
       });
       dispatch(mutateAuth({ ...data }));

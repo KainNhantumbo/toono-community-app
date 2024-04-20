@@ -3,10 +3,23 @@
   margin: 0 auto;
 }
 
+.post-content h1 {
+  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+}
+
 .post-content p {
-  margin-bottom: 25px;
-  font-size: 1.1rem;
-  line-height: 1.8rem;
+  @apply leading-7 [&:not(:first-child)]:mt-6;
+}
+
+.post-content table {
+  @apply w-full;
+}
+
+.post-content table thead tr {
+  @apply m-0 border-t p-0 even:bg-muted;
+}
+.post-content table th, td {
+  @apply order px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
 }
 
 .post-content h3,

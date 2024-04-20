@@ -18,7 +18,7 @@ const config: Config = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        foreground: "(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))"
@@ -46,7 +46,12 @@ const config: Config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))"
-        }
+        },
+        transparent: "var(--transparent)",
+        error: "rgb(var(--error) / <alpha-value>)",
+        font: "rgb(var(--font) / <alpha-value>)",
+        black: "rgb(var(--black) / <alpha-value>)",
+        white: "rgb(var(--white) / <alpha-value>)"
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -68,9 +73,8 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out"
       },
       fontFamily: {
-        sans: ["Plus Jakarta Sans", "Inter", "Roboto", "sans-serif"],
-        "sans-body": ["IBM Plex Sans", "Inter", "sans-serif"],
-        mono: ["IBM Plex Mono", "Hack","Menlo", "Consolas", "monospace"]
+        sans: ["Manrope", "Inter", "Roboto", "sans-serif"],
+        mono: ["IBM Plex Mono", "Hack", "Menlo", "Consolas", "monospace"]
       },
       screens: {
         mobile: "420px",

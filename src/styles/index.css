@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Manrope";
+  src: local("Manrope"), url("/fonts/Manrope-Regular.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: local("Manrope"), url("/fonts/Manrope-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Manrope";
+  src: local("Manrope"), url("/fonts/Manrope-SemiBold.ttf");
+  font-weight: 700;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -111,7 +129,7 @@
   }
 
   body {
-    @apply text-font relative m-0 w-[100%] bg-background font-sans font-normal selection:bg-primary selection:text-white selection:text-opacity-90;
+    @apply text-font relative m-0 w-full bg-background font-sans font-normal selection:bg-primary selection:text-white selection:text-opacity-90;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -122,6 +140,10 @@
 
   * {
     @apply text-font border-border;
+  }
+
+  main {
+    min-height: 60vh;
   }
 }
 
@@ -135,7 +157,7 @@
   }
 
   .inputs {
-    @apply border-font text-font focus:border-font mobile:max-w-[260px] h-fit w-[100%] max-w-[200px] resize-y rounded-xl border-[1px] border-solid border-opacity-50 bg-background bg-opacity-70 px-[18px] py-[10px] leading-7 outline-none placeholder:text-[0.9rem] focus:border-opacity-70 focus:shadow-[0_0_20px_rgba(0,0,0,0.1)] focus:transition-shadow disabled:border-none disabled:bg-foreground disabled:placeholder:text-transparent sm:max-w-md md:max-w-lg;
+    @apply border-font text-font focus:border-font h-fit w-[100%] max-w-[200px] resize-y rounded-xl border-[1px] border-solid border-opacity-50 bg-background bg-opacity-70 px-[18px] py-[10px] leading-7 outline-none placeholder:text-[0.9rem] focus:border-opacity-70 focus:shadow-[0_0_20px_rgba(0,0,0,0.1)] focus:transition-shadow disabled:border-none disabled:bg-foreground disabled:placeholder:text-transparent mobile:max-w-[260px] sm:max-w-md md:max-w-lg;
   }
 
   .base-border {

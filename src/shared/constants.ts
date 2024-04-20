@@ -50,12 +50,18 @@ export const LOADING_SCREEN_MESSAGES = [
 export const FOOTER_URLS: { path: string; label: string }[][] = [
   [
     { label: "Home", path: "/" },
-    { label: "About", path: "/about" },
-    { label: "Contact", path: "/contact" },
+    { label: "About", path: "/about" }
   ],
   [
-    { label: "Terms of Use", path: "/terms-of-use" },
-    { label: "Privacy  Policy", path: "/privacy-policy" },
-    { label: "Code of Conduct", path: "/code-of-conduct" },
+    { label: "Contact", path: "/contact" },
+    { label: "Terms of Use", path: "/terms-of-use" }
   ],
+  [
+    { label: "Privacy  Policy", path: "/privacy-policy" },
+    { label: "Code of Conduct", path: "/code-of-conduct" }
+  ],
+  [
+    { label: "Sign In", path: "/auth/sign-in" },
+    { label: "Sign Up", path: "/auth/sign-up" }
+  ]
 ];

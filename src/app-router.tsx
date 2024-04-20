@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Loader } from "./components/loader";
 
 const NotFoundPage = React.lazy(() => import("@/router/404"));
@@ -16,22 +16,20 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
 
 export const AppRouter = () => {
   return (
-    <BrowserRouter>
-      <React.Suspense fallback={<Loader />}>
-        <Routes>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                <React.Suspense fallback={<Loader />}>
-                  <route.element />
-                </React.Suspense>
-              }
-            />
-          ))}
-        </Routes>
-      </React.Suspense>
-    </BrowserRouter>
+    <React.Suspense fallback={<Loader />}>
+      <Routes>
+        {routes.map((route, index) => (
+          <Route
+            key={index}
+            path={route.path}
+            element={
+              <React.Suspense fallback={<Loader />}>
+                <route.element />
+              </React.Suspense>
+            }
+          />
+        ))}
+      </Routes>
+    </React.Suspense>
   );
 };
