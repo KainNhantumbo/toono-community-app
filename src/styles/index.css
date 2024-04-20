@@ -33,6 +33,12 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    --transparent: transparent;
+    --error: 253 56 79;
+    --font: 95 99 104;
+    --black: 36 35 36;
+    --white: 255 255 255;
   }
 
   .dark {
@@ -63,14 +69,80 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    --transparent: transparent;
+    --error: 253 56 79;
+    --font: 198 197 205;
+    --black: 46 45 46;
+    --white: 255 255 255;
+  }
+
+  label {
+    @apply select-none;
+  }
+
+  h1 {
+    @apply font-sans text-3xl font-bold;
+  }
+
+  h2 {
+    @apply font-sans text-xl font-semibold leading-6;
+  }
+
+  h3 {
+    @apply font-semibold;
+  }
+
+  ul,
+  ol {
+    @apply flex flex-col gap-3;
+  }
+
+  li {
+    @apply list-inside list-disc;
+  }
+
+  em {
+    @apply italic;
+  }
+
+  i {
+    @apply not-italic;
+  }
+
+  body {
+    @apply text-font relative m-0 w-[100%] bg-background font-sans font-normal selection:bg-primary selection:text-white selection:text-opacity-90;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    @apply text-font m-0 overflow-x-hidden scroll-smooth p-0;
+  }
+
+  * {
+    @apply text-font border-border;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+@layer components {
+  .base-image {
+    @apply h-[100%] w-[100%] rounded-full object-cover;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .base-link {
+    @apply w-fit text-center text-blue-400 underline underline-offset-4 transition-colors hover:text-primary sm:text-left;
+  }
+
+  .inputs {
+    @apply border-font text-font focus:border-font mobile:max-w-[260px] h-fit w-[100%] max-w-[200px] resize-y rounded-xl border-[1px] border-solid border-opacity-50 bg-background bg-opacity-70 px-[18px] py-[10px] leading-7 outline-none placeholder:text-[0.9rem] focus:border-opacity-70 focus:shadow-[0_0_20px_rgba(0,0,0,0.1)] focus:transition-shadow disabled:border-none disabled:bg-foreground disabled:placeholder:text-transparent sm:max-w-md md:max-w-lg;
+  }
+
+  .base-border {
+    @apply border-font/[.12] border-[1px] border-solid;
+  }
+
+  .base-shadow {
+    @apply shadow-[0_0_20px_rgba(0,0,0,.1)];
   }
 }
