@@ -2,8 +2,9 @@ import * as React from "react";
 import { LazyMotion, MotionConfig, domAnimation } from "framer-motion";
 import { Header } from "./header";
 import { Footer } from "./footer";
+// import { Toaster } from "sonner";
 
-// complete this instead
+//TODO: complete this instead
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <MotionConfig reducedMotion='user'>
@@ -11,6 +12,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Header />
         {children}
         <Footer />
+        {/* <Toaster closeButton loadingIcon duration={3000} /> */}
       </LazyMotion>
     </MotionConfig>
   );

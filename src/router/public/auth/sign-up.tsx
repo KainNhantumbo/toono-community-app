@@ -1,91 +1,179 @@
+import { Layout } from "@/components/layout";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { LoadingButton } from "@/components/ui/loading-button";
+import { Separator } from "@/components/ui/separator";
+import httpClient from "@/config/http-client";
+import { errorTransformer } from "@/lib/error";
+import { UserSignupType, userSignupSchema } from "@/schemas";
 import { metadata } from "@/shared/constants";
-import { Label } from "@/components/ui/label";
-import { RiGithubLine, RiGoogleLine } from "@remixicon/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { ArrowRight, LockIcon, MailIcon, User2Icon } from "lucide-react";
 import * as React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupPage() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted");
+  const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
+
+  const form = useForm<UserSignupType>({
+    resolver: zodResolver(userSignupSchema),
+    defaultValues: { email: "", password: "", confirm_password: "", name: "" }
+  });
+
+  const onSubmit = async (data: UserSignupType) => {
+    setLoading(true);
+    try {
+      await httpClient({ method: "post", url: "/api/v1/auth/sign-up", data });
+      navigate(`/auth/success`);
+    } catch (error) {
+      const { message } = errorTransformer(error);
+      console.error(message);
+      // TODO: ADD TOAST HERE
+      // toast.error("Something went wrong. Please try again.", {
+      //   action: {
+      //     label: "Retry",
+      //     onClick: () => onSubmit(data)
+      //   }
+      // });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className='mx-auto w-full max-w-md rounded-none bg-white p-4 shadow-input dark:bg-black md:rounded-2xl md:p-8'>
-      <h2 className='text-xl font-bold text-neutral-800 dark:text-neutral-200'>
-        Welcome to {metadata.appName}
-      </h2>
-      <p className='mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300'>
-        Login to {metadata.appName} if you can because we don&apos;t have a login flow yet
-      </p>
+    <Layout>
+      <main className='flex w-full flex-col gap-12 px-4'>
+        <div className='mx-auto w-full max-w-md p-4 shadow-input md:p-8'>
+          <h2 className='text-center text-4xl font-bold'>
+            Welcome to {metadata.appName} Community
+          </h2>
 
-      <form className='my-8' onSubmit={handleSubmit}>
-        <div className='mb-4 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0'>
-          <LabelInputContainer>
-            <Label htmlFor='name'>Name</Label>
-            <Input id='name' placeholder='Tyler' type='text' />
-          </LabelInputContainer>
+          <div className='my-4 flex flex-col'>
+            <Button variant={"default"}>
+              <GitHubLogoIcon className='mr-2 h-4 w-4' />
+              <span className='text-sm text-white'>Login with GitHub</span>
+            </Button>
+          </div>
 
+          <Separator decorative className='my-5' />
+
+          <p className='my-3 max-w-sm space-y-6 text-center text-sm'>
+            Complete the form below to create your account.
+          </p>
+
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='max my-auto h-full w-full space-y-8'>
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel className='flex items-center gap-2'>
+                      <User2Icon className='h-5 w-auto' />
+                      <span>Name</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={loading}
+                        placeholder='Enter your full name'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='flex items-center gap-2'>
+                      <MailIcon className='h-5 w-auto' />
+                      <span>Email</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={loading}
+                        placeholder='Enter your email'
+                        type='email'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel className='flex items-center gap-2'>
+                      <LockIcon className='h-5 w-auto' />
+                      <span>Password</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={loading}
+                        type='password'
+                        placeholder='Enter your password'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='confirm_password'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel className='flex items-center gap-2'>
+                      <LockIcon className='h-5 w-auto' />
+                      <span>Confirm Password</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={loading}
+                        type='password'
+                        placeholder='Confirm your password'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <LoadingButton
+                loading={loading}
+                variant={"default"}
+                size={"lg"}
+                className='flex w-full items-center gap-2'
+                type='submit'>
+                <ArrowRight className='stroke-white' />
+                <span className='font-semibold text-white'>Sign Up</span>
+              </LoadingButton>
+            </form>
+          </Form>
         </div>
-        <LabelInputContainer className='mb-4'>
-          <Label htmlFor='email'>Email Address</Label>
-          <Input id='email' placeholder='projectmayhem@fc.com' type='email' />
-        </LabelInputContainer>
-        <LabelInputContainer className='mb-4'>
-          <Label htmlFor='password'>Password</Label>
-          <Input id='password' placeholder='••••••••' type='password' />
-        </LabelInputContainer>
-        <LabelInputContainer className='mb-8'>
-          <Label htmlFor='twitterpassword'>Your twitter password</Label>
-          <Input id='twitterpassword' placeholder='••••••••' type='twitterpassword' />
-        </LabelInputContainer>
-
-        <button
-          className='group/btn relative block h-10 w-full rounded-md bg-gradient-to-br from-black to-neutral-600 font-medium text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]'
-          type='submit'>
-          Sign up &rarr;
-          <BottomGradient />
-        </button>
-
-        <div className='my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700' />
-
-        <div className='flex flex-col space-y-4'>
-          <button
-            className=' group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]'
-            type='submit'>
-            <RiGithubLine className='h-4 w-4 text-neutral-800 dark:text-neutral-300' />
-            <span className='text-sm text-neutral-700 dark:text-neutral-300'>GitHub</span>
-            <BottomGradient />
-          </button>
-          <button
-            className=' group/btn relative flex h-10 w-full items-center justify-start space-x-2 rounded-md bg-gray-50 px-4 font-medium text-black shadow-input dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]'
-            type='submit'>
-            <RiGoogleLine className='h-4 w-4 text-neutral-800 dark:text-neutral-300' />
-            <span className='text-sm text-neutral-700 dark:text-neutral-300'>Google</span>
-            <BottomGradient />
-          </button>
-        </div>
-      </form>
-    </div>
+      </main>
+    </Layout>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className='absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100' />
-      <span className='absolute inset-x-10 -bottom-px mx-auto block h-px w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100' />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return <div className={cn("flex w-full flex-col space-y-2", className)}>{children}</div>;
-};

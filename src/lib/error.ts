@@ -1,7 +1,8 @@
 import { DEFAULT_ERROR_MESSAGE } from "@/shared/constants";
 import { HttpError } from "@/types";
 
-export const errorTransformer = ({ response, status }: HttpError) => {
+export const errorTransformer = (_props: unknown) => {
+  const { status, response } = _props as HttpError;
   let message: string = DEFAULT_ERROR_MESSAGE;
 
   if (response?.data && response.data.message) {
