@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { metadata } from "@/shared/constants";
-import { LockIcon, SearchIcon, User } from "lucide-react";
+import { LockIcon, PenBoxIcon, SearchIcon, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { TooltipWrapper } from "./tooltip-wrapper";
@@ -20,10 +20,12 @@ export const Header = () => {
 
   return (
     <header className='base-border fixed left-0 top-0 z-50 mb-8 flex h-[52px] w-full items-center justify-between gap-3 bg-background/45 px-3 py-1 font-sans text-sm backdrop-blur'>
-      <span className='text-lg font-semibold'>{metadata.appName}</span>
+      <span className='base-border select-none rounded-lg bg-foreground p-1 px-2 text-lg font-semibold'>
+        {metadata.appName}
+      </span>
       <nav className=' flex items-center gap-2'>
         <TooltipWrapper content='Search and filters'>
-          <Button className='rounded-full bg-transparent p-2' variant={"ghost"}>
+          <Button size={"icon"} variant={"ghost"}>
             <SearchIcon />
             <span className='sr-only'>Search</span>
           </Button>
@@ -36,8 +38,13 @@ export const Header = () => {
             </div>
           </Button>
         ) : (
-          <Button asChild variant={"secondary"} size={"lg"}>
-            <Link to={"/users/dashboard/create-post"}>Create Post</Link>
+          <Button asChild variant={"ghost"} size={"icon"}>
+            <Link to={"/users/dashboard/create-post"}>
+              <TooltipWrapper content='Create new post'>
+                <PenBoxIcon />
+              </TooltipWrapper>
+              <span className='sr-only'> Create new post</span>
+            </Link>
           </Button>
         )}
 
