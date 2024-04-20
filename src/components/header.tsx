@@ -12,7 +12,7 @@ export const Header = () => {
 
   return (
     <header className='base-border fixed left-0 top-0 z-50 mb-8 flex h-[52px] w-full items-center justify-between gap-3 bg-background/45 px-3 py-1 font-sans text-sm backdrop-blur'>
-      <span className='text-md font-semibold'>{metadata.appName} Community</span>
+      <span className='text-lg font-semibold'>{metadata.appName}</span>
       <nav className=' flex items-center gap-2'>
         <TooltipWrapper content='Search and filters'>
           <Button className='rounded-full bg-transparent p-2' variant={"ghost"}>
@@ -29,21 +29,24 @@ export const Header = () => {
           </Button>
         ) : (
           <Button asChild variant={"secondary"} size={"lg"}>
-            <Link to={"/users/create-post"}>Create Post</Link>
+            <Link to={"/users/dashboard/create-post"}>Create Post</Link>
           </Button>
         )}
-        <Avatar>
-          {auth.profile_image ? (
-            <AvatarImage src={auth.profile_image} alt={`${auth.name} profile image`} />
-          ) : (
-            <TooltipWrapper content='Sign-in to access your account'>
-              <AvatarFallback className='base-border'>
-                <User className='h-auto w-5' />
-                <span className='sr-only'>user icon</span>
-              </AvatarFallback>
-            </TooltipWrapper>
-          )}
-        </Avatar>
+
+        {auth.token && (
+          <Avatar>
+            {auth.profile_image ? (
+              <AvatarImage src={auth.profile_image} alt={`${auth.name} profile image`} />
+            ) : (
+              <TooltipWrapper content='Access your account'>
+                <AvatarFallback className='base-border'>
+                  <User className='h-auto w-5' />
+                  <span className='sr-only'>user icon</span>
+                </AvatarFallback>
+              </TooltipWrapper>
+            )}
+          </Avatar>
+        )}
       </nav>
     </header>
   );

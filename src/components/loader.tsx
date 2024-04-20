@@ -1,5 +1,5 @@
 import { LOADING_SCREEN_MESSAGES } from "@/shared/constants";
-import { RiseLoader } from "react-spinners";
+import { Spinner } from "./ui/spinner";
 
 const randomMessage = (): string => {
   return LOADING_SCREEN_MESSAGES[
@@ -9,17 +9,11 @@ const randomMessage = (): string => {
 
 export const Loader = () => (
   <div className='grid h-[100vh] w-[100vw] place-content-center place-items-center'>
-    <section className='flex h-full w-full flex-col items-center gap-8 p-[calc(25%_-_1px)_12px] font-medium'>
-      <h3 className='font-sans-display text-center text-lg font-medium uppercase'>
+    <section className='flex h-full w-full items-center gap-3 p-[calc(25%_-_1px)_12px] font-medium'>
+      <Spinner show size={"medium"} />
+      <h3 className='base-border font-sans-display rounded-3xl p-1 px-2 text-center text-sm font-semibold uppercase'>
         {randomMessage()}
       </h3>
-      <RiseLoader
-        color={`rgb(var(--primary-default))`}
-        cssOverride={{
-          display: "block",
-          background: `transparent})`
-        }}
-      />
     </section>
   </div>
 );

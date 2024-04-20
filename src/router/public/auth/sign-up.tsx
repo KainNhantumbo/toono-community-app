@@ -17,7 +17,7 @@ import { UserSignupType, userSignupSchema } from "@/schemas";
 import { metadata } from "@/shared/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { ArrowRight, LockIcon, MailIcon, User2Icon } from "lucide-react";
+import { LockIcon, MailIcon, User2Icon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -34,13 +34,13 @@ export default function SignupPage() {
   const onSubmit = async (data: UserSignupType) => {
     setLoading(true);
     try {
-      await httpClient({ method: "post", url: "/api/v1/auth/sign-up", data });
+      await httpClient({ method: "post", url: "/api/v1/users", data });
       navigate(`/auth/success`);
     } catch (error) {
       const { message } = errorTransformer(error);
-      console.error(message);
+      console.error(message || error);
       // TODO: ADD TOAST HERE
-      // toast.error("Something went wrong. Please try again.", {
+      // toast.error(message, {
       //   action: {
       //     label: "Retry",
       //     onClick: () => onSubmit(data)
@@ -69,7 +69,7 @@ export default function SignupPage() {
           <Separator decorative className='my-5' />
 
           <p className='my-3 max-w-sm space-y-6 text-center text-sm'>
-            Complete the form below to create your account.
+            Or complete the form below to create your account.
           </p>
 
           <Form {...form}>
@@ -167,7 +167,7 @@ export default function SignupPage() {
                 size={"lg"}
                 className='flex w-full items-center gap-2'
                 type='submit'>
-                <ArrowRight className='stroke-white' />
+                <UserPlus className='w-4 stroke-white' />
                 <span className='font-semibold text-white'>Sign Up</span>
               </LoadingButton>
             </form>
