@@ -1,13 +1,6 @@
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "@/components/ui/form";
+import * as CoreForm from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { Separator } from "@/components/ui/separator";
@@ -35,7 +28,7 @@ export default function SignupPage() {
     setLoading(true);
     try {
       await httpClient({ method: "post", url: "/api/v1/users", data });
-      navigate(`/auth/success`);
+      navigate(`/auth/sign-up-success`);
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(message || error);
@@ -72,92 +65,92 @@ export default function SignupPage() {
             Or complete the form below to create your account.
           </p>
 
-          <Form {...form}>
+          <CoreForm.Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className='max my-auto h-full w-full space-y-8'>
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='name'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
                       <User2Icon className='h-5 w-auto' />
                       <span>Name</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Input
                         disabled={loading}
                         placeholder='Enter your full name'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='email'
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='flex items-center gap-2'>
+                  <CoreForm.FormItem>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
                       <MailIcon className='h-5 w-auto' />
                       <span>Email</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Input
                         disabled={loading}
                         placeholder='Enter your email'
                         type='email'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
 
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='password'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
                       <LockIcon className='h-5 w-auto' />
                       <span>Password</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Input
                         disabled={loading}
                         type='password'
                         placeholder='Enter your password'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='confirm_password'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
                       <LockIcon className='h-5 w-auto' />
                       <span>Confirm Password</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Input
                         disabled={loading}
                         type='password'
                         placeholder='Confirm your password'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
 
@@ -171,7 +164,7 @@ export default function SignupPage() {
                 <span className='font-semibold text-white'>Sign Up</span>
               </LoadingButton>
             </form>
-          </Form>
+          </CoreForm.Form>
         </div>
       </main>
     </Layout>

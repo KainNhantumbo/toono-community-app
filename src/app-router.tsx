@@ -5,12 +5,14 @@ import { Loader } from "./components/loader";
 const NotFoundPage = React.lazy(() => import("@/router/404"));
 const HomePage = React.lazy(() => import("./router/public/home"));
 const SignupPage = React.lazy(() => import("./router/public/auth/sign-up"));
+const SignupSuccessPage = React.lazy(() => import("./router/public/auth/sign-up-success"));
 const SigninPage = React.lazy(() => import("./router/public/auth/sign-in"));
 
 const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: HomePage, path: "/" },
   { element: SigninPage, path: "/auth/sign-in" },
   { element: SignupPage, path: "/auth/sign-up" },
+  { element: SignupSuccessPage, path: "/auth/sign-up-success" },
   { element: NotFoundPage, path: "*" }
 ];
 
