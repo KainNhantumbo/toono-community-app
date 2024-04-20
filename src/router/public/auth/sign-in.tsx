@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout";
+import { Spotlight } from "@/components/spotlight-effect";
 import { Button } from "@/components/ui/button";
 import * as CoreForm from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -53,6 +54,7 @@ export default function SigninPage() {
     <Layout>
       <main className='flex w-full flex-col gap-12 px-4'>
         <div className='mx-auto w-full max-w-md p-4 shadow-input md:p-8'>
+          <Spotlight fill='#13273F' className='max-h-[100%]' />
           <h2 className='text-center text-4xl font-bold'>
             Welcome back to {metadata.appName} Community
           </h2>

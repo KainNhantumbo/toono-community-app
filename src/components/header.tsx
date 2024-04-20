@@ -1,5 +1,13 @@
 import { RootState } from "@/state/store";
 import { useSelector } from "react-redux";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { metadata } from "@/shared/constants";
 import { LockIcon, SearchIcon, User } from "lucide-react";
