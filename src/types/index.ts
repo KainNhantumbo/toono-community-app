@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import { LucideIcon } from "lucide-react";
 import type { ChangeEvent, FormEvent } from "react";
 import * as React from "react";
 
@@ -22,3 +23,10 @@ export type Auth = {
 };
 
 export type HttpError = AxiosError<{ message: string; code?: string; status: number }>;
+
+export type DashboardActions = Array<{
+  label: string;
+  description: string;
+  icon: LucideIcon;
+  path: string;
+}>;

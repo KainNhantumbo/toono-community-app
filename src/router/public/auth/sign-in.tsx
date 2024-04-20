@@ -54,7 +54,9 @@ export default function SigninPage() {
     <Layout>
       <main className='flex w-full flex-col gap-12 px-4'>
         <div className='mx-auto w-full max-w-md p-4 shadow-input md:p-8'>
+          {/* TODO: ADD THEMING SUPPORT */}
           <Spotlight fill='#13273F' className='max-h-[100%]' />
+
           <h2 className='text-center text-4xl font-bold'>
             Welcome back to {metadata.appName} Community
           </h2>

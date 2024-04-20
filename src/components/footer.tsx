@@ -1,12 +1,13 @@
+import { FOOTER_URLS, metadata } from "@/shared/constants";
 import * as React from "react";
-import { FOOTER_URLS } from "@/shared/constants";
-import { metadata } from "@/shared/constants";
 import { Link } from "react-router-dom";
 
 export const Footer = (): React.JSX.Element => {
   return (
     <footer className='flex w-full flex-col items-center gap-3 bg-muted px-3 py-2 text-center'>
-      <h4>{metadata.appName} - A inclusive the open source community for developers.</h4>
+      <h3 className='my-2'>
+        {metadata.appName} - A inclusive the open source community for developers.
+      </h3>
       <nav className=' flex items-center justify-center gap-3'>
         {FOOTER_URLS.map((group, i) => (
           <div className='flex flex-col flex-wrap gap-3' key={i}>
@@ -24,8 +25,7 @@ export const Footer = (): React.JSX.Element => {
       </nav>
       <p className='my-3 font-medium'>
         Made Made with love and React.JS + Typescript. Copyright © {metadata.appName}{" "}
-        Community {" "}
-        {new Date().getFullYear()}{" "}
+        Community {new Date().getFullYear()}{" "}
       </p>
     </footer>
   );
