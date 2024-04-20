@@ -1,18 +1,17 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Loader } from './components/loader';
-import { NotFoundPage } from './router/404';
-import { HomePage } from './router/public/home';
-import { SignupPage } from './router/public/auth/sign-up';
-import { SigninPage } from './router/public/auth/sign-in';
+import * as React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Loader } from "./components/loader";
 
-type RouteType = { path: string; element: React.JSX.ElementType };
+const NotFoundPage = React.lazy(() => import("@/router/404"));
+const HomePage = React.lazy(() => import("./router/public/home"));
+const SignupPage = React.lazy(() => import("./router/public/auth/sign-up"));
+const SigninPage = React.lazy(() => import("./router/public/auth/sign-in"));
 
-const routes: RouteType[] = [
-  { element: HomePage, path: '/' },
-  { element: SigninPage, path: '/auth/sign-in' },
-  { element: SignupPage, path: '/auth/sign-up' },
-  { element: NotFoundPage, path: '*' }
+const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
+  { element: HomePage, path: "/" },
+  { element: SigninPage, path: "/auth/sign-in" },
+  { element: SignupPage, path: "/auth/sign-up" },
+  { element: NotFoundPage, path: "*" }
 ];
 
 export const AppRouter = () => {

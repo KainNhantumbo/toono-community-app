@@ -8,12 +8,12 @@ const filtersSlice = createSlice({
   initialState,
   name: "filters-slice",
   reducers: {
-    updateFilters: (state, action: PayloadAction<Filters>) => {
+    mutateFilters: (state, action: PayloadAction<Filters>) => {
       state = action.payload;
       return state;
     }
   }
 });
 
-export const { updateFilters } = filtersSlice.actions;
+export const { mutateFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;

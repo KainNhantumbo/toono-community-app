@@ -1,7 +1,7 @@
 import httpClient from "@/config/http-client";
 import { errorTransformer } from "@/lib/error";
-import { updateAuth } from "@/state/slices/auth";
-import { RootState } from "@/state/store";
+import { mutateAuth } from "@/state/slices/auth";
+import { AppDispatch, RootState } from "@/state/store";
 import { Auth, HttpError } from "@/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
 
 export const AppContext = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
 
   const authenticate = async () => {
@@ -33,7 +33,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
         url: "/api/v1/auth/refresh",
         withCredentials: true
       });
-      dispatch(updateAuth({ ...data }));
+      dispatch(mutateAuth({ ...data }));
     } catch (error) {
       const { message } = errorTransformer(error as HttpError);
       console.error(message || error);
@@ -61,7 +61,6 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-
   // sends a handshake to the server
   const onHandShake = async () => {
     try {
@@ -76,7 +75,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  React.useEffect((): (() => void) => {
+  React.useEffect(() => {
     const instance = setTimeout(() => authenticate(), 1000 * 60 * 4);
     return (): void => clearTimeout(instance);
   }, [auth]);

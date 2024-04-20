@@ -7,12 +7,12 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    updateAuth: (state, action: PayloadAction<Auth>) => {
+    mutateAuth: (state, action: PayloadAction<Auth>) => {
       state = action.payload;
       return state;
     }
   }
 });
 
-export const { updateAuth } = authSlice.actions;
+export const { mutateAuth } = authSlice.actions;
 export default authSlice.reducer;
