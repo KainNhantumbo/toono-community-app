@@ -6,18 +6,26 @@ import { Input } from "@/components/ui/input";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { Separator } from "@/components/ui/separator";
 import httpClient from "@/config/http-client";
+import { useThemeContext } from "@/context/theme-context";
 import { errorTransformer } from "@/lib/error";
 import { UserLoginType, userLoginSchema } from "@/schemas";
 import { metadata } from "@/shared/constants";
+import { mutateAuth } from "@/state/slices/auth";
+import { AppDispatch } from "@/state/store";
+import { Auth } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { LockIcon, LockOpen, MailIcon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SigninPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { theme } = useThemeContext();
   const [loading, setLoading] = React.useState(false);
 
   const form = useForm<UserLoginType>({
@@ -25,26 +33,23 @@ export default function SigninPage() {
     defaultValues: { email: "", password: "" }
   });
 
-  const onSubmit = async (data: UserLoginType) => {
+  const onSubmit = async (formData: UserLoginType) => {
     setLoading(true);
     try {
-      await httpClient({
+      const { data } = await httpClient<Auth>({
         method: "post",
         url: "/api/v1/auth/sign-in",
-        data,
+        data: formData,
         withCredentials: true
       });
+      dispatch(mutateAuth({ ...data }));
       navigate(`/users/dashboard/overview`);
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(message);
-      // TODO: ADD TOAST HERE
-      // toast.error(message, {
-      //   action: {
-      //     label: "Retry",
-      //     onClick: () => onSubmit(data)
-      //   }
-      // });
+      toast.error(message, {
+        action: { label: "Retry", onClick: () => onSubmit(formData) }
+      });
     } finally {
       setLoading(false);
     }
@@ -54,8 +59,10 @@ export default function SigninPage() {
     <Layout>
       <main className='flex w-full flex-col gap-12 px-4'>
         <div className='mx-auto w-full max-w-md p-4 shadow-input md:p-8'>
-          {/* TODO: ADD THEMING SUPPORT */}
-          <Spotlight fill='#13273F' className='max-h-[100%]' />
+          <Spotlight
+            fill={theme === "light" ? "#12162E" : "#B1ACA6"}
+            className='max-h-[100%]'
+          />
 
           <h2 className='text-center text-4xl font-bold'>
             Welcome back to {metadata.appName} Community
@@ -128,8 +135,8 @@ export default function SigninPage() {
                 )}
               />
               <LoadingButton
-                loading={loading}
                 variant={"default"}
+                loading={loading}
                 size={"lg"}
                 className='flex w-full items-center gap-2'
                 type='submit'>

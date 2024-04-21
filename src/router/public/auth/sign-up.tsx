@@ -1,10 +1,12 @@
 import { Layout } from "@/components/layout";
+import { Spotlight } from "@/components/spotlight-effect";
 import { Button } from "@/components/ui/button";
 import * as CoreForm from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { Separator } from "@/components/ui/separator";
 import httpClient from "@/config/http-client";
+import { useThemeContext } from "@/context/theme-context";
 import { errorTransformer } from "@/lib/error";
 import { UserSignupType, userSignupSchema } from "@/schemas";
 import { metadata } from "@/shared/constants";
@@ -14,9 +16,11 @@ import { LockIcon, MailIcon, User2Icon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const { theme } = useThemeContext();
   const [loading, setLoading] = React.useState(false);
 
   const form = useForm<UserSignupType>({
@@ -31,14 +35,9 @@ export default function SignupPage() {
       navigate(`/auth/sign-up-success`);
     } catch (error) {
       const { message } = errorTransformer(error);
-      console.error(message || error);
-      // TODO: ADD TOAST HERE
-      // toast.error(message, {
-      //   action: {
-      //     label: "Retry",
-      //     onClick: () => onSubmit(data)
-      //   }
-      // });
+      console.error(error);
+      console.warn(message);
+      toast.error(message, { action: { label: "Retry", onClick: () => onSubmit(data) } });
     } finally {
       setLoading(false);
     }
@@ -48,6 +47,10 @@ export default function SignupPage() {
     <Layout>
       <main className='flex w-full flex-col gap-12 px-4'>
         <div className='mx-auto w-full max-w-md p-4 shadow-input md:p-8'>
+          <Spotlight
+            fill={theme === "light" ? "#12162E" : "#B1ACA6"}
+            className='max-h-[100%]'
+          />
           <h2 className='text-center text-4xl font-bold'>
             Welcome to {metadata.appName} Community
           </h2>

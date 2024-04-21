@@ -5,10 +5,12 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Footer } from "./footer";
 import { Header } from "./header";
-// import { Toaster } from "sonner";
+import { Toaster } from "sonner";
+import { SpeechIcon, SunDimIcon, XIcon } from "lucide-react";
+import { useThemeContext } from "@/context/theme-context";
 
-//TODO: instantiate the toaster
 export const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { theme } = useThemeContext();
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useSelector((state: RootState) => state.auth);
@@ -28,7 +30,18 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Header />
         {children}
         <Footer />
-        {/* <Toaster closeButton loadingIcon duration={3000} /> */}
+        <Toaster
+          closeButton
+          duration={10000}
+          pauseWhenPageIsHidden
+          richColors
+          theme={theme}
+          icons={{
+            error: <XIcon className='stroke-destructive' />,
+            success: <SunDimIcon />,
+            info: <SpeechIcon />
+          }}
+        />
       </LazyMotion>
     </MotionConfig>
   );

@@ -1,4 +1,6 @@
 import { Layout } from "@/components/layout";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -12,7 +14,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ThemeVariants, useThemeContext } from "@/context/theme-context";
 import { cn } from "@/lib/utils";
-import { MoonStarIcon, SunDimIcon } from "lucide-react";
+import { ArrowLeft, MoonStarIcon, SunDimIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Configurations() {
   const { theme, handleChangeTheme } = useThemeContext();
@@ -20,7 +23,18 @@ export default function Configurations() {
   return (
     <Layout>
       <main className='mx-auto w-full max-w-4xl space-y-5 px-3'>
-        <Heading title='Configurations' description='Manage common configurations' />
+        <div className='flex items-center gap-5'>
+          <TooltipWrapper content='Back'>
+            <Button
+              onClick={() => history.back()}
+              variant={"outline"}
+              size={"icon"}
+              className='rounded-full'>
+              <ArrowLeft className='h-auto w-6' />
+            </Button>
+          </TooltipWrapper>
+          <Heading title='Configurations' description='Manage common configurations' />
+        </div>
 
         <section className='flex w-full flex-col gap-3'>
           <Card className='base-border shadow-none'>

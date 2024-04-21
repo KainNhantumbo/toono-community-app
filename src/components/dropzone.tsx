@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Input } from './ui/input';
 import { Skeleton } from './ui/skeleton';
+import { toast } from 'sonner';
 
 export type DropzoneProps = { handler: (file: string) => void };
 
@@ -17,15 +18,13 @@ export const DropzoneArea = ({ handler }: DropzoneProps) => {
       <T extends File>(acceptedFiles: T[]) => {
         const file = acceptedFiles[0];
         if (!file || !ALLOWED_MIMETYPES.includes(String(file.type)))
-          // return toast.error('Error: file type forbidden.');
-          // TODO: ADD THIS TO AN TOAST INSTEAD OF PRINTING AN ERROR
-          console.error('File type forbidden');
+          return toast.error('Error: file type forbidden.');
 
         const reader = new FileReader();
         reader.LOADING && setIsLoading(true);
         reader.readAsDataURL(file);
         reader.onloadend = function (e: ProgressEvent<FileReader>) {
-          const encodedImage: string = e.target?.result as string;
+          const encodedImage = e.target?.result as string;
           handler(encodedImage);
           setIsLoading(false);
         };
