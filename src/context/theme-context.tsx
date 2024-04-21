@@ -1,32 +1,33 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import * as React from "react";
 
-// TODO: ADD TOAST TO THIS
-// import { toast } from "sonner";
+export type ThemeVariants = "light" | "dark";
+type Context = {
+  theme: ThemeVariants;
+  handleChangeTheme: (variant: ThemeVariants) => void;
+};
 
-type ThemeVariants = "light" | "dark";
-
-type Context = { theme: ThemeVariants; setTheme: () => void };
-
-const context = React.createContext<Context>({ theme: "light", setTheme: () => {} });
+const context = React.createContext<Context>({
+  theme: "light",
+  handleChangeTheme: () => {}
+});
 
 export const ThemeContext = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useLocalStorage<ThemeVariants>("TOONO-UI-THEME", "light");
 
-  const toggleTheme = () => {
+  const handleChangeTheme = (variant: ThemeVariants) => {
     const html = document.querySelector("html");
-    // TODO: FIX THIS
-    // if (!html) return toast.error("Failed to change theme");
-    const currentTheme = theme === "light" ? "dark" : "light";
-    html?.setAttribute("class", currentTheme);
-    setTheme(currentTheme);
+    if (html) {
+      html.setAttribute("class", variant);
+      setTheme(variant);
+    }
   };
 
   const handleSync = React.useCallback(() => {
     const html = document.querySelector("html");
-    // TODO: FIX THIS
-    // if (!html) return toast.error("Failed to change theme");
-    html?.setAttribute("class", theme);
+    if (html) {
+      html.setAttribute("class", theme);
+    }
   }, [theme]);
 
   React.useEffect(() => {
@@ -34,7 +35,7 @@ export const ThemeContext = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <context.Provider value={{ theme, setTheme: toggleTheme }}>{children}</context.Provider>
+    <context.Provider value={{ theme,  handleChangeTheme }}>{children}</context.Provider>
   );
 };
 

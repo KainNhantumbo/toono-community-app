@@ -8,6 +8,7 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
+import { useOverviewQuery } from "@/hooks/use-overview-query";
 import { RootState } from "@/state/store";
 import { DashboardActions } from "@/types";
 import { ArrowRight, CogIcon, FilePenIcon, UserIcon } from "lucide-react";
@@ -37,6 +38,8 @@ const actions: DashboardActions = [
 
 export default function Overview() {
   const auth = useSelector((state: RootState) => state.auth);
+  const { data, isError, isLoading } = useOverviewQuery();
+  console.log(data);
 
   return (
     <Layout>
@@ -47,7 +50,7 @@ export default function Overview() {
             description={`${auth.name}, welcome to your dashboard!`}
           />
         </section>
-        <section className=' grid w-full gap-3 mobile:grid-cols-2'>
+        <section className='grid w-full gap-3 mobile:grid-cols-2'>
           {actions.map(({ label, path, description, icon: Icon }, i) => (
             <Card key={i} className='w-full max-w-sm shadow-none'>
               <CardHeader>
