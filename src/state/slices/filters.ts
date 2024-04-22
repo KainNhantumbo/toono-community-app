@@ -1,7 +1,6 @@
 import type { Filters } from "@/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-
 const initialState: Filters = { search: "", sort: "", limit: "", offset: "" };
 
 const filtersSlice = createSlice({

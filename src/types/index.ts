@@ -30,3 +30,28 @@ export type DashboardActions = Array<{
   icon: LucideIcon;
   path: string;
 }>;
+
+
+
+export type User = {
+  id: string;
+  name: string;
+  user_name: string;
+  biography: string;
+  work: string;
+  education: string;
+  learning: string;
+  available: string;
+  location: string;
+  birthday: null | string;
+  created_at: string;
+  updated_at: string;
+  network: {
+    website: string;
+    github: string;
+    facebook: string;
+    instagram: string;
+    linkedin: string;
+  };
+  profile_image: null | { url: string };
+};

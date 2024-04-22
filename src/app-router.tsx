@@ -9,6 +9,7 @@ const SignupSuccessPage = React.lazy(() => import("./router/public/auth/sign-up-
 const SigninPage = React.lazy(() => import("./router/public/auth/sign-in"));
 const Overview = React.lazy(() => import("./router/private/dashboard/overview"));
 const Configurations = React.lazy(() => import("./router/private/dashboard/configurations"));
+const Account = React.lazy(() => import("./router/private/dashboard/account"));
 
 const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: HomePage, path: "/" },
@@ -16,6 +17,7 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: SignupPage, path: "/auth/sign-up" },
   { element: Overview, path: "/users/dashboard/overview" },
   { element: Configurations, path: "/users/dashboard/configurations" },
+  { element: Account, path: "/users/dashboard/account" },
   { element: SignupSuccessPage, path: "/auth/sign-up-success" },
   { element: NotFoundPage, path: "*" }
 ];

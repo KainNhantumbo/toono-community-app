@@ -40,7 +40,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const client = <T = unknown, S = AxiosRequestConfig>(config: S) => {
+  async function client<T = unknown, S = AxiosRequestConfig>(config: S) {
     httpClient.interceptors.response.use(undefined, (error): Promise<never> => {
       const status = (error as AxiosError).response?.status as number;
       let retryCount = 0;
@@ -59,7 +59,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
       headers: { authorization: `Bearer ${auth.token}` },
       withCredentials: true
     });
-  };
+  }
 
   // sends a handshake to the server
   const onHandShake = async () => {

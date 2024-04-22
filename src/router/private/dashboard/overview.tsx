@@ -25,7 +25,7 @@ const actions: DashboardActions = [
   {
     label: "Account",
     description: "Adjust account data settings",
-    path: "/users/dashboard/configurations",
+    path: "/users/dashboard/account",
     icon: UserIcon
   },
   {

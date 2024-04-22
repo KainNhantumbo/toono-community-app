@@ -42,5 +42,25 @@ export const userSignupSchema = z
     path: ["confirm_password"]
   });
 
+export const UpdateUserSchema = z.object({
+  name: z.string().max(64).optional(),
+  user_name: z.string().max(32).optional(),
+  biography: z.string().max(128).optional(),
+  work: z.string().max(256).optional(),
+  education: z.string().max(256).optional(),
+  learning: z.string().max(256).optional(),
+  available: z.string().max(256).optional(),
+  location: z.string().max(128).optional(),
+  birthday: z.coerce.string({ invalid_type_error: "Invalid birthday value" }).optional(),
+  profileImage: z.string().optional(),
+
+  website: z.string().url("Please insert valid url.").optional().default(""),
+  github: z.string().url("Please insert valid url.").optional().default(""),
+  facebook: z.string().url("Please insert valid url.").optional().default(""),
+  instagram: z.string().url("Please insert valid url.").optional().default(""),
+  linkedin: z.string().url("Please insert valid url.").optional().default("")
+});
+
+export type UpdateUserDataType = z.infer<typeof UpdateUserSchema>;
 export type UserLoginType = z.infer<typeof userLoginSchema>;
 export type UserSignupType = z.infer<typeof userSignupSchema>;

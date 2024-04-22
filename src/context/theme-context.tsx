@@ -2,6 +2,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import * as React from "react";
 
 export type ThemeVariants = "light" | "dark";
+
 type Context = {
   theme: ThemeVariants;
   handleChangeTheme: (variant: ThemeVariants) => void;

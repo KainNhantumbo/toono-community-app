@@ -1,10 +1,11 @@
 import { AppDispatch, RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import httpClient from "@/config/http-client";
@@ -12,7 +13,14 @@ import { errorTransformer } from "@/lib/error";
 import { metadata } from "@/shared/constants";
 import { initialAuthState, mutateAuth } from "@/state/slices/auth";
 import { DashboardIcon } from "@radix-ui/react-icons";
-import { LockIcon, LogOutIcon, PenBoxIcon, SearchIcon, User } from "lucide-react";
+import {
+  AtSignIcon,
+  LockIcon,
+  LogOutIcon,
+  PenBoxIcon,
+  SearchIcon,
+  User
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { TooltipWrapper } from "./tooltip-wrapper";
@@ -66,7 +74,7 @@ export const Header = () => {
               <TooltipWrapper content='Create new post'>
                 <PenBoxIcon />
               </TooltipWrapper>
-              <span className='sr-only'> Create new post</span>
+              <span className='sr-only'>Create new post</span>
             </Link>
           </Button>
         )}
@@ -92,6 +100,15 @@ export const Header = () => {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                <DropdownMenuLabel className='flex items-center'>
+                  <User className='mr-2 h-auto w-4' />
+                  <span>{auth.name}</span>
+                </DropdownMenuLabel>
+                <DropdownMenuLabel className='flex items-center'>
+                  <AtSignIcon className='mr-2 h-auto w-4' />
+                  <span>{auth.email}</span>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/users/dashboard/overview")}>
                   <DashboardIcon className='mr-2 h-auto w-4 ' />
                   <span>Dashboard</span>
