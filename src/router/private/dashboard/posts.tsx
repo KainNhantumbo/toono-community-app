@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import * as React from "react";
 import { Separator } from "@/components/ui/separator";
+import { PostsTableRender } from "@/components/posts-table";
 
 export default function PostsPage() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function PostsPage() {
         <Separator decorative />
 
         <section>
-          {/* {!isLoading && !isError ? <PostsTableRender data={posts} /> : null} */}
+          {!isLoading && !isError ? <PostsTableRender data={posts} /> : null}
 
           {isLoading && !isError ? <Loader /> : null}
           {!isLoading && isError ? (
