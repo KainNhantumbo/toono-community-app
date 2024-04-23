@@ -65,3 +65,6 @@ export const FOOTER_URLS: { path: string; label: string }[][] = [
     { label: "Sign Up", path: "/auth/sign-up" }
   ]
 ];
+
+export const PUBLIC_POSTS_LIMIT_PER_PAGE = 15;
+export const POSTS_LIMIT_PER_PAGE = 10;

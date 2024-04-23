@@ -52,13 +52,23 @@ export const UpdateUserSchema = z.object({
   available: z.string().max(256).optional(),
   location: z.string().max(128).optional(),
   birthday: z.coerce.string({ invalid_type_error: "Invalid birthday value" }).optional(),
-  profileImage: z.string().optional(),
-
-  website: z.string().url("Please insert valid url.").optional().default(""),
-  github: z.string().url("Please insert valid url.").optional().default(""),
-  facebook: z.string().url("Please insert valid url.").optional().default(""),
-  instagram: z.string().url("Please insert valid url.").optional().default(""),
-  linkedin: z.string().url("Please insert valid url.").optional().default("")
+  password: z
+    .string()
+    .trim()
+    .max(20, { message: "Your password must have less than 20 characters." })
+    .optional(),
+  confirm_password: z
+    .string()
+    .trim()
+    .max(20, { message: "Your password must have less than 20 characters." })
+    .optional(),
+  network: z.object({
+    website: z.string().url("Please insert valid url.").optional().default(""),
+    github: z.string().url("Please insert valid url.").optional().default(""),
+    facebook: z.string().url("Please insert valid url.").optional().default(""),
+    instagram: z.string().url("Please insert valid url.").optional().default(""),
+    linkedin: z.string().url("Please insert valid url.").optional().default("")
+  })
 });
 
 export type UpdateUserDataType = z.infer<typeof UpdateUserSchema>;

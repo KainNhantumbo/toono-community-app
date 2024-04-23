@@ -41,8 +41,8 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
   };
 
   async function client<T = unknown, S = AxiosRequestConfig>(config: S) {
-    httpClient.interceptors.response.use(undefined, (error): Promise<never> => {
-      const status = (error as AxiosError).response?.status as number;
+    httpClient.interceptors.response.use(undefined, (error: AxiosError) => {
+      const status = error.response?.status as number;
       let retryCount = 0;
       if (status && status > 400 && status < 404 && retryCount < 6) {
         authenticate().catch((error) => {
@@ -51,7 +51,6 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
           retryCount += 1;
         });
       }
-      navigate("/auth/sign-in");
       return Promise.reject(error);
     });
     return httpClient<T>({

@@ -7,19 +7,19 @@ import { useSelector } from "react-redux";
 
 export const initialUserState: User = {
   id: "",
-  available: "",
+  name: "",
+  user_name: "",
   biography: "",
   birthday: "",
-  created_at: "",
+  work: "",
+  available: "",
   education: "",
   learning: "",
   location: "",
-  name: "",
   network: { facebook: "", github: "", instagram: "", linkedin: "", website: "" },
   profile_image: null,
   updated_at: "",
-  user_name: "",
-  work: ""
+  created_at: "",
 };
 
 export const useUserDataQuery = () => {
