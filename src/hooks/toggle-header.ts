@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useWindowSize } from '@uidotdev/usehooks';
+import { useEffect, useState } from "react";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export const useToggleHeader = (breakpoint: number) => {
   const { width: innerWidth } = useWindowSize();

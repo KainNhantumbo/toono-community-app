@@ -9,6 +9,7 @@ import { TooltipWrapper } from "./tooltip-wrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { UserLogoutAlert } from "./user-logout-alert";
+import { PostsSearchSheet } from "./posts-search-sheet";
 
 export const Header = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -20,12 +21,8 @@ export const Header = () => {
         {metadata.appName}
       </span>
       <nav className=' flex items-center gap-2'>
-        <TooltipWrapper content='Search and filters'>
-          <Button size={"icon"} variant={"ghost"}>
-            <Lucide.SearchIcon />
-            <span className='sr-only'>Search</span>
-          </Button>
-        </TooltipWrapper>
+        <PostsSearchSheet />
+
         {!auth.token ? (
           <Button asChild variant={"secondary"} className='base-border' size={"default"}>
             <Link to={"/auth/sign-in"}>
@@ -34,14 +31,14 @@ export const Header = () => {
             </Link>
           </Button>
         ) : (
-          <Button asChild variant={"ghost"} size={"icon"}>
-            <Link to={"/users/dashboard/create-post"}>
-              <TooltipWrapper content='Create new post'>
+          <TooltipWrapper content='Create new post'>
+            <Button asChild variant={"ghost"} size={"icon"}>
+              <Link to={"/users/dashboard/posts/post-editor/create"}>
                 <Lucide.PenBoxIcon />
-              </TooltipWrapper>
-              <span className='sr-only'>Create new post</span>
-            </Link>
-          </Button>
+                <span className='sr-only'>Create new post</span>
+              </Link>
+            </Button>
+          </TooltipWrapper>
         )}
 
         {auth.token && (
@@ -55,12 +52,10 @@ export const Header = () => {
                       alt={`${auth.name} profile image`}
                     />
                   ) : (
-                    <TooltipWrapper content='Access your account'>
-                      <AvatarFallback className='base-border'>
-                        <Lucide.User className='h-auto w-5' />
-                        <span className='sr-only'>user icon</span>
-                      </AvatarFallback>
-                    </TooltipWrapper>
+                    <AvatarFallback className='base-border'>
+                      <Lucide.User className='h-auto w-5' />
+                      <span className='sr-only'>user icon</span>
+                    </AvatarFallback>
                   )}
                 </Avatar>
               </Dropdown.DropdownMenuTrigger>

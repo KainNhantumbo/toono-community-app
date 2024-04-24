@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 type Context = {
   client: <T>(config: AxiosRequestConfig<T>) => Promise<AxiosResponse<T>>;
@@ -22,7 +21,6 @@ const queryClient = new QueryClient({
 });
 
 export const AppContext = ({ children }: { children: React.ReactNode }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
 

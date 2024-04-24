@@ -15,7 +15,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ThemeVariants, useThemeContext } from "@/context/theme-context";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, MoonStarIcon, SunDimIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function Configurations() {
   const { theme, handleChangeTheme } = useThemeContext();

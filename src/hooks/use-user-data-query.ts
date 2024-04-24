@@ -19,7 +19,7 @@ export const initialUserState: User = {
   network: { facebook: "", github: "", instagram: "", linkedin: "", website: "" },
   profile_image: null,
   updated_at: "",
-  created_at: "",
+  created_at: ""
 };
 
 export const useUserDataQuery = () => {
@@ -46,5 +46,5 @@ export const useUserDataQuery = () => {
     queryFn: getUserData
   });
 
-  return { data:  data || initialUserState, isError, error, isLoading, refetch };
+  return { data: data || initialUserState, isError, error, isLoading, refetch };
 };

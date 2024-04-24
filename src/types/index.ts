@@ -12,7 +12,7 @@ export type InputEvent =
 
 export type SubmitEvent = FormEvent<HTMLFormElement>;
 
-export type Filters = { search: string; offset: string; limit: string; sort: string };
+export type Filters = { search: string; sort: string };
 
 export type Auth = {
   id: string;
@@ -30,8 +30,6 @@ export type DashboardActions = Array<{
   icon: LucideIcon;
   path: string;
 }>;
-
-
 
 export type User = {
   id: string;
