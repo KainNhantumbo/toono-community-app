@@ -38,9 +38,9 @@ import { toast } from "sonner";
 
 export default function Account() {
   const auth = useSelector((state: RootState) => state.auth);
-  const { data, error, isLoading, refetch, isError } = useUserDataQuery();
+  const { data: initialUserState, error, isLoading, refetch, isError } = useUserDataQuery();
   const [profileImage, setProfileImage] = React.useState<string>(() =>
-    data.profile_image ? data.profile_image.url : ""
+    initialUserState.profile_image ? initialUserState.profile_image.url : ""
   );
   const [loading, setLoading] = React.useState<boolean>(false);
   const { client } = useAppContext();
@@ -49,16 +49,16 @@ export default function Account() {
     resolver: zodResolver(UpdateUserSchema),
     disabled: loading,
     values: {
-      name: data.name,
-      available: data.available,
-      biography: data.biography,
-      birthday: data.birthday ?? "",
-      network: data.network,
-      education: data.education,
-      learning: data.learning,
-      location: data.location,
-      user_name: data.user_name,
-      work: data.work
+      name: initialUserState.name,
+      available: initialUserState.available,
+      biography: initialUserState.biography,
+      birthday: initialUserState.birthday ?? "",
+      network: initialUserState.network,
+      education: initialUserState.education,
+      learning: initialUserState.learning,
+      location: initialUserState.location,
+      user_name: initialUserState.user_name,
+      work: initialUserState.work
     }
   });
 
@@ -107,9 +107,9 @@ export default function Account() {
         </div>
 
         <div className=' flex w-full items-center justify-between gap-3 text-sm font-medium uppercase'>
-          <p>Account created at: {formatDate(data.created_at)}</p>
+          <p>Account created at: {formatDate(initialUserState.created_at)}</p>
           <Separator orientation='vertical' decorative />
-          <p>Last update: {formatDate(data.updated_at)}</p>
+          <p>Last update: {formatDate(initialUserState.updated_at)}</p>
         </div>
 
         <Separator decorative />
@@ -119,7 +119,7 @@ export default function Account() {
             <div className='flex w-full flex-col items-center gap-3'>
               <img
                 src={profileImage}
-                alt={`${data.name} profile image`}
+                alt={`${initialUserState.name} profile image`}
                 className='mx-auto w-full max-w-[200px] rounded-full object-cover'
               />
 

@@ -1,13 +1,13 @@
+import { useThemeContext } from "@/context/theme-context";
 import { RootState } from "@/state/store";
 import { LazyMotion, MotionConfig, domAnimation } from "framer-motion";
+import { CheckIcon, SpeechIcon, XIcon } from "lucide-react";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Toaster } from "sonner";
 import { Footer } from "./footer";
 import { Header } from "./header";
-import { Toaster } from "sonner";
-import { SpeechIcon, SunDimIcon, XIcon } from "lucide-react";
-import { useThemeContext } from "@/context/theme-context";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useThemeContext();
@@ -38,7 +38,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           theme={theme}
           icons={{
             error: <XIcon className='stroke-destructive' />,
-            success: <SunDimIcon />,
+            success: <CheckIcon />,
             info: <SpeechIcon />
           }}
         />

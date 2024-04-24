@@ -7,3 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const formatDate = (date: string): string => moment(date).format("LL");
+
+export const transformChild = (child: string) =>
+  child
+    .replace(/ /g, "-")
+    .replace(/[/\\^$*+?.()|[\]{}<>:;"'~,=@`#!%&]/g, "")
+    .toLowerCase();
+
+export const clipboard = async (content: string) => {
+  try {
+    await navigator.clipboard.writeText(content);
+  } catch (error) {
+    console.log(error);
+  }
+};

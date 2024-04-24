@@ -94,8 +94,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out"
       },
       fontFamily: {
+        serif: [ ...defaultTheme.fontFamily.serif],
         sans: ["Manrope", "Inter", ...defaultTheme.fontFamily.sans],
-        mono: ["IBM Plex Mono", "Hack", "Menlo", "Consolas", "monospace"]
+        mono: ["Geist Mono", "Hack", "Menlo", "Consolas", ...defaultTheme.fontFamily.mono]
       },
       screens: {
         mobile: "420px",
