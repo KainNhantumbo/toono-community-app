@@ -17,7 +17,9 @@ export const Header = () => {
 
   return (
     <header className='base-border fixed left-0 top-0 z-50 mb-8 flex h-[52px] w-full items-center justify-between gap-3 bg-background/45 px-3 py-1 font-sans text-sm backdrop-blur'>
-      <span className='base-border select-none rounded-lg bg-foreground p-1 px-2 text-lg font-semibold'>
+      <span
+        className='base-border cursor-pointer select-none rounded-lg bg-foreground p-1 px-2 text-lg font-semibold'
+        onClick={() => navigate("/")}>
         {metadata.appName}
       </span>
       <nav className=' flex items-center gap-2'>

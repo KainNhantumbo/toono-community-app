@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Loader } from "./components/loader";
+import { RouteErrorBoundary } from "./components/route-error";
 
 const NotFoundPage = React.lazy(() => import("@/router/404"));
 const HomePage = React.lazy(() => import("./router/public/home"));
@@ -36,6 +37,7 @@ export const router = createBrowserRouter(
       <React.Suspense fallback={<Loader />}>
         <route.element />
       </React.Suspense>
-    )
+    ),
+    errorElement: <RouteErrorBoundary />
   }))
 );

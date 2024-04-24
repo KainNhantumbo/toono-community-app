@@ -1,4 +1,5 @@
 import client from "@/config/http-client";
+import { errorTransformer } from "@/lib/error";
 import { PUBLIC_POSTS_LIMIT_PER_PAGE } from "@/shared/constants";
 import { UserPost, mutateUserPosts } from "@/state/slices/users-posts";
 import { AppDispatch, RootState } from "@/state/store";
@@ -20,20 +21,27 @@ export const usePublicPostsQuery = () => {
       initialPageParam: 0,
       queryKey: ["user-posts"],
       queryFn: async ({ pageParam = 0 }) => {
-        const queryParams = new URLSearchParams({
-          offset: params.get("offset") || String(pageParam * PUBLIC_POSTS_LIMIT_PER_PAGE),
-          limit: params.get("limit") || String(PUBLIC_POSTS_LIMIT_PER_PAGE),
-          fields: "id,title,updated_at,tags,created_at",
-          sort: params.get("sort") || "",
-          search: params.get("search") || ""
-        });
+        try {
+          const queryParams = new URLSearchParams({
+            offset: params.get("offset") || String(pageParam * PUBLIC_POSTS_LIMIT_PER_PAGE),
+            limit: params.get("limit") || String(PUBLIC_POSTS_LIMIT_PER_PAGE),
+            fields: "id,title,updated_at,slug,read_time,words,tags,created_at",
+            sort: params.get("sort") || "",
+            search: params.get("search") || ""
+          });
 
-        const { data } = await client<UserPost[]>({
-          method: "get",
-          url: `/api/v1/posts?${queryParams.toString()}`
-        });
+          const { data } = await client<UserPost[]>({
+            method: "get",
+            url: `/api/v1/posts?${queryParams.toString()}`
+          });
 
-        return { data, currentOffset: pageParam + 1 };
+          return { data, currentOffset: pageParam + 1 };
+        } catch (error) {
+          const { message } = errorTransformer(error);
+          console.error(error);
+          console.warn(message);
+          return { data: [], currentOffset: 0 };
+        }
       },
       getNextPageParam: ({ data, currentOffset }) =>
         data.length >= PUBLIC_POSTS_LIMIT_PER_PAGE ? currentOffset : undefined

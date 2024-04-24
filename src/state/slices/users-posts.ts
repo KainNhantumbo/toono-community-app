@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 export type UserPost = {
   id: string;
   title: string;
-  tags: string[];
+  claps: string[];
   updated_at: string;
   created_at: string;
 };

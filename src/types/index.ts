@@ -67,9 +67,27 @@ export type PublicPost = {
   title: string;
   slug: string;
   content: string;
+  read_time: string;
+  words: number;
+  visits: number;
   tags: string[];
-  cover_image: { url: string } | null;
+  coverImage: { url: string } | null;
   public: boolean;
   created_at: string;
   updated_at: string;
 };
+
+export type PostList = Array<{
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  read_time: string;
+  words: number;
+  visits: number;
+  tags: string[];
+  coverImage: { url: string } | null;
+  public: boolean;
+  created_at: string;
+  updated_at: string;
+}>;

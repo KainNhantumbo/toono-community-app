@@ -11,9 +11,9 @@ export const useUserPostsQuery = () => {
 
   const { data, refetch, isLoading, isError, error } = useQuery({
     queryKey: ["user-posts"],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async () => {
       const queryParams = new URLSearchParams({
-        fields: "id,title,updated_at,tags,created_at",
+        fields: "id,title,updated_at,created_at",
         userId: auth.id
       });
       const { data } = await client.get<UserPost[]>(
@@ -24,7 +24,7 @@ export const useUserPostsQuery = () => {
   });
 
   const posts = React.useMemo((): UserPost[] => {
-    if (data) return data;
+    if (data && Array.isArray(data)) return data;
     return [];
   }, [data]);
 

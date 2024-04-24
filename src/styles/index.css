@@ -146,6 +146,10 @@
     min-height: 100vh;
     padding-top: 65px;
   }
+
+  input, textarea, select {
+    @apply bg-background;
+  }
 }
 
 @layer components {

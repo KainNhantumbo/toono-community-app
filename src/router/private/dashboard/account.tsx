@@ -495,7 +495,6 @@ export default function Account() {
               </div>
 
               <Button variant={"default"} disabled={loading} size={"lg"} type='submit'>
-                <Lucide.ArrowRightCircleIcon className='mr-2 w-4 stroke-white' />
                 <span className='font-semibold text-white'>Update Data</span>
               </Button>
             </form>

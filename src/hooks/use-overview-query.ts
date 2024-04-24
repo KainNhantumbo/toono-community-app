@@ -4,7 +4,7 @@ import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
 import { toast } from "sonner";
 
-const initialState = [{ posts: {} }];
+export type ResultData = { _count: number }[][];
 
 export const useOverviewQuery = () => {
   const { client } = useAppContext();
@@ -17,7 +17,6 @@ export const useOverviewQuery = () => {
       const { message } = errorTransformer(error);
       console.error(message);
       toast.error(message, { action: { label: "Retry", onClick: getStats } });
-      return initialState;
     }
   };
 
@@ -28,7 +27,6 @@ export const useOverviewQuery = () => {
 
   const stats = React.useMemo(() => {
     if (data) return data;
-    return initialState;
   }, [data]);
 
   return { data: stats, isError, isLoading };

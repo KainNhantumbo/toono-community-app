@@ -1,13 +1,12 @@
 import { clipboard, transformChild } from "@/lib/utils";
 import clsx from "clsx";
 import { ClipboardCopyIcon } from "lucide-react";
-import type { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import remarkGFM from "remark-gfm";
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import remarkGFM from "remark-gfm";
 
-export const ContentRenderer: FC<{ children: string }> = ({ children }) => (
+export const ContentRenderer = ({ children }: { children: string }) => (
   <ReactMarkdown
     className='blog-post-content'
     remarkPlugins={[remarkGFM]}

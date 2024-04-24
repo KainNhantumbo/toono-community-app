@@ -1,20 +1,21 @@
 import { cn } from "@/lib/utils";
 import { ALLOWED_MIMETYPES } from "@/shared/constants";
-import { DownloadIcon } from "lucide-react";
+import Compressor from "compressorjs";
+import { ImageIcon } from "lucide-react";
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
+import { toast } from "sonner";
 import { Input } from "./ui/input";
 import { Skeleton } from "./ui/skeleton";
-import { toast } from "sonner";
-import Compressor from "compressorjs";
 
 export type DropzoneProps = {
   handler: (file: string) => void;
   width: number;
   height: number;
+  className?: string;
 };
 
-export const DropzoneArea = ({ handler, width, height }: DropzoneProps) => {
+export const DropzoneArea = ({ handler, width, height, className }: DropzoneProps) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -61,17 +62,21 @@ export const DropzoneArea = ({ handler, width, height }: DropzoneProps) => {
     <div
       {...getRootProps()}
       className={cn(
-        "base-border bg-foreground-default mx-auto grid w-full max-w-xl place-content-center rounded-2xl border-[1px] p-4 py-12",
-        { "divide-dashed border-primary/85": isDragActive }
+        "base-border bg-foreground-default mx-auto grid w-full max-w-xl place-content-center rounded-lg border-[1px] p-4",
+        { "divide-dashed border-primary/85": isDragActive },
+        className
       )}>
       <div className='flex w-full select-none flex-col items-center gap-3'>
-        <DownloadIcon />
-        <h3 className='max-w-[260px] text-center text-primary'>
+        <ImageIcon />
+        <h3 className='max-w-[360px] text-center text-sm text-primary'>
           {isDragActive
             ? "Drop your image here"
             : "Click to select or drag and drop an image here"}
         </h3>
-        <span className='description'>Extensions: [.JPEG, .JPG, .PNG].</span>
+        <span>Extensions: [.JPEG, .JPG, .PNG].</span>
+        <span className='text-sm font-medium'>
+          Dimensions: {width} x {height}px.
+        </span>
 
         <Input {...getInputProps()} />
       </div>
