@@ -89,7 +89,7 @@ export default function Account() {
 
   return (
     <Layout>
-      <main className='mx-auto w-full max-w-4xl space-y-5 px-3'>
+      <main className='mx-auto mb-3 w-full max-w-4xl space-y-5 px-3'>
         <div className='flex items-center gap-5'>
           <TooltipWrapper content='Back'>
             <Button
@@ -114,34 +114,7 @@ export default function Account() {
 
         <Separator decorative />
 
-        <div className='w-full'>
-          {profileImage ? (
-            <div className='flex w-full flex-col items-center gap-3'>
-              <img
-                src={profileImage}
-                alt={`${initialUserState.name} profile image`}
-                className='mx-auto w-full max-w-[200px] rounded-full object-cover'
-              />
-
-              <Button variant={"outline"} onClick={() => setProfileImage("")}>
-                <Lucide.Trash2 className='mr-2 h-auto w-4' />
-                <span>Delete Image</span>
-              </Button>
-            </div>
-          ) : (
-            <DropzoneArea
-              width={200}
-              height={200}
-              handler={(encodedImage) => {
-                setProfileImage(encodedImage);
-              }}
-            />
-          )}
-        </div>
-
-        <Separator decorative />
-
-        <section>
+        <section className='space-y-5 rounded-lg border bg-input/30 p-3'>
           {isLoading && !isError ? <Loader /> : null}
           {!isLoading && isError ? (
             <AlertMessage
@@ -151,11 +124,39 @@ export default function Account() {
             />
           ) : null}
 
+          <div className='w-full'>
+            {profileImage ? (
+              <div className='flex w-full flex-col items-center gap-3'>
+                <img
+                  src={profileImage}
+                  alt={`${initialUserState.name} profile image`}
+                  className='mx-auto w-full max-w-[200px] rounded-full object-cover'
+                />
+
+                <Button variant={"outline"} onClick={() => setProfileImage("")}>
+                  <Lucide.Trash2 className='mr-2 h-auto w-4' />
+                  <span>Delete Image</span>
+                </Button>
+              </div>
+            ) : (
+              <DropzoneArea
+                width={200}
+                height={200}
+                className="border-none"
+                handler={(encodedImage) => {
+                  setProfileImage(encodedImage);
+                }}
+              />
+            )}
+          </div>
+
+          <Separator decorative />
+
           <Form {...form}>
             <form
               autoComplete='off'
               onSubmit={form.handleSubmit(onSubmit)}
-              className='max my-auto mb-3 h-full w-full space-y-8'>
+              className='max my-auto h-full w-full space-y-8'>
               <div className='flex flex-col items-center justify-between gap-4 sm:flex-row'>
                 <FormField
                   control={form.control}
@@ -495,7 +496,7 @@ export default function Account() {
               </div>
 
               <Button variant={"default"} disabled={loading} size={"lg"} type='submit'>
-                <span className='font-semibold text-white'>Update Data</span>
+                <span className='font-semibold'>Update Data</span>
               </Button>
             </form>
           </Form>

@@ -16,8 +16,8 @@ export const TooltipWrapper: FC<TooltipProps> = ({ offsetDistance, children, con
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger asChild={true}>{children}</TooltipTrigger>
-      <TooltipContent className='base-border bg-background' sideOffset={offsetDistance}>
-        <p>{content}</p>
+      <TooltipContent className='border bg-background' sideOffset={offsetDistance}>
+        <p className='text-card-foreground'>{content}</p>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>

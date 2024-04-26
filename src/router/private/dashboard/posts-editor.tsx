@@ -129,10 +129,10 @@ export default function PostsEditor() {
 
         <Separator decorative />
 
-        <section className='flex w-full flex-col gap-3 bg-background'>
+        <section className='flex w-full flex-col gap-3'>
           <form
             onSubmit={(e) => e.preventDefault()}
-            className='base-border flex w-full flex-col gap-3 rounded-md'>
+            className='flex w-full flex-col gap-3 rounded-lg border bg-input/30'>
             <div className='w-full'>
               {postDraft.coverImage ? (
                 <div className='relative flex w-full flex-col items-center gap-3'>
@@ -171,7 +171,7 @@ export default function PostsEditor() {
                 id='title'
                 value={postDraft.title}
                 placeholder='Your new post title here...'
-                className='h-full w-full rounded-none border-none text-xl shadow-none outline-none focus-visible:ring-0 md:text-4xl'
+                className='h-full w-full rounded-none border-none bg-transparent text-xl shadow-none outline-none focus-visible:ring-0 md:text-4xl'
                 onChange={(e) =>
                   setPostDraft((state) => ({ ...state, title: e.target.value }))
                 }

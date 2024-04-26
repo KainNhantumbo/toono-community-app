@@ -29,7 +29,7 @@ export default function Configurations() {
               variant={"outline"}
               size={"icon"}
               className='rounded-full'>
-              <ArrowLeft className='h-auto w-6 text-primary/20' />
+              <ArrowLeft className='h-auto w-6' />
             </Button>
           </TooltipWrapper>
           <Heading title='Configurations' description='Manage common configurations' />
@@ -54,15 +54,15 @@ export default function Configurations() {
                         {
                           "border-dashed border-primary ": theme === "light"
                         },
-                        "flex h-28 w-28 flex-col items-center justify-around rounded-lg border p-2"
+                        "flex h-36 w-48 flex-col items-center justify-around rounded-lg border-4 p-2"
                       )}>
                       <div className='flex w-full items-center gap-2'>
-                        <SunDimIcon className='h-auto w-8' />
-                        <Skeleton className='h-4 w-full animate-none rounded-full' />
+                        <SunDimIcon className='h-auto w-8 stroke-muted-foreground' />
+                        <Skeleton className='h-2 w-full animate-none rounded-full bg-muted-foreground/50' />
                       </div>
-                      <Skeleton className='h-2 w-full animate-none rounded-full' />
-                      <Skeleton className='h-2 w-full animate-none rounded-full' />
-                      <Skeleton className='h-2 w-full animate-none rounded-full' />
+                      <Skeleton className='h-2 w-full animate-none rounded-full bg-muted-foreground/50' />
+                      <Skeleton className='h-2 w-full animate-none rounded-full bg-muted-foreground/50' />
+                      <Skeleton className='h-2 w-full animate-none rounded-full bg-muted-foreground/50' />
                     </div>
                   </Label>
                 </div>
@@ -74,15 +74,15 @@ export default function Configurations() {
                         {
                           "border-dashed border-primary ": theme === "dark"
                         },
-                        "flex h-28 w-28 flex-col items-center justify-around rounded-lg border p-2"
+                        "flex h-36 w-48 flex-col items-center justify-around rounded-lg border-4 p-2"
                       )}>
                       <div className='flex w-full items-center gap-2'>
-                        <MoonStarIcon className='h-auto w-8' />
-                        <Skeleton className='h-4 w-full animate-none rounded-full' />
+                        <MoonStarIcon className='h-auto w-8 stroke-muted-foreground' />
+                        <Skeleton className='h-2 w-full animate-none rounded-full bg-primary/40' />
                       </div>
-                      <Skeleton className='h-2 w-full animate-none rounded-full' />
-                      <Skeleton className='h-2 w-full animate-none rounded-full' />
-                      <Skeleton className='h-2 w-full animate-none rounded-full' />
+                      <Skeleton className='h-2 w-full animate-none rounded-full bg-primary/40' />
+                      <Skeleton className='h-2 w-full animate-none rounded-full bg-primary/40' />
+                      <Skeleton className='h-2 w-full animate-none rounded-full bg-primary/40' />
                     </div>
                   </Label>
                 </div>

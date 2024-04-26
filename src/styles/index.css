@@ -131,22 +131,20 @@
   }
 
   html {
-    @apply m-0 overflow-x-hidden scroll-smooth p-0;
+    @apply m-0 overflow-x-hidden scroll-smooth p-0 text-card-foreground;
   }
 
   * {
     @apply border-border;
   }
 
+  svg {
+    @apply text-card-foreground;
+  }
+
   main {
     min-height: 100vh;
     padding-top: 65px;
-  }
-
-  input,
-  textarea,
-  select {
-    @apply bg-foreground;
   }
 }
 

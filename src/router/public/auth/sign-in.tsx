@@ -60,7 +60,7 @@ export default function SigninPage() {
       <main className='flex w-full flex-col gap-12 px-4'>
         <div className='mx-auto w-full max-w-md p-4 shadow-input md:p-8'>
           <Spotlight
-            fill={theme === "light" ? "#12162E" : "#B1ACA6"}
+            fill={theme === "light" ? "#FACC15AA" : "#FACC15AA"}
             className='max-h-[100%]'
           />
 
@@ -71,7 +71,7 @@ export default function SigninPage() {
           <div className='my-5 flex flex-col space-y-3'>
             <Button variant={"default"}>
               <GitHubLogoIcon className='mr-2 h-4 w-4' />
-              <span className='text-sm text-white'>Login with GitHub</span>
+              <span className='text-sm'>Login with GitHub</span>
             </Button>
             <Button asChild variant={"secondary"}>
               <Link to={"/auth/sign-up"}>
@@ -140,8 +140,8 @@ export default function SigninPage() {
                 size={"lg"}
                 className='flex w-full items-center gap-2'
                 type='submit'>
-                <LockOpen className='w-4 stroke-white' />
-                <span className='font-semibold text-white'>Sign in</span>
+                <LockOpen className='w-4' />
+                <span className='font-semibold'>Sign in</span>
               </LoadingButton>
             </form>
           </CoreForm.Form>

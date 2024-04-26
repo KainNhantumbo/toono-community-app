@@ -34,9 +34,7 @@ export default function PostsPage() {
             <Heading title='Posts' description='View your saved posts' />
           </div>
           <Button asChild>
-            <Link to={`/users/dashboard/posts/post-editor/create`} className='text-white'>
-              Create Post
-            </Link>
+            <Link to={`/users/dashboard/posts/post-editor/create`}>Create Post</Link>
           </Button>
         </section>
 
