@@ -8,7 +8,6 @@ import {
   DialogTitle
 } from "@/components/ui/dialog";
 import { DEFAULT_ERROR_MESSAGE } from "@/shared/constants";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useRouteError } from "react-router-dom";
 import { Button } from "./ui/button";
 

@@ -48,9 +48,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))"
         },
-        transparent: "var(--transparent)",
-        error: "rgb(var(--error) / <alpha-value>)",
-        font: "rgb(var(--font) / <alpha-value>)",
         black: "rgb(var(--black) / <alpha-value>)",
         white: "rgb(var(--white) / <alpha-value>)"
       },
@@ -94,8 +91,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out"
       },
       fontFamily: {
-        serif: [ ...defaultTheme.fontFamily.serif],
-        sans: ["Manrope", "Inter", ...defaultTheme.fontFamily.sans],
+        serif: [...defaultTheme.fontFamily.serif],
+        sans: ["Geist", "Inter", ...defaultTheme.fontFamily.sans],
+        display: ["Manrope", "Inter", ...defaultTheme.fontFamily.sans],
         mono: ["Geist Mono", "Hack", "Menlo", "Consolas", ...defaultTheme.fontFamily.mono]
       },
       screens: {

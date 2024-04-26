@@ -85,9 +85,14 @@ export type PostList = Array<{
   read_time: string;
   words: number;
   visits: number;
-  tags: string[];
+  tags: Array<string>;
   coverImage: { url: string } | null;
-  public: boolean;
   created_at: string;
   updated_at: string;
+  claps: Array<{ id: string }>
+  user: {
+    id: string;
+    name: string;
+    profile_image: { url: string } | null;
+  };
 }>;

@@ -29,14 +29,14 @@ export default function Configurations() {
               variant={"outline"}
               size={"icon"}
               className='rounded-full'>
-              <ArrowLeft className='h-auto w-6' />
+              <ArrowLeft className='h-auto w-6 text-primary/20' />
             </Button>
           </TooltipWrapper>
           <Heading title='Configurations' description='Manage common configurations' />
         </div>
 
         <section className='flex w-full flex-col gap-3'>
-          <Card className='base-border shadow-none'>
+          <Card className='shadow-none'>
             <CardHeader>
               <CardTitle>Appearance</CardTitle>
               <CardDescription>Customize the UI colors</CardDescription>
@@ -52,9 +52,9 @@ export default function Configurations() {
                     <div
                       className={cn(
                         {
-                          "border-2 border-primary ": theme === "light"
+                          "border-dashed border-primary ": theme === "light"
                         },
-                        "base-border flex h-28 w-28 flex-col items-center justify-around rounded-lg p-2"
+                        "flex h-28 w-28 flex-col items-center justify-around rounded-lg border p-2"
                       )}>
                       <div className='flex w-full items-center gap-2'>
                         <SunDimIcon className='h-auto w-8' />
@@ -72,9 +72,9 @@ export default function Configurations() {
                     <div
                       className={cn(
                         {
-                          "border-2 border-primary ": theme === "dark"
+                          "border-dashed border-primary ": theme === "dark"
                         },
-                        "base-border flex h-28 w-28 flex-col items-center justify-around rounded-lg p-2"
+                        "flex h-28 w-28 flex-col items-center justify-around rounded-lg border p-2"
                       )}>
                       <div className='flex w-full items-center gap-2'>
                         <MoonStarIcon className='h-auto w-8' />

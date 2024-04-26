@@ -15,7 +15,7 @@ export const ContentRenderer = ({ children }: { children: string }) => (
         const match = /language-(\w+)/.exec(className || "");
         return match ? (
           <div className='font-monospace my-3 flex flex-col gap-0 text-white'>
-            <div className='flex w-full items-center justify-between gap-2 rounded-t-xl border-b-2 border-b-font/10 bg-[#2F2F2F] px-3 py-2'>
+            <div className='flex w-full items-center justify-between gap-2 rounded-t-xl border-b-2 border-b-primary/10 bg-[#2F2F2F] px-3 py-2'>
               <i className='font-sans text-xs font-bold uppercase'>{match[1].toString()}</i>
               <button
                 onClick={() => clipboard(String(children).replace(/\n$/, ""))}
@@ -39,7 +39,7 @@ export const ContentRenderer = ({ children }: { children: string }) => (
             {...rest}
             className={clsx(
               className,
-              "font-monospace mx-1 rounded-[5px] bg-font/10 px-[5px] py-[2px]"
+              "font-monospace mx-1 rounded-[5px] bg-primary/10 px-[5px] py-[2px]"
             )}>
             {children}
           </code>

@@ -1,4 +1,4 @@
-import client from "@/config/http-client";
+import { useAppContext } from "@/context/app-context";
 import { UserPost, mutateUserPosts } from "@/state/slices/users-posts";
 import { AppDispatch, RootState } from "@/state/store";
 import { useQuery } from "@tanstack/react-query";
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 export const useUserPostsQuery = () => {
   const dispatch = useDispatch<AppDispatch>();
   const auth = useSelector((state: RootState) => state.auth);
-
+  const { client } = useAppContext();
   const { data, refetch, isLoading, isError, error } = useQuery({
     queryKey: ["user-posts"],
     queryFn: async () => {
@@ -16,9 +16,10 @@ export const useUserPostsQuery = () => {
         fields: "id,title,updated_at,created_at",
         userId: auth.id
       });
-      const { data } = await client.get<UserPost[]>(
-        `/api/v1/posts?${queryParams.toString()}`
-      );
+      const { data } = await client<UserPost[]>({
+        method: "get",
+        url: `/api/v1/posts?${queryParams.toString()}`
+      });
       return [...data];
     }
   });

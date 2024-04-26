@@ -62,7 +62,7 @@ export const DropzoneArea = ({ handler, width, height, className }: DropzoneProp
     <div
       {...getRootProps()}
       className={cn(
-        "base-border bg-foreground-default mx-auto grid w-full max-w-xl place-content-center rounded-lg border-[1px] p-4",
+        "border bg-foreground-default mx-auto grid w-full max-w-xl place-content-center rounded-lg p-4",
         { "divide-dashed border-primary/85": isDragActive },
         className
       )}>

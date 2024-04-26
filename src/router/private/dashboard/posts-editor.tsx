@@ -1,3 +1,11 @@
+import MultipleSelector from "@/components/multiple-selector";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import { ContentEditor } from "@/components/content-editor";
 import { DropzoneArea } from "@/components/dropzone";
 import { Layout } from "@/components/layout";
@@ -170,14 +178,30 @@ export default function PostsEditor() {
               />
             </div>
 
-            <div></div>
+            <div className='w-full px-1'>
+              <MultipleSelector
+                value={postDraft.tags.map((tag) => ({ label: tag, value: tag }))}
+                placeholder='Type here to add up to 4 tags...'
+                maxSelected={4}
+                creatable={true}
+                badgeClassName='text-md rounded-full gap-2'
+                className='focus:ring-none border-none outline-none'
+                onChange={(value) => {
+                  console.log(value);
+                  setPostDraft((state) => ({
+                    ...state,
+                    tags: value.map((obj) => obj.value)
+                  }));
+                }}
+              />
+            </div>
 
             <ContentEditor
               value={postDraft.content}
               handler={({ text }) => setPostDraft((state) => ({ ...state, content: text }))}
             />
 
-            <div className='px-8 pb-4'>
+            <div className='flex w-full flex-wrap items-center gap-3 px-8 pb-4'>
               <LoadingButton
                 loading={loading}
                 onClick={() => {
@@ -186,6 +210,22 @@ export default function PostsEditor() {
                 }}>
                 <span>{isUpdate ? "Update Post" : "Create Post"}</span>
               </LoadingButton>
+
+              <Select
+                value={String(postDraft.public)}
+                onValueChange={(option) => {
+                  let bool = false;
+                  if (option === "true") bool = true;
+                  setPostDraft((state) => ({ ...state, public: bool }));
+                }}>
+                <SelectTrigger className='w-fit'>
+                  <SelectValue placeholder='Select the post visibility' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='true'>Public (visible to anyone)</SelectItem>
+                  <SelectItem value='false'>Private (only visible to you)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </form>
         </section>

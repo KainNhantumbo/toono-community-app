@@ -21,7 +21,7 @@ export default function NotFoundPage () {
         <Link
           to={'/'}
           replace
-          className='rounded-lg font-medium font-sans border-solid border-[2px] border-font mt-5 p-3 px-5 hover:border-primary hover:text-primary transition-colors '>
+          className='rounded-lg font-medium font-sans border-solid border-[2px] border-muted mt-5 p-3 px-5 hover:border-primary hover:text-primary transition-colors '>
           Take me back
         </Link>
       </section>

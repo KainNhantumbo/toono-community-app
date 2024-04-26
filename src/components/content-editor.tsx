@@ -1,5 +1,6 @@
 import { ContentRenderer } from "./content-renderer";
 import MdEditor from "react-markdown-editor-lite";
+import {} from '@uiw/react-md-editor'
 
 export type ContentEditorProps = {
   handler: (content: { text: string; html: string }) => void;
@@ -14,7 +15,6 @@ export const ContentEditor = (_props: ContentEditorProps) => {
         value={_props.value}
         renderHTML={(text) => <ContentRenderer>{text}</ContentRenderer>}
         onChange={_props.handler}
-        view={{ html: false }}
       />
     </div>
   );

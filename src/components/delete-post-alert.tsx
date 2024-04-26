@@ -65,7 +65,7 @@ export const DeletePostAlert = ({ id }: { id: string }) => {
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={onDelete}
-            className='base-border bg-background-default group flex items-center gap-2 rounded-lg shadow-none'>
+            className='border bg-background-default group flex items-center gap-2 rounded-lg shadow-none'>
             <Trash2Icon className='w-4 transition-colors group-hover:stroke-white group-active:stroke-red-500' />
             <span className='font-medium capitalize transition-colors group-hover:text-white'>
               Confirm

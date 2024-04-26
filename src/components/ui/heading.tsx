@@ -7,7 +7,7 @@ export type HeadingProps = {
 
 export const Heading: FC<HeadingProps> = ({ title, description }) => (
   <div>
-    <h2 className='text-3xl font-bold tracking-tight'>{title}</h2>
+    <h2 className='text-3xl font-display font-bold tracking-tight'>{title}</h2>
     <p className='text-sm text-muted-foreground'>{description}</p>
   </div>
 );

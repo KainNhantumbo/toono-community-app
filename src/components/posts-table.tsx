@@ -147,7 +147,7 @@ export const PostsTableRender = (props: { data: UserPost[] }) => {
               Columns <ChevronDownIcon className='ml-2 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='end' className='font-sans-body font-medium text-font'>
+          <DropdownMenuContent align='end' className='font-sans font-medium'>
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
