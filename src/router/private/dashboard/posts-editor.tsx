@@ -198,7 +198,7 @@ export default function PostsEditor() {
 
             <ContentEditor
               value={postDraft.content}
-              handler={({ text }) => setPostDraft((state) => ({ ...state, content: text }))}
+              handler={(content) => setPostDraft((state) => ({ ...state, content }))}
             />
 
             <div className='flex w-full flex-wrap items-center gap-3 px-8 pb-4'>

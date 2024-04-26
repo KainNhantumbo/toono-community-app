@@ -20,6 +20,7 @@ export const ThemeContext = ({ children }: { children: React.ReactNode }) => {
     const html = document.querySelector("html");
     if (html) {
       html.setAttribute("class", variant);
+      html.setAttribute("data-color-mode", variant);
       setTheme(variant);
     }
   };
@@ -28,6 +29,7 @@ export const ThemeContext = ({ children }: { children: React.ReactNode }) => {
     const html = document.querySelector("html");
     if (html) {
       html.setAttribute("class", theme);
+      html.setAttribute("data-color-mode", theme);
     }
   }, [theme]);
 
@@ -36,7 +38,7 @@ export const ThemeContext = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <context.Provider value={{ theme,  handleChangeTheme }}>{children}</context.Provider>
+    <context.Provider value={{ theme, handleChangeTheme }}>{children}</context.Provider>
   );
 };
 

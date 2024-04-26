@@ -1,20 +1,25 @@
-import { ContentRenderer } from "./content-renderer";
-import MdEditor from "react-markdown-editor-lite";
-import {} from '@uiw/react-md-editor'
+// import "@/styles/editor.css";
+import MarkdownEditor from "@uiw/react-markdown-editor";
 
 export type ContentEditorProps = {
-  handler: (content: { text: string; html: string }) => void;
+  handler: (content: string) => void;
   value: string;
 };
 
 export const ContentEditor = (_props: ContentEditorProps) => {
   return (
-    <div>
-      <MdEditor
-        style={{ height: "500px", background: "#000" }}
+    <div className='h-full max-h-[780px] w-full'>
+      <MarkdownEditor
         value={_props.value}
-        renderHTML={(text) => <ContentRenderer>{text}</ContentRenderer>}
-        onChange={_props.handler}
+        className='max-h-[700px]'
+        onChange={(value, viewUpdate) => _props.handler(value)}
+        // preview={"live"}
+        // highlightEnable={true}
+        // value={_props.value}
+        // onChange={(value, event, state) => {
+        // console.log(value);
+        // if (typeof value === "string") return _props.handler(value);
+        // }}
       />
     </div>
   );

@@ -1,7 +1,6 @@
 import "@/styles/index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "react-markdown-editor-lite/lib/index.css";
 import { Provider as StoreProvider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./app-router.tsx";

@@ -52,6 +52,7 @@
     "@tanstack/react-query": "^5.29.2",
     "@tanstack/react-table": "^8.16.0",
     "@uidotdev/usehooks": "^2.4.1",
+    "@uiw/react-markdown-editor": "^6.1.1",
     "@uiw/react-md-editor": "^4.0.4",
     "axios": "^1.6.8",
     "class-validator": "^0.14.1",
