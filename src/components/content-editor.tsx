@@ -1,6 +1,4 @@
-// import "@/styles/editor.css";
-import MarkdownEditor, { code, codeBlock } from "@uiw/react-markdown-editor";
-import { Code2 } from "lucide-react";
+import MarkdownEditor from "@uiw/react-markdown-editor";
 
 export type ContentEditorProps = {
   handler: (content: string) => void;
