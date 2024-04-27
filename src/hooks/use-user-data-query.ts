@@ -10,7 +10,7 @@ export const initialUserState: User = {
   name: "",
   user_name: "",
   biography: "",
-  birthday: "",
+  birthday: null,
   work: "",
   available: "",
   education: "",

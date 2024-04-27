@@ -140,7 +140,7 @@ export default function SigninPage() {
                 size={"lg"}
                 className='flex w-full items-center gap-2'
                 type='submit'>
-                <LockOpen className='w-4' />
+                <LockOpen className='h-auto w-4 stroke-card' />
                 <span className='font-semibold'>Sign in</span>
               </LoadingButton>
             </form>

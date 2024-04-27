@@ -163,7 +163,7 @@ export default function SignupPage() {
                 size={"lg"}
                 className='flex w-full items-center gap-2'
                 type='submit'>
-                <UserPlus className='w-4' />
+                <UserPlus className='h-auto w-4 stroke-card' />
                 <span className='font-semibold'>Sign Up</span>
               </LoadingButton>
             </form>

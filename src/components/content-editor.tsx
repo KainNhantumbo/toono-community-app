@@ -1,5 +1,6 @@
 // import "@/styles/editor.css";
-import MarkdownEditor from "@uiw/react-markdown-editor";
+import MarkdownEditor, { code, codeBlock } from "@uiw/react-markdown-editor";
+import { Code2 } from "lucide-react";
 
 export type ContentEditorProps = {
   handler: (content: string) => void;
@@ -8,18 +9,15 @@ export type ContentEditorProps = {
 
 export const ContentEditor = (_props: ContentEditorProps) => {
   return (
-    <div className='h-full max-h-[780px] w-full'>
+    <div className='h-full max-h-[580px] w-full'>
       <MarkdownEditor
         value={_props.value}
-        className='max-h-[700px]'
-        onChange={(value, viewUpdate) => _props.handler(value)}
-        // preview={"live"}
-        // highlightEnable={true}
-        // value={_props.value}
-        // onChange={(value, event, state) => {
-        // console.log(value);
-        // if (typeof value === "string") return _props.handler(value);
-        // }}
+        className='max-h-[700px] bg-transparent'
+        toolbarsMode={[]}
+        onChange={(value) => _props.handler(value)}
+        enablePreview={false}
+        minHeight='300px'
+        maxHeight='480px'
       />
     </div>
   );

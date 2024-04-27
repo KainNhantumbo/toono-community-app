@@ -4,44 +4,54 @@ import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "@/components/ui/form";
+import { Calendar } from "@/components/ui/calendar";
+import * as CoreForm from "@/components/ui/form";
 import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
+import { PopoverContent } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppContext } from "@/context/app-context";
 import { useUserDataQuery } from "@/hooks/use-user-data-query";
 import { errorTransformer } from "@/lib/error";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { UpdateUserDataType, UpdateUserSchema } from "@/schemas";
 import { RootState } from "@/state/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
+import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
 import {
   RiFacebookLine,
   RiGithubLine,
   RiSuitcase2Line,
   RiUserLocationLine
 } from "@remixicon/react";
-import * as Lucide from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  AtSign,
+  CakeIcon,
+  CalendarIcon,
+  Clock,
+  Globe2,
+  GraduationCapIcon,
+  LinkedinIcon,
+  LockIcon,
+  School,
+  Text,
+  Trash2,
+  User,
+  UserCircle
+} from "lucide-react";
+import moment from "moment";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 export default function Account() {
-  const auth = useSelector((state: RootState) => state.auth);
   const { data: initialUserState, error, isLoading, refetch, isError } = useUserDataQuery();
-  const [profileImage, setProfileImage] = React.useState<string>(() =>
-    initialUserState.profile_image ? initialUserState.profile_image.url : ""
-  );
+  const [profileImage, setProfileImage] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
   const { client } = useAppContext();
 
@@ -52,40 +62,50 @@ export default function Account() {
       name: initialUserState.name,
       available: initialUserState.available,
       biography: initialUserState.biography,
-      birthday: initialUserState.birthday ?? "",
+      birthday: initialUserState.birthday
+        ? new Date(initialUserState.birthday).toISOString()
+        : null,
       network: initialUserState.network,
       education: initialUserState.education,
       learning: initialUserState.learning,
       location: initialUserState.location,
       user_name: initialUserState.user_name,
-      work: initialUserState.work
+      work: initialUserState.work,
+      confirm_password: "",
+      password: ""
     }
   });
 
-  const onSubmit = async (data: UpdateUserDataType) => {
+  const handleSubmit = async (data: UpdateUserDataType) => {
+    console.info("submitted", data);
+    setLoading(true);
     try {
-      setLoading(true);
       if (data.password && data.password.length > 0) {
         if (data.password !== data.confirm_password) {
           return toast.error("Passwords don't match. Please check and try again.");
         }
       }
-      console.info("submitted");
       await client({
         method: "patch",
-        url: `/api/v1/users/${auth.id}`,
+        url: `/api/v1/users`,
         data: { ...data, profileImage }
       });
       toast.success("User data updated successfully.");
     } catch (error) {
       const { message } = errorTransformer(error);
       toast.error(message, {
-        action: { label: "Retry", onClick: () => onSubmit(data) }
+        action: { label: "Retry", onClick: () => handleSubmit(data) }
       });
     } finally {
       setLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    if (initialUserState.profile_image) {
+      setProfileImage(initialUserState.profile_image.url);
+    }
+  }, [initialUserState]);
 
   return (
     <Layout>
@@ -97,7 +117,7 @@ export default function Account() {
               variant={"outline"}
               size={"icon"}
               className='rounded-full'>
-              <Lucide.ArrowLeft className='h-auto w-6' />
+              <ArrowLeft className='h-auto w-6' />
             </Button>
           </TooltipWrapper>
           <Heading
@@ -118,7 +138,7 @@ export default function Account() {
           {isLoading && !isError ? <Loader /> : null}
           {!isLoading && isError ? (
             <AlertMessage
-              icon={Lucide.AlertTriangle}
+              icon={AlertTriangle}
               action={{ handler: () => refetch(), label: "Retry" }}
               message={errorTransformer(error).message}
             />
@@ -134,7 +154,7 @@ export default function Account() {
                 />
 
                 <Button variant={"outline"} onClick={() => setProfileImage("")}>
-                  <Lucide.Trash2 className='mr-2 h-auto w-4' />
+                  <Trash2 className='mr-2 h-auto w-4' />
                   <span>Delete Image</span>
                 </Button>
               </div>
@@ -142,7 +162,7 @@ export default function Account() {
               <DropzoneArea
                 width={200}
                 height={200}
-                className="border-none"
+                className='border-none'
                 handler={(encodedImage) => {
                   setProfileImage(encodedImage);
                 }}
@@ -152,291 +172,340 @@ export default function Account() {
 
           <Separator decorative />
 
-          <Form {...form}>
+          <CoreForm.Form {...form}>
             <form
               autoComplete='off'
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(handleSubmit)}
               className='max my-auto h-full w-full space-y-8'>
               <div className='flex flex-col items-center justify-between gap-4 sm:flex-row'>
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='name'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
-                        <Lucide.User className='h-5 w-auto' />
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <User className='h-5 w-auto' />
                         <span>Name</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           autoComplete='off'
                           placeholder='Enter your full name'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='user_name'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
-                        <Lucide.UserCircle className='h-5 w-auto' />
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <AtSign className='h-5 w-auto' />
                         <span>Username</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           autoComplete='off'
                           placeholder='Enter your username'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
               </div>
 
-              <FormField
+              <div className='flex flex-col items-center justify-between gap-4 sm:flex-row'>
+                <CoreForm.FormField
+                  control={form.control}
+                  name='location'
+                  render={({ field }) => (
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <RiUserLocationLine className='h-5 w-auto' />
+                        <span>Location</span>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
+                        <Input
+                          disabled={loading}
+                          placeholder='Enter your location'
+                          {...field}
+                        />
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
+                  )}
+                />
+
+                <CoreForm.FormField
+                  control={form.control}
+                  name='birthday'
+                  render={({ field }) => (
+                    <CoreForm.FormItem className='flex flex-col'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <CakeIcon className='h-5 w-auto' />
+                        <span>Date of birth</span>
+                      </CoreForm.FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <CoreForm.FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}>
+                              {field.value ? (
+                                <span>{moment(new Date(field.value)).format("LL")}</span>
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                            </Button>
+                          </CoreForm.FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className='w-auto p-0' align='start'>
+                          <Calendar
+                            mode='single'
+                            selected={new Date(field.value || "")}
+                            onSelect={(date) => {
+                              if (date) {
+                                field.onChange(date.toISOString());
+                              }
+                            }}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
+                  )}
+                />
+              </div>
+              <CoreForm.FormField
                 control={form.control}
                 name='biography'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
-                      <Lucide.Text className='h-5 w-auto' />
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
+                      <Text className='h-5 w-auto' />
                       <span>Bio</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Input
                         disabled={loading}
                         placeholder='Enter your biography'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name='location'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
-                      <RiUserLocationLine className='h-5 w-auto' />
-                      <span>Location</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={loading}
-                        placeholder='Enter your location'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='education'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
-                      <Lucide.School className='h-5 w-auto' />
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
+                      <School className='h-5 w-auto' />
                       <span>Education</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Textarea
                         disabled={loading}
                         rows={5}
                         placeholder='Enter your education details'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
 
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='learning'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
-                      <Lucide.GraduationCapIcon className='h-5 w-auto' />
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
+                      <GraduationCapIcon className='h-5 w-auto' />
                       <span>What are Learning?</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Textarea
                         disabled={loading}
                         rows={5}
                         placeholder='Enter what are your currently learning'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
 
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='work'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
                       <RiSuitcase2Line className='h-5 w-auto' />
                       <span>Current Work</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Textarea
                         disabled={loading}
                         rows={5}
                         placeholder='Enter your work details'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
 
-              <FormField
+              <CoreForm.FormField
                 control={form.control}
                 name='available'
                 render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel className='flex items-center gap-2'>
-                      <Lucide.Clock className='h-5 w-auto' />
+                  <CoreForm.FormItem className='w-full'>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
+                      <Clock className='h-5 w-auto' />
                       <span>Your Availability</span>
-                    </FormLabel>
-                    <FormControl>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
                       <Textarea
                         disabled={loading}
                         rows={5}
                         placeholder='Enter your availability details for work'
                         {...field}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
                 )}
               />
 
               <Separator decorative />
 
               <div className='grid w-full gap-5 mobile-x:grid-cols-2'>
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='network.facebook'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
                         <RiFacebookLine className='h-5 w-auto' />
                         <span>Your Facebook</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           placeholder='Enter your facebook profile link'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
 
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='network.github'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
                         <RiGithubLine className='h-5 w-auto' />
                         <span>Your Github</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           placeholder='Enter your github profile link'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
 
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='network.instagram'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
                         <InstagramLogoIcon className='h-5 w-auto' />
                         <span>Your Instagram</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           placeholder='Enter your instagram profile link'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
 
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='network.linkedin'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
-                        <Lucide.LinkedinIcon className='h-5 w-auto' />
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <LinkedinIcon className='h-5 w-auto' />
                         <span>Your LinkedIn</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           placeholder='Enter your LinkedIn profile link'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
 
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='network.website'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
-                        <Lucide.Globe2 className='h-5 w-auto' />
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <Globe2 className='h-5 w-auto' />
                         <span>Your Website</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           placeholder='Enter your website link'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
               </div>
@@ -447,16 +516,16 @@ export default function Account() {
                 Note: leave these fields below blank, if you don't want to update password.
               </h3>
               <div className='flex flex-col items-center justify-between gap-4 sm:flex-row'>
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='password'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
-                        <Lucide.LockIcon className='h-5 w-auto' />
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <LockIcon className='h-5 w-auto' />
                         <span>Password</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           type='password'
@@ -465,21 +534,21 @@ export default function Account() {
                           placeholder='Enter your password'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
-                <FormField
+                <CoreForm.FormField
                   control={form.control}
                   name='confirm_password'
                   render={({ field }) => (
-                    <FormItem className='w-full'>
-                      <FormLabel className='flex items-center gap-2'>
-                        <Lucide.LockIcon className='h-5 w-auto' />
+                    <CoreForm.FormItem className='w-full'>
+                      <CoreForm.FormLabel className='flex items-center gap-2'>
+                        <LockIcon className='h-5 w-auto' />
                         <span>Confirm Password</span>
-                      </FormLabel>
-                      <FormControl>
+                      </CoreForm.FormLabel>
+                      <CoreForm.FormControl>
                         <Input
                           disabled={loading}
                           type='password'
@@ -488,9 +557,9 @@ export default function Account() {
                           placeholder='Confirm your password'
                           {...field}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                      </CoreForm.FormControl>
+                      <CoreForm.FormMessage />
+                    </CoreForm.FormItem>
                   )}
                 />
               </div>
@@ -499,7 +568,7 @@ export default function Account() {
                 <span className='font-semibold'>Update Data</span>
               </Button>
             </form>
-          </Form>
+          </CoreForm.Form>
         </section>
       </main>
     </Layout>

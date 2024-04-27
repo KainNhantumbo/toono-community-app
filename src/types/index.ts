@@ -41,7 +41,7 @@ export type User = {
   learning: string;
   available: string;
   location: string;
-  birthday: null | string;
+  birthday: string | null;
   created_at: string;
   updated_at: string;
   network: {
@@ -89,7 +89,7 @@ export type PostList = Array<{
   coverImage: { url: string } | null;
   created_at: string;
   updated_at: string;
-  claps: Array<{ id: string }>
+  claps: Array<{ id: string }>;
   user: {
     id: string;
     name: string;
