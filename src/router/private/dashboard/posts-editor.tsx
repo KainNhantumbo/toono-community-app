@@ -1,4 +1,13 @@
+import { ContentEditor } from "@/components/content-editor";
+import { DropzoneArea } from "@/components/dropzone";
+import { Layout } from "@/components/layout";
 import MultipleSelector from "@/components/multiple-selector";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
+import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { LoadingButton } from "@/components/ui/loading-button";
 import {
   Select,
   SelectContent,
@@ -6,15 +15,6 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { ContentEditor } from "@/components/content-editor";
-import { DropzoneArea } from "@/components/dropzone";
-import { Layout } from "@/components/layout";
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
-import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LoadingButton } from "@/components/ui/loading-button";
 import { Separator } from "@/components/ui/separator";
 import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
@@ -111,7 +111,7 @@ export default function PostsEditor() {
 
   return (
     <Layout>
-      <main className='mx-auto mb-3 w-full max-w-4xl space-y-5 px-3'>
+      <main className='mx-auto mb-3 w-full max-w-4xl space-y-5 mobile-x:px-3'>
         <section className='flex w-full flex-wrap items-center justify-between gap-3'>
           <div className='flex items-center gap-5'>
             <TooltipWrapper content='Back'>
@@ -147,7 +147,7 @@ export default function PostsEditor() {
                     size={"icon"}
                     className='absolute right-1 top-1'
                     onClick={() => setPostDraft((state) => ({ ...state, coverImage: "" }))}>
-                    <Trash2 className='stroke-white/90' />
+                    <Trash2 />
                     <span className='sr-only'>Delete Image</span>
                   </Button>
                 </div>
@@ -187,7 +187,6 @@ export default function PostsEditor() {
                 badgeClassName='text-md rounded-full gap-2'
                 className='focus:ring-none border-none outline-none'
                 onChange={(value) => {
-                  console.log(value);
                   setPostDraft((state) => ({
                     ...state,
                     tags: value.map((obj) => obj.value)
@@ -201,7 +200,7 @@ export default function PostsEditor() {
               handler={(content) => setPostDraft((state) => ({ ...state, content }))}
             />
 
-            <div className='flex w-full flex-wrap items-center gap-3 px-8 pb-4'>
+            <div className='flex w-full flex-wrap items-center gap-3 px-1 pb-4 mobile-x:px-8'>
               <LoadingButton
                 loading={loading}
                 onClick={() => {

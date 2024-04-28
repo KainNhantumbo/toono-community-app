@@ -30,7 +30,7 @@ export default function HomePage() {
             {posts.map((post) => (
               <li
                 key={post.id}
-                className='base-border group flex list-none flex-col gap-2 rounded-lg bg-background'>
+                className='group flex list-none flex-col gap-2 rounded-lg border bg-background'>
                 {post.coverImage ? (
                   <img
                     src={post.coverImage.url}
@@ -39,7 +39,7 @@ export default function HomePage() {
                 ) : null}
 
                 <section className='p-3'>
-                  <h3 className='font-display font- text-xl font-semibold'>{post.title}</h3>
+                  <h3 className='font- font-display text-xl font-semibold'>{post.title}</h3>
 
                   <div className='flex flex-wrap items-center gap-3'>
                     <div></div>

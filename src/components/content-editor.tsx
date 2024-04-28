@@ -1,4 +1,8 @@
+import { useWindowSize } from "@uidotdev/usehooks";
 import MarkdownEditor from "@uiw/react-markdown-editor";
+
+// this styles must always be in the end of imports
+import "@/styles/editor.css";
 
 export type ContentEditorProps = {
   handler: (content: string) => void;
@@ -6,16 +10,24 @@ export type ContentEditorProps = {
 };
 
 export const ContentEditor = (_props: ContentEditorProps) => {
+  const { width: windowWidth } = useWindowSize();
+
   return (
-    <div className='h-full max-h-[580px] w-full'>
+    <div className='relative h-full max-h-[580px] w-full border-b'>
       <MarkdownEditor
-        value={_props.value}
-        className='max-h-[700px] bg-transparent'
-        toolbarsMode={[]}
-        onChange={(value) => _props.handler(value)}
-        enablePreview={false}
+        maxHeight={windowWidth && windowWidth < 400 ? "300px" : "440px"}
         minHeight='300px'
-        maxHeight='480px'
+        toolbarsMode={[]}
+        value={_props.value}
+        enablePreview={false}
+        onChange={(value) => _props.handler(value)}
+        basicSetup={{
+          syntaxHighlighting: false,
+          lineNumbers: false,
+          foldGutter: false,
+          highlightActiveLine: false
+        }}
+        className='max-h-[700px] overflow-y-auto'
       />
     </div>
   );

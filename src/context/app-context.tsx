@@ -10,10 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 type Context = {
   client: <T>(config: AxiosRequestConfig<T>) => Promise<AxiosResponse<T>>;
+  authenticate: () => Promise<void>;
 };
 
 const context = React.createContext<Context>({
-  client: ({ ...config }) => httpClient(config)
+  client: ({ ...config }) => httpClient(config),
+  authenticate: async () => {}
 });
 
 const queryClient = new QueryClient({
@@ -73,7 +75,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
   };
 
   React.useEffect(() => {
-    const instance = setTimeout(() => authenticate(), 1000 * 60 * 4);
+    const instance = setTimeout(() => authenticate(), 1000 * 60 * 3);
     return (): void => clearTimeout(instance);
   }, [auth]);
 
@@ -84,7 +86,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <context.Provider value={{ client }}>{children}</context.Provider>
+      <context.Provider value={{ client, authenticate }}>{children}</context.Provider>
     </QueryClientProvider>
   );
 };

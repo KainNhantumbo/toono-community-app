@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import type { UserPost } from "@/state/slices/users-posts";
 import { CaretSortIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import {
@@ -50,6 +50,24 @@ export const createColumns: ColumnDef<UserPost>[] = [
       );
     },
     cell: ({ row }) => <div className='capitalize'>{row.getValue("title")}</div>
+  },
+  {
+    accessorKey: "public",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Public
+          <CaretSortIcon className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }: { row: Row<UserPost> }) => (
+      <div className={cn({ "text-destructive": !row.original.public }, "font-medium")}>
+        {row.original.public ? "Yes" : "No"}
+      </div>
+    )
   },
   {
     accessorKey: "created_at",

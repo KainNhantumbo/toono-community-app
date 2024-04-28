@@ -16,44 +16,21 @@ import { useUserDataQuery } from "@/hooks/use-user-data-query";
 import { errorTransformer } from "@/lib/error";
 import { cn, formatDate } from "@/lib/utils";
 import { UpdateUserDataType, UpdateUserSchema } from "@/schemas";
-import { RootState } from "@/state/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
-import {
-  RiFacebookLine,
-  RiGithubLine,
-  RiSuitcase2Line,
-  RiUserLocationLine
-} from "@remixicon/react";
-import {
-  AlertTriangle,
-  ArrowLeft,
-  AtSign,
-  CakeIcon,
-  CalendarIcon,
-  Clock,
-  Globe2,
-  GraduationCapIcon,
-  LinkedinIcon,
-  LockIcon,
-  School,
-  Text,
-  Trash2,
-  User,
-  UserCircle
-} from "lucide-react";
+import * as Ri from "@remixicon/react";
+import * as Lucide from "lucide-react";
 import moment from "moment";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 export default function Account() {
   const { data: initialUserState, error, isLoading, refetch, isError } = useUserDataQuery();
   const [profileImage, setProfileImage] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
-  const { client } = useAppContext();
+  const { client, authenticate } = useAppContext();
 
   const form = useForm<UpdateUserDataType>({
     resolver: zodResolver(UpdateUserSchema),
@@ -90,7 +67,16 @@ export default function Account() {
         url: `/api/v1/users`,
         data: { ...data, profileImage }
       });
+
+      // reset the password fields if filled
+      if (data.password) {
+        form.resetField("password", { defaultValue: "" });
+        form.resetField("confirm_password", { defaultValue: "" });
+      }
       toast.success("User data updated successfully.");
+      // this will revalidate the user auth data such
+      // as the profile image if it has been changed
+      await authenticate();
     } catch (error) {
       const { message } = errorTransformer(error);
       toast.error(message, {
@@ -117,7 +103,7 @@ export default function Account() {
               variant={"outline"}
               size={"icon"}
               className='rounded-full'>
-              <ArrowLeft className='h-auto w-6' />
+              <Lucide.ArrowLeft className='h-auto w-6' />
             </Button>
           </TooltipWrapper>
           <Heading
@@ -138,7 +124,7 @@ export default function Account() {
           {isLoading && !isError ? <Loader /> : null}
           {!isLoading && isError ? (
             <AlertMessage
-              icon={AlertTriangle}
+              icon={Lucide.AlertTriangle}
               action={{ handler: () => refetch(), label: "Retry" }}
               message={errorTransformer(error).message}
             />
@@ -154,7 +140,7 @@ export default function Account() {
                 />
 
                 <Button variant={"outline"} onClick={() => setProfileImage("")}>
-                  <Trash2 className='mr-2 h-auto w-4' />
+                  <Lucide.Trash2 className='mr-2 h-auto w-4' />
                   <span>Delete Image</span>
                 </Button>
               </div>
@@ -184,7 +170,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <User className='h-5 w-auto' />
+                        <Lucide.User className='h-5 w-auto' />
                         <span>Name</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -205,7 +191,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <AtSign className='h-5 w-auto' />
+                        <Lucide.AtSign className='h-5 w-auto' />
                         <span>Username</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -229,7 +215,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <RiUserLocationLine className='h-5 w-auto' />
+                        <Ri.RiUserLocationLine className='h-5 w-auto' />
                         <span>Location</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -250,7 +236,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='flex flex-col'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <CakeIcon className='h-5 w-auto' />
+                        <Lucide.CakeIcon className='h-5 w-auto' />
                         <span>Date of birth</span>
                       </CoreForm.FormLabel>
                       <Popover>
@@ -267,7 +253,7 @@ export default function Account() {
                               ) : (
                                 <span>Pick a date</span>
                               )}
-                              <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                              <Lucide.CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
                             </Button>
                           </CoreForm.FormControl>
                         </PopoverTrigger>
@@ -298,7 +284,7 @@ export default function Account() {
                 render={({ field }) => (
                   <CoreForm.FormItem className='w-full'>
                     <CoreForm.FormLabel className='flex items-center gap-2'>
-                      <Text className='h-5 w-auto' />
+                      <Lucide.Text className='h-5 w-auto' />
                       <span>Bio</span>
                     </CoreForm.FormLabel>
                     <CoreForm.FormControl>
@@ -319,7 +305,7 @@ export default function Account() {
                 render={({ field }) => (
                   <CoreForm.FormItem className='w-full'>
                     <CoreForm.FormLabel className='flex items-center gap-2'>
-                      <School className='h-5 w-auto' />
+                      <Lucide.School className='h-5 w-auto' />
                       <span>Education</span>
                     </CoreForm.FormLabel>
                     <CoreForm.FormControl>
@@ -341,7 +327,7 @@ export default function Account() {
                 render={({ field }) => (
                   <CoreForm.FormItem className='w-full'>
                     <CoreForm.FormLabel className='flex items-center gap-2'>
-                      <GraduationCapIcon className='h-5 w-auto' />
+                      <Lucide.GraduationCapIcon className='h-5 w-auto' />
                       <span>What are Learning?</span>
                     </CoreForm.FormLabel>
                     <CoreForm.FormControl>
@@ -363,7 +349,7 @@ export default function Account() {
                 render={({ field }) => (
                   <CoreForm.FormItem className='w-full'>
                     <CoreForm.FormLabel className='flex items-center gap-2'>
-                      <RiSuitcase2Line className='h-5 w-auto' />
+                      <Ri.RiSuitcase2Line className='h-5 w-auto' />
                       <span>Current Work</span>
                     </CoreForm.FormLabel>
                     <CoreForm.FormControl>
@@ -385,7 +371,7 @@ export default function Account() {
                 render={({ field }) => (
                   <CoreForm.FormItem className='w-full'>
                     <CoreForm.FormLabel className='flex items-center gap-2'>
-                      <Clock className='h-5 w-auto' />
+                      <Lucide.Clock className='h-5 w-auto' />
                       <span>Your Availability</span>
                     </CoreForm.FormLabel>
                     <CoreForm.FormControl>
@@ -410,7 +396,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <RiFacebookLine className='h-5 w-auto' />
+                        <Ri.RiFacebookLine className='h-5 w-auto' />
                         <span>Your Facebook</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -431,7 +417,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <RiGithubLine className='h-5 w-auto' />
+                        <Ri.RiGithubLine className='h-5 w-auto' />
                         <span>Your Github</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -473,7 +459,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <LinkedinIcon className='h-5 w-auto' />
+                        <Lucide.LinkedinIcon className='h-5 w-auto' />
                         <span>Your LinkedIn</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -494,7 +480,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <Globe2 className='h-5 w-auto' />
+                        <Lucide.Globe2 className='h-5 w-auto' />
                         <span>Your Website</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -522,7 +508,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <LockIcon className='h-5 w-auto' />
+                        <Lucide.LockIcon className='h-5 w-auto' />
                         <span>Password</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
@@ -545,7 +531,7 @@ export default function Account() {
                   render={({ field }) => (
                     <CoreForm.FormItem className='w-full'>
                       <CoreForm.FormLabel className='flex items-center gap-2'>
-                        <LockIcon className='h-5 w-auto' />
+                        <Lucide.LockIcon className='h-5 w-auto' />
                         <span>Confirm Password</span>
                       </CoreForm.FormLabel>
                       <CoreForm.FormControl>
