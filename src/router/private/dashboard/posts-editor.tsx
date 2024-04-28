@@ -20,8 +20,9 @@ import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
 import type { PostDraft, PublicPost } from "@/types";
 import { isUUID } from "class-validator";
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { ArrowLeft, Edit2, Eye, Trash2 } from "lucide-react";
 import * as React from "react";
+import { ContentRenderer } from "@/components/content-renderer";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -38,6 +39,7 @@ export default function PostsEditor() {
   const { client } = useAppContext();
   const isUpdate: boolean = isUUID(params["id"]);
   const [postDraft, setPostDraft] = React.useState<PostDraft>(initialPostDraftState);
+  const [isEditing, setIsEditing] = React.useState<boolean>(true);
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const handleUpdatePost = async () => {
@@ -113,7 +115,7 @@ export default function PostsEditor() {
     <Layout>
       <main className='mx-auto mb-3 w-full max-w-4xl space-y-5 mobile-x:px-3'>
         <section className='flex w-full flex-wrap items-center justify-between gap-3'>
-          <div className='flex items-center gap-5'>
+          <div className='flex items-center gap-5 px-2 mobile-x:p-0'>
             <TooltipWrapper content='Back'>
               <Button
                 onClick={() => history.back()}
@@ -125,11 +127,30 @@ export default function PostsEditor() {
             </TooltipWrapper>
             <Heading title='Posts Editor' description='Create and update your posts' />
           </div>
+          <div className='mx-auto flex  flex-wrap items-center gap-3 mobile-x:mx-0'>
+            <Button
+              variant={isEditing ? "default" : "outline"}
+              onClick={() => setIsEditing(true)}>
+              <Edit2 className='mr-2 h-auto w-4' />
+              <span>Edit</span>
+            </Button>
+            <Button
+              variant={!isEditing ? "default" : "outline"}
+              onClick={() => setIsEditing(false)}>
+              <Eye className='mr-2 h-auto w-4' />
+              <span>Preview</span>
+            </Button>
+          </div>
         </section>
 
         <Separator decorative />
 
-        <section className='flex w-full flex-col gap-3'>
+        {!isEditing ? (
+          <div className={"w-full overflow-auto rounded-lg border bg-input/30 p-3"}>
+            <ContentRenderer>{postDraft.content}</ContentRenderer>
+          </div>
+        ) : null}
+        {isEditing ? (
           <form
             onSubmit={(e) => e.preventDefault()}
             className='flex w-full flex-col gap-3 rounded-lg border bg-input/30'>
@@ -187,9 +208,10 @@ export default function PostsEditor() {
                 badgeClassName='text-md rounded-full gap-2'
                 className='focus:ring-none border-none outline-none'
                 onChange={(value) => {
+                  const currentValues = Array.from(new Set(value.map((obj) => obj.value)));
                   setPostDraft((state) => ({
                     ...state,
-                    tags: value.map((obj) => obj.value)
+                    tags: currentValues
                   }));
                 }}
               />
@@ -227,7 +249,7 @@ export default function PostsEditor() {
               </Select>
             </div>
           </form>
-        </section>
+        ) : null}
       </main>
     </Layout>
   );

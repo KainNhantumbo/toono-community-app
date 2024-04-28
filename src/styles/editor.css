@@ -8,7 +8,7 @@
 
   ::-webkit-scrollbar {
     width: 9px;
-    @apply bg-primary/5;
+    @apply bg-transparent;
 
     :hover {
       transition: all 0.2s ease-in-out;
