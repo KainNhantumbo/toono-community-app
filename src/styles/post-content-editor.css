@@ -5,36 +5,7 @@
   outline: none;
   border: 0px solid transparent;
   box-shadow: none;
-
-  ::-webkit-scrollbar {
-    width: 9px;
-    @apply bg-transparent;
-
-    :hover {
-      transition: all 0.2s ease-in-out;
-    }
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    @apply bg-primary;
-
-    :hover {
-      transition: all 0.2s ease-in-out;
-    }
-  }
-
-  ::-webkit-scrollbar-thumb::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-    min-width: 44px;
-    min-height: 44px;
-  }
+  scrollbar-width: thin;
 }
 
 .md-editor-toolbar-warp {
@@ -44,7 +15,19 @@
   outline-color: transparent;
   outline-offset: 0px;
   box-shadow: none;
-  @apply bg-input/60;
+  @apply bg-input/60 p-1;
+}
+
+.md-editor-toolbar {
+  @apply flex-nowrap gap-2 overflow-x-auto;
+}
+
+.md-editor-toolbar button {
+  @apply h-full w-full max-w-9 rounded-sm p-2 hover:bg-primary/45;
+
+  svg {
+    @apply h-auto w-4;
+  }
 }
 
 .md-editor-toolbar-warp:not(.md-editor-toolbar-bottom) {

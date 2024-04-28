@@ -1,3 +1,4 @@
+import { TableOfContents } from "@/components/table-of-contents-renderer";
 import { ContentEditor } from "@/components/content-editor";
 import { DropzoneArea } from "@/components/dropzone";
 import { Layout } from "@/components/layout";
@@ -147,6 +148,7 @@ export default function PostsEditor() {
 
         {!isEditing ? (
           <div className={"w-full overflow-auto rounded-lg border bg-input/30 p-3"}>
+            <TableOfContents content={postDraft.content}/>
             <ContentRenderer>{postDraft.content}</ContentRenderer>
           </div>
         ) : null}

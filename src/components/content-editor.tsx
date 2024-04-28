@@ -2,7 +2,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 
 // this styles must always be in the end of imports
-import "@/styles/editor.css";
+import "@/styles/post-content-editor.css";
 
 export type ContentEditorProps = {
   handler: (content: string) => void;
