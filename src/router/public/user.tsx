@@ -26,7 +26,7 @@ export default function UserPage() {
     queryFn: async () => {
       try {
         const { data } = await client.get<User & { posts: PostList }>(
-          `/api/v1/users/public/${params["userId"]}`
+          `/api/v1/users/${params["userId"]}`
         );
         return data;
       } catch (error) {

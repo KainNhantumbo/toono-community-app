@@ -18,6 +18,7 @@ export const TableOfContents = ({ content }: { content: string }) => {
 
   return (
     <>
+      <Separator decorative className='my-3' />
       <aside className='toc-container base-border my-2 rounded-xl bg-foreground p-3 px-4'>
         <nav className='flex flex-col gap-2'>
           <h2 className='font-sans-body text-xl'>Table of Contents</h2>
@@ -27,11 +28,11 @@ export const TableOfContents = ({ content }: { content: string }) => {
                 key={index}
                 className='list-inside pl-3'
                 style={{ paddingLeft: `calc(${heading.depth}px * 8px)` }}>
-                <Link
-                  to={`#${transformChild(heading.text)}`}
+                <a
+                  href={`#${transformChild(heading.text)}`}
                   className='group font-medium underline underline-offset-4 transition-colors'>
                   {String(heading.text)}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

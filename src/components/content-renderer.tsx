@@ -1,76 +1,91 @@
 import { clipboard, transformChild } from "@/lib/utils";
+import "@/styles/post-content.css";
 import clsx from "clsx";
-import { ClipboardCopyIcon } from "lucide-react";
+import { ClipboardCopy } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { a11yDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGFM from "remark-gfm";
+import { toast } from "sonner";
+import { Button } from "./ui/button";
 
-export const ContentRenderer = ({ children }: { children: string }) => (
-  <ReactMarkdown
-    className='blog-post-content'
-    remarkPlugins={[remarkGFM]}
-    components={{
-      code({ children, className, ...rest }) {
-        const match = /language-(\w+)/.exec(className || "");
-        return match ? (
-          <div className='font-monospace my-3 flex flex-col gap-0 text-white'>
-            <div className='flex w-full items-center justify-between gap-2 rounded-t-xl border-b-2 border-b-primary/10 bg-[#2F2F2F] px-3 py-2'>
-              <i className='font-sans text-xs font-bold uppercase'>{match[1].toString()}</i>
-              <button
-                onClick={() => clipboard(String(children).replace(/\n$/, ""))}
-                className='base-border group flex flex-row flex-nowrap items-center gap-2 rounded-lg p-1 px-2 hover:bg-primary/30 active:animate-ping'>
-                <ClipboardCopyIcon className='h-auto w-4' />
-                <span className='font-sans text-xs font-bold uppercase'>Copy</span>
-              </button>
+export const ContentRenderer = ({ children }: { children: string }) => {
+  const handleCopy = (data: unknown) => {
+    const content = String(data).replace(/\n$/, "");
+    clipboard(content);
+    toast.success("Code copied successfully!");
+  };
+
+  return (
+    <ReactMarkdown
+      className='post-content'
+      remarkPlugins={[remarkGFM]}
+      components={{
+        code({ children, className, ...rest }) {
+          const match = /language-(\w+)/.exec(className || "");
+          return match ? (
+            <div className='my-3 flex flex-col rounded-lg border-4 font-mono text-white'>
+              <div className='flex w-full items-center justify-between gap-2 rounded-t-[8px] bg-[#2B2B2B] px-3 py-2 pb-0'>
+                <i className='font-sans text-xs font-bold uppercase text-primary'>
+                  {match[1].toString()}
+                </i>
+                <Button
+                  onClick={() => handleCopy(children)}
+                  variant={"ghost"}
+                  className='hover:bg-input/20 hover:dark:bg-secondary-foreground/10'
+                  size={"icon"}>
+                  <ClipboardCopy className='h-auto w-4 stroke-primary' />
+                  <span className='sr-only'>Copy</span>
+                </Button>
+              </div>
+              <SyntaxHighlighter
+                {...rest}
+                ref={undefined}
+                style={{ ...a11yDark }}
+                language={match[1]}
+                showLineNumbers={true}
+                customStyle={{ margin: 0, borderRadius: "0 0 8px 8px" }}>
+                {String(children).replace(/\n$/, "")}
+              </SyntaxHighlighter>
             </div>
-            <SyntaxHighlighter
+          ) : (
+            <code
               {...rest}
-              style={{ ...materialDark }}
-              language={match[1]}
-              showLineNumbers
-              customStyle={{ margin: 0 }}
-              ref={undefined}>
-              {String(children).replace(/\n$/, "")}
-            </SyntaxHighlighter>
-          </div>
-        ) : (
-          <code
-            {...rest}
-            className={clsx(
-              className,
-              "font-monospace mx-1 rounded-[5px] bg-primary/10 px-[5px] py-[2px]"
-            )}>
+              className={clsx(
+                className,
+                "font-monospace mx-1 rounded-[5px] bg-primary/10 px-[5px] py-[2px]"
+              )}>
+              {children}
+            </code>
+          );
+        },
+        h2: ({ children, ...rest }) => (
+          <h2 {...rest} id={transformChild(String(children))}>
             {children}
-          </code>
-        );
-      },
-      h2: ({ children, ...rest }) => (
-        <h2 {...rest} id={transformChild(String(children))}>
-          {children}
-        </h2>
-      ),
-      h3: ({ children, ...rest }) => (
-        <h2 {...rest} id={transformChild(String(children))}>
-          {children}
-        </h2>
-      ),
-      h4: ({ children, ...rest }) => (
-        <h4 {...rest} id={transformChild(String(children))}>
-          {children}
-        </h4>
-      ),
-      h5: ({ children, ...rest }) => (
-        <h5 {...rest} id={transformChild(String(children))}>
-          {children}
-        </h5>
-      ),
-      h6: ({ children, ...rest }) => (
-        <h6 {...rest} id={transformChild(String(children))}>
-          {children}
-        </h6>
-      )
-    }}>
-    {children}
-  </ReactMarkdown>
-);
+          </h2>
+        ),
+        h3: ({ children, ...rest }) => (
+          <h2 {...rest} id={transformChild(String(children))}>
+            {children}
+          </h2>
+        ),
+        h4: ({ children, ...rest }) => (
+          <h4 {...rest} id={transformChild(String(children))}>
+            {children}
+          </h4>
+        ),
+        h5: ({ children, ...rest }) => (
+          <h5 {...rest} id={transformChild(String(children))}>
+            {children}
+          </h5>
+        ),
+        h6: ({ children, ...rest }) => (
+          <h6 {...rest} id={transformChild(String(children))}>
+            {children}
+          </h6>
+        )
+      }}>
+      {children}
+    </ReactMarkdown>
+  );
+};

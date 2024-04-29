@@ -4,7 +4,7 @@
 }
 
 .post-content h1 {
-  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+  @apply scroll-m-20 my-6 text-2xl font-extrabold tracking-tight lg:text-3xl;
 }
 
 .post-content p {
@@ -18,14 +18,14 @@
 .post-content table thead tr {
   @apply m-0 border-t p-0 even:bg-muted;
 }
-.post-content table th, td {
-  @apply order px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+.post-content table th,
+td {
+  @apply order-1 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
 }
 
 .post-content h3,
 .post-content h2 {
-  margin-bottom: 10px;
-  font-size: 1.4rem;
+  @apply my-3 pb-2;
 }
 
 .post-content h2 {
@@ -34,8 +34,12 @@
   font-weight: 500;
 }
 
-.post-content h4 {
+.post-content h3 {
   font-size: 1.3rem;
+}
+
+.post-content h4 {
+  font-size: 1.2rem;
   line-height: 2.2rem;
 }
 
@@ -63,11 +67,4 @@
   margin: 0 auto;
   margin-top: 10px;
   border: 1px solid #00000015;
-}
-
-.post-content code,
-.post-content pre {
-  * {
-    @apply text-[#ccc] dark:text-[#fff];
-  }
 }

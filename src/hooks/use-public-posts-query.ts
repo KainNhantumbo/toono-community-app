@@ -34,7 +34,7 @@ export const usePublicPostsQuery = () => {
         const queryParams = new URLSearchParams({
           offset: params.get("offset") || String(pageParam * PUBLIC_POSTS_LIMIT_PER_PAGE),
           limit: params.get("limit") || String(PUBLIC_POSTS_LIMIT_PER_PAGE),
-          fields: "id,title,updated_at,slug,read_time,words,tags,created_at",
+          fields: "id,title,updated_at,visits,slug,read_time,words,tags,created_at",
           sort: params.get("sort") || "",
           search: params.get("search") || ""
         });

@@ -40,13 +40,15 @@ export default function PostPage() {
     queryKey: ["community-posts"],
     queryFn: async () => {
       try {
-        const { data } = await client.get<PublicPost>(`/api/v1/posts/public/${params["slug"]}`);
+        const { data } = await client.get<PublicPost>(
+          `/api/v1/posts/public/${params["slug"]}`
+        );
         return data;
       } catch (error) {
         const { message } = errorTransformer(error);
         console.error(error);
         console.warn(message);
-        throw error
+        throw error;
       }
     }
   });
@@ -57,7 +59,7 @@ export default function PostPage() {
 
   return (
     <Layout>
-      <main>
+      <main className='mx-auto w-full max-w-4xl space-y-5 px-3'>
         {isError && !isLoading ? (
           <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
             <AlertMessage
@@ -72,50 +74,96 @@ export default function PostPage() {
 
         {!isError && !isLoading ? (
           <>
-            <section>
-              <div className='w-full'>
-                {post.coverImage ? (
-                  <LazyLoadImage
-                    src={post.coverImage.url}
-                    alt={`Cover image of ${post.title}`}
-                    className='h-full max-h-[400px] w-full object-cover'
-                  />
-                ) : (
-                  <Skeleton className='h-[400] w-full' />
-                )}
-              </div>
-              <div className='flex flex-nowrap items-center gap-2'>
-                <Link to={`/community/users/${post.user.id}`}>
-                  <Avatar>
-                    {post.user.profile_image ? (
-                      <AvatarImage
-                        loading='lazy'
-                        decoding='async'
-                        className='border'
-                        src={post.user.profile_image.url}
-                        alt={`${post.user.name} profile image`}
-                      />
-                    ) : (
-                      <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
-                        <Lucide.User className='h-auto w-5' />
-                        <span className='sr-only'>user icon</span>
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
-                </Link>
-                <div className='space-y-1'>
-                  <p>{post.user.name}</p>
-                  <span className='text-[.75rem]'>
-                    {moment(post.created_at).format("LL")}
-                  </span>
+            <article className='mx-auto mb-3 flex w-full max-w-[820px] flex-col gap-2 rounded-lg border bg-input/30'>
+              <section>
+                <div className='w-full'>
+                  {post.coverImage ? (
+                    <LazyLoadImage
+                      src={post.coverImage.url}
+                      alt={`Cover image of ${post.title}`}
+                      className='h-full max-h-[300px] w-full rounded-t-lg object-cover'
+                    />
+                  ) : (
+                    <Skeleton className='h-[400] w-full' />
+                  )}
                 </div>
-              </div>
-            </section>
-            <article className='flex flex-col gap-2'>
-              <TableOfContents content={post.content} />
-              <ContentRenderer>{post.content}</ContentRenderer>
+
+                <section className='mx-auto flex w-full max-w-2xl flex-col gap-2 p-3'>
+                  <div className='flex w-full flex-nowrap items-center gap-2'>
+                    <Link to={`/community/users/${post.user.id}`}>
+                      <Avatar>
+                        {post.user.profile_image ? (
+                          <AvatarImage
+                            loading='lazy'
+                            decoding='async'
+                            className='border'
+                            src={post.user.profile_image.url}
+                            alt={`${post.user.name} profile image`}
+                          />
+                        ) : (
+                          <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
+                            <Lucide.User className='h-auto w-5' />
+                            <span className='sr-only'>user icon</span>
+                          </AvatarFallback>
+                        )}
+                      </Avatar>
+                    </Link>
+                    <div className='space-y-1'>
+                      <p>{post.user.name}</p>
+                      <span className='text-[.75rem]'>
+                        Posted on {moment(post.created_at).format("LL")} : Edited at{" "}
+                        {moment(post.updated_at).format("LL")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h1 className='my-6 scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl'>
+                    {post.title}
+                  </h1>
+
+                  <div className='flex flex-wrap items-center gap-2'>
+                    {post.tags.length > 0
+                      ? post.tags.map((tag, index) => (
+                          <div
+                            key={index}
+                            className='flex cursor-pointer select-none flex-nowrap items-center rounded-sm border p-1 px-2'>
+                            <Lucide.HashIcon className='mr-1 h-auto w-4' />
+                            <span className='text-sm'>{tag}</span>
+                          </div>
+                        ))
+                      : null}
+                  </div>
+
+                  <div className='flex flex-wrap items-center gap-2'>
+                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
+                      <span> {post.comments.length} comments</span>
+                    </div>
+                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <Lucide.HandHeartIcon className='h-auto w-4 ' />
+                      <span> {post.claps.length} claps</span>
+                    </div>
+                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <Lucide.EyeIcon className='h-auto w-4 ' />
+                      <span>{post.visits ?? 0} views</span>
+                    </div>
+                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <Lucide.TextSelectIcon className='h-auto w-4 ' />
+                      <span>{post.words ?? 0} words</span>
+                    </div>
+                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <Lucide.FileClockIcon className='h-auto w-4 ' />
+                      <span>{post.read_time}</span>
+                    </div>
+                  </div>
+                </section>
+              </section>
+
+              <section className='px-6 pb-6'>
+                <TableOfContents content={post.content} />
+                <ContentRenderer>{post.content}</ContentRenderer>
+              </section>
             </article>
-            <section></section>
           </>
         ) : null}
       </main>
