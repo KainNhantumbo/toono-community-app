@@ -2,19 +2,26 @@ import { AlertMessage } from "@/components/alert-message";
 import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { usePublicPostsQuery } from "@/hooks/use-public-posts-query";
 import { errorTransformer } from "@/lib/error";
-import { RootState } from "@/state/store";
+import { cn } from "@/lib/utils";
+import { mutateFilters, sortOptions } from "@/state/slices/filters";
+import { AppDispatch, RootState } from "@/state/store";
 import * as Lucide from "lucide-react";
 import moment from "moment";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const { error, isLoading, hasNextPage, inViewRef, isError, refetch } =
     usePublicPostsQuery();
   const posts = useSelector((state: RootState) => state.publicPosts);
+  const filters = useSelector((state: RootState) => state.filters);
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <Layout>
@@ -29,14 +36,67 @@ export default function HomePage() {
 
         {!isError && isLoading ? <Loader /> : null}
 
-        <article className='flex flex-col gap-3'>
+        <article className='flex w-full flex-col gap-3'>
+          {filters.search ? (
+            <div className='flex flex-wrap justify-between gap-2 rounded-lg border bg-input/30 p-2'>
+              <div className='space-y-2'>
+                <h2>Search: {filters.search}</h2>
+                <h3>Initial results: {posts.length}</h3>
+              </div>
+
+              <Button
+                variant={"destructive"}
+                onClick={() => dispatch(mutateFilters({ ...filters, search: "" }))}>
+                <Lucide.Trash className='mr-2 h-auto w-4 stroke-white' />
+                <span>Clear</span>
+              </Button>
+            </div>
+          ) : null}
+
+          <RadioGroup
+            defaultValue={filters.sort}
+            className='my-1 flex w-full flex-wrap items-center'
+            onValueChange={(selected) =>
+              dispatch(mutateFilters({ ...filters, sort: selected }))
+            }>
+            {sortOptions.map((option, i) => (
+              <div key={i}>
+                <RadioGroupItem
+                  value={option.value}
+                  id={option.value}
+                  className='sr-only'
+                />
+                <Label
+                  htmlFor={option.value}
+                  className={cn(
+                    "text-md cursor-pointer select-none rounded-sm p-2 px-4 font-display text-muted-foreground transition-all hover:bg-input/30",
+                    {
+                      "font-bold text-card-foreground": filters.sort == option.value
+                    }
+                  )}>
+                  {option.label}
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+
+          {!isError && !isLoading && posts.length < 1 ? (
+            <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
+              <AlertMessage
+                icon={Lucide.WindIcon}
+                message='No posts to show.'
+                action={{ label: "Refresh", handler: () => refetch() }}
+              />
+            </div>
+          ) : null}
+
           {!isLoading && !isError ? (
             <ul className='flex w-full flex-col gap-2'>
               {posts.map((post, index) => (
                 <li
                   key={post.id}
                   ref={posts.length === index + 1 ? inViewRef : undefined}
-                  className='group flex list-none flex-col gap-2 rounded-lg border bg-background'>
+                  className='group flex list-none flex-col gap-2 rounded-lg border bg-input/30'>
                   {post.coverImage ? (
                     <Link to={`/community/posts/${post.slug}`}>
                       <LazyLoadImage
@@ -54,11 +114,12 @@ export default function HomePage() {
                             <AvatarImage
                               loading='lazy'
                               decoding='async'
+                              className='border'
                               src={post.user.profile_image.url}
                               alt={`${post.user.name} profile image`}
                             />
                           ) : (
-                            <AvatarFallback className='base-none cursor-pointer rounded-lg bg-transparent hover:bg-muted'>
+                            <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
                               <Lucide.User className='h-auto w-5' />
                               <span className='sr-only'>user icon</span>
                             </AvatarFallback>
@@ -93,6 +154,10 @@ export default function HomePage() {
                     </div>
 
                     <div className='flex flex-wrap items-center gap-2'>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                        <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
+                        <span> {post.comments.length} comments</span>
+                      </div>
                       <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
                         <Lucide.HandHeartIcon className='h-auto w-4 ' />
                         <span> {post.claps.length} claps</span>

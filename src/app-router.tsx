@@ -15,11 +15,15 @@ const Account = React.lazy(() => import("./router/private/dashboard/account"));
 const Configurations = React.lazy(
   () => import("./router/private/dashboard/configurations")
 );
+const UserPage = React.lazy(() => import("@/router/public/user"));
+const PostPage = React.lazy(() => import("@/router/public/post"));
 
 const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: HomePage, path: "/" },
   { element: SigninPage, path: "/auth/sign-in" },
   { element: SignupPage, path: "/auth/sign-up" },
+  { element: PostPage, path: "/community/posts/:slug" },
+  { element: UserPage, path: "/community/posts/:userId" },
   { element: Overview, path: "/users/dashboard/overview" },
   { element: Posts, path: "/users/dashboard/posts" },
   { element: PostsEditor, path: "/users/dashboard/posts/post-editor/:id" },

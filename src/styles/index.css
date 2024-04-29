@@ -125,7 +125,7 @@
   }
 
   body {
-    @apply relative m-0 w-full bg-background font-sans font-normal selection:bg-primary selection:text-white selection:text-opacity-90;
+    @apply relative m-0 w-full bg-background font-sans font-normal selection:bg-primary/40;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

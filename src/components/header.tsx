@@ -19,7 +19,7 @@ export const Header = () => {
     <header className='fixed  left-0 top-0 z-50 mb-8 flex h-[52px] w-full border-b bg-background/45 px-3 py-1 font-sans text-sm backdrop-blur'>
       <nav className='mx-auto flex w-full max-w-4xl items-center justify-between gap-2'>
         <span
-          className='cursor-pointer select-none rounded-lg border bg-foreground p-1 px-2 text-lg font-semibold'
+          className='cursor-pointer select-none rounded-lg bg-foreground p-1 px-2 text-lg font-semibold'
           onClick={() => navigate("/", { replace: false })}>
           {metadata.appName}
         </span>

@@ -72,9 +72,15 @@ export type PublicPost = {
   visits: number;
   tags: string[];
   coverImage: { url: string } | null;
-  public: boolean;
   created_at: string;
   updated_at: string;
+  claps: Array<{ id: string }>;
+  comments: Array<{ id: string }>;
+  user: {
+    id: string;
+    name: string;
+    profile_image: { url: string } | null;
+  };
 };
 
 export type PostList = Array<{
@@ -90,6 +96,7 @@ export type PostList = Array<{
   created_at: string;
   updated_at: string;
   claps: Array<{ id: string }>;
+  comments: Array<{ id: string }>;
   user: {
     id: string;
     name: string;
