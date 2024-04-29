@@ -39,10 +39,9 @@ export const usePublicPostsQuery = () => {
           search: params.get("search") || ""
         });
 
-        const { data } = await client<PostList>({
-          method: "get",
-          url: `/api/v1/posts/public?${queryParams.toString()}`
-        });
+        const { data } = await client.get<PostList>(
+          `/api/v1/posts/public?${queryParams.toString()}`
+        );
 
         return { data, currentOffset: pageParam + 1 };
       } catch (error) {

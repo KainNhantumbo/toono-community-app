@@ -82,11 +82,7 @@ export default function HomePage() {
 
           {!isError && !isLoading && posts.length < 1 ? (
             <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
-              <AlertMessage
-                icon={Lucide.WindIcon}
-                message='No posts to show.'
-                action={{ label: "Refresh", handler: () => refetch() }}
-              />
+              <AlertMessage icon={Lucide.WindIcon} message='No posts to show.' />
             </div>
           ) : null}
 

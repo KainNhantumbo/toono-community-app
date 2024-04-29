@@ -23,7 +23,7 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: SigninPage, path: "/auth/sign-in" },
   { element: SignupPage, path: "/auth/sign-up" },
   { element: PostPage, path: "/community/posts/:slug" },
-  { element: UserPage, path: "/community/posts/:userId" },
+  { element: UserPage, path: "/community/users/:userId" },
   { element: Overview, path: "/users/dashboard/overview" },
   { element: Posts, path: "/users/dashboard/posts" },
   { element: PostsEditor, path: "/users/dashboard/posts/post-editor/:id" },
