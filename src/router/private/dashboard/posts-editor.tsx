@@ -85,7 +85,7 @@ export default function PostsEditor() {
 
   const handleGetPost = async () => {
     try {
-      const { data } = await client<PublicPost>({
+      const { data } = await client<PublicPost & { public: boolean }>({
         method: "get",
         url: `/api/v1/posts/${params["id"]}`
       });
@@ -148,7 +148,7 @@ export default function PostsEditor() {
 
         {!isEditing ? (
           <div className={"w-full overflow-auto rounded-lg border bg-input/30 p-3"}>
-            <TableOfContents content={postDraft.content}/>
+            <TableOfContents content={postDraft.content} />
             <ContentRenderer>{postDraft.content}</ContentRenderer>
           </div>
         ) : null}

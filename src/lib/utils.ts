@@ -8,11 +8,12 @@ export function cn(...inputs: ClassValue[]) {
 
 export const formatDate = (date: string): string => moment(date).format("LL");
 
-export const transformChild = (child: string) =>
-  child
+export const transformChild = (child: string) => {
+  return child
     .replace(/ /g, "-")
     .replace(/[/\\^$*+?.()|[\]{}<>:;"'~,=@`#!%&]/g, "")
     .toLowerCase();
+};
 
 export const clipboard = async (content: string) => {
   try {
@@ -21,5 +22,3 @@ export const clipboard = async (content: string) => {
     console.log(error);
   }
 };
-
-

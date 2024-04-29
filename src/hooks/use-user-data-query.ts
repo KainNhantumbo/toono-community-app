@@ -37,7 +37,7 @@ export const useUserDataQuery = () => {
       const { message } = errorTransformer(error);
       console.error(error);
       console.warn(message);
-      return initialUserState;
+      throw error;
     }
   };
 

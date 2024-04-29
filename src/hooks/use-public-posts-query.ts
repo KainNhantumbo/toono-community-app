@@ -48,7 +48,7 @@ export const usePublicPostsQuery = () => {
         const { message } = errorTransformer(error);
         console.error(error);
         console.warn(message);
-        return { data: [], currentOffset: 0 };
+        throw error;
       }
     },
     getNextPageParam: ({ data, currentOffset }) =>

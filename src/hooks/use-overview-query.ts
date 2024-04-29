@@ -17,6 +17,7 @@ export const useOverviewQuery = () => {
       const { message } = errorTransformer(error);
       console.error(message);
       toast.error(message, { action: { label: "Retry", onClick: getStats } });
+      throw error;
     }
   };
 

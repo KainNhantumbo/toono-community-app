@@ -4,7 +4,7 @@ export type UserPost = {
   id: string;
   title: string;
   claps: string[];
-  public: boolean
+  public: boolean;
   updated_at: string;
   created_at: string;
 };

@@ -1,5 +1,5 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import * as Lucide from 'lucide-react'
+import * as Lucide from "lucide-react";
 import { Layout } from "@/components/layout";
 import { errorTransformer } from "@/lib/error";
 import { useQuery } from "@tanstack/react-query";
@@ -25,27 +25,28 @@ const initialPostState: PublicPost = {
   visits: 0,
   tags: [],
   coverImage: null,
-  created_at: "",
-  updated_at: "",
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
   claps: [],
   comments: [],
-  user: {id: '', name: '', profile_image: null}
+  user: { id: "", name: "", profile_image: null }
 };
 
 export default function PostPage() {
   const [post, setPost] = React.useState<PublicPost>(initialPostState);
-  const slug = useParams();
+  const params = useParams();
 
-  const { data, isError, isLoading, error , refetch} = useQuery({
+  const { data, isError, isLoading, error, refetch } = useQuery({
     queryKey: ["community-posts"],
     queryFn: async () => {
       try {
-        const { data } = await client.get<PublicPost>(`/api/v1/posts/public/${slug}`);
+        const { data } = await client.get<PublicPost>(`/api/v1/posts/public/${params["slug"]}`);
         return data;
       } catch (error) {
         const { message } = errorTransformer(error);
         console.error(error);
         console.warn(message);
+        throw error
       }
     }
   });
@@ -59,60 +60,64 @@ export default function PostPage() {
       <main>
         {isError && !isLoading ? (
           <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
-            {isError && !isLoading ? (
-              <AlertMessage
-                icon={Lucide.AlertTriangleIcon}
-                message={errorTransformer(error).message}
-                action={{ label: "Retry", handler: () => refetch() }}
-              />
-            ) : null}
+            <AlertMessage
+              icon={Lucide.AlertTriangleIcon}
+              message={errorTransformer(error).message}
+              action={{ label: "Retry", handler: () => refetch() }}
+            />
           </div>
         ) : null}
 
         {!isError && isLoading ? <Loader /> : null}
 
-        <section>
-          <div className='w-full'>
-            {post.coverImage ? (
-              <LazyLoadImage
-                src={post.coverImage.url}
-                alt={`Cover image of ${post.title}`}
-                className='h-full max-h-[400px] w-full object-cover'
-              />
-            ) : (
-              <Skeleton className='h-[400] w-full' />
-            )}
-          </div>
-          <div className='flex flex-nowrap items-center gap-2'>
-            <Link to={`/community/users/${post.user.id}`}>
-              <Avatar>
-                {post.user.profile_image ? (
-                  <AvatarImage
-                    loading='lazy'
-                    decoding='async'
-                    className='border'
-                    src={post.user.profile_image.url}
-                    alt={`${post.user.name} profile image`}
+        {!isError && !isLoading ? (
+          <>
+            <section>
+              <div className='w-full'>
+                {post.coverImage ? (
+                  <LazyLoadImage
+                    src={post.coverImage.url}
+                    alt={`Cover image of ${post.title}`}
+                    className='h-full max-h-[400px] w-full object-cover'
                   />
                 ) : (
-                  <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
-                    <Lucide.User className='h-auto w-5' />
-                    <span className='sr-only'>user icon</span>
-                  </AvatarFallback>
+                  <Skeleton className='h-[400] w-full' />
                 )}
-              </Avatar>
-            </Link>
-            <div className='space-y-1'>
-              <p>{post.user.name}</p>
-              <span className='text-[.75rem]'>{moment(post.created_at).format("LL")}</span>
-            </div>
-          </div>
-        </section>
-        <article className='flex flex-col gap-2'>
-          <TableOfContents content={post.content} />
-          <ContentRenderer>{post.content}</ContentRenderer>
-        </article>
-        <section></section>
+              </div>
+              <div className='flex flex-nowrap items-center gap-2'>
+                <Link to={`/community/users/${post.user.id}`}>
+                  <Avatar>
+                    {post.user.profile_image ? (
+                      <AvatarImage
+                        loading='lazy'
+                        decoding='async'
+                        className='border'
+                        src={post.user.profile_image.url}
+                        alt={`${post.user.name} profile image`}
+                      />
+                    ) : (
+                      <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
+                        <Lucide.User className='h-auto w-5' />
+                        <span className='sr-only'>user icon</span>
+                      </AvatarFallback>
+                    )}
+                  </Avatar>
+                </Link>
+                <div className='space-y-1'>
+                  <p>{post.user.name}</p>
+                  <span className='text-[.75rem]'>
+                    {moment(post.created_at).format("LL")}
+                  </span>
+                </div>
+              </div>
+            </section>
+            <article className='flex flex-col gap-2'>
+              <TableOfContents content={post.content} />
+              <ContentRenderer>{post.content}</ContentRenderer>
+            </article>
+            <section></section>
+          </>
+        ) : null}
       </main>
     </Layout>
   );

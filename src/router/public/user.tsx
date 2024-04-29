@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import moment from "moment";
 
 export default function UserPage() {
-  const userId = useParams();
+  const params = useParams();
   const [user, setUser] = React.useState<User & { posts: PostList }>({
     ...initialUserState,
     posts: []
@@ -26,17 +26,14 @@ export default function UserPage() {
     queryFn: async () => {
       try {
         const { data } = await client.get<User & { posts: PostList }>(
-          `/api/v1/users/public/${userId}`
+          `/api/v1/users/public/${params["userId"]}`
         );
         return data;
       } catch (error) {
         const { message } = errorTransformer(error);
         console.error(error);
         console.warn(message);
-        return {
-          ...initialUserState,
-          posts: []
-        };
+        throw error;
       }
     }
   });
@@ -60,7 +57,33 @@ export default function UserPage() {
 
         {!isError && isLoading ? <Loader /> : null}
 
-        <section></section>
+        <section>
+          {user.profile_image ? (
+            <LazyLoadImage
+              src={user.profile_image.url}
+              alt={`${user.name} profile image`}
+              className='mx-auto w-full max-w-[200px] rounded-full object-cover'
+            />
+          ) : null}
+
+          <div>
+            <h1>{user.name}</h1>
+            {user.user_name ? <h3>{user.user_name}</h3> : null}
+          </div>
+
+          {Object.entries(user.network).map(([key, value], index) => {
+            if (key && value) {
+              return (
+                <div key={index} className='flex flex-wrap items-center gap-3'>
+                  <Link to={value}>
+                    <span>@{key}</span>
+                  </Link>
+                </div>
+              );
+            }
+            return null;
+          })}
+        </section>
 
         <Separator decorative />
 
