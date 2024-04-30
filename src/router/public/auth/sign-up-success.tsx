@@ -21,8 +21,8 @@ export default function SignupSuccessPage() {
 
               <Button asChild>
                 <Link to={"/auth/sign-in"} className='flex w-fit items-center gap-2'>
-                  <ArrowRight className='h-auto w-5 stroke-white' />
-                  <span className='font-semibold text-white'>Proceed</span>
+                  <ArrowRight className='h-auto w-4' />
+                  <span>Proceed</span>
                 </Link>
               </Button>
             </div>

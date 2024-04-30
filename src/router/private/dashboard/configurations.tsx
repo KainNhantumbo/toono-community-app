@@ -1,3 +1,4 @@
+import { DeleteAccountAlert } from "@/components/delete-account-alert";
 import { Layout } from "@/components/layout";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,8 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent
+  CardContent,
+  CardFooter
 } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Label } from "@/components/ui/label";
@@ -88,6 +90,19 @@ export default function Configurations() {
                 </div>
               </RadioGroup>
             </CardContent>
+          </Card>
+          <Card className='border-destructive bg-destructive/10'>
+            <CardHeader>
+              <CardTitle className='text-destructive'>Danger Zone</CardTitle>
+              <CardDescription>Delete your account</CardDescription>
+            </CardHeader>
+            <CardContent>
+              By clicking here, you will delete your user account and remove all associated
+              with it. Proceed carefully.
+            </CardContent>
+            <CardFooter>
+              <DeleteAccountAlert />
+            </CardFooter>
           </Card>
         </section>
       </main>

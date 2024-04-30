@@ -79,17 +79,19 @@ export default function PostPage() {
     // correct the scroll position on enter
     scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, []);
-
+const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false)
   return (
     <Layout>
       <main className='relative mx-auto w-full max-w-4xl space-y-5 px-3'>
+        <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen}/>
+
         {isError && !isLoading ? (
           <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
             <AlertMessage
               icon={Lucide.AlertTriangleIcon}
               message={errorTransformer(error).message}
               action={{ label: "Retry", handler: () => refetch() }}
-            />
+              />
           </div>
         ) : null}
 
@@ -182,7 +184,7 @@ export default function PostPage() {
                     variant={"outline"}
                     className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'
                     onClick={() => {
-                      if (!auth.token) return <LoginRequest />;
+                      if (!auth.token) return setIsRequestLoginOpen(true);
                       if (isInClapsArray) return handleRemoveClap(post.id);
                       return handleAddClap(post.id);
                     }}>

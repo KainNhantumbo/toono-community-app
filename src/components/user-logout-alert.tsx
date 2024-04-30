@@ -15,13 +15,15 @@ import { cn } from "@/lib/utils";
 import { initialAuthState, mutateAuth } from "@/state/slices/auth";
 import { AppDispatch } from "@/state/store";
 import { CheckIcon, LogOutIcon, XIcon } from "lucide-react";
-import type { FC } from "react";
+import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 
-export const UserLogoutAlert: FC = () => {
+type Props = { isOpen: boolean; setOpen: React.Dispatch<React.SetStateAction<boolean>> };
+
+export const UserLogoutAlert = ({ isOpen, setOpen }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -42,42 +44,27 @@ export const UserLogoutAlert: FC = () => {
     }
   };
   return (
-    <AlertDialog>
-      <AlertDialogTrigger
-        className={cn(
-          "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-          "w-full hover:bg-muted"
-        )}>
-        <LogOutIcon className='mr-2 h-auto w-4 ' />
-        <span>Log out</span>
-      </AlertDialogTrigger>
+    <AlertDialog open={isOpen} onOpenChange={(state) => setOpen(state)}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className='font-sans'>Log out</AlertDialogTitle>
+          <AlertDialogTitle>Log out</AlertDialogTitle>
           <AlertDialogDescription>
             Do you really want to exit this session and log out?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction asChild>
-            <Button
-              variant={"secondary"}
-              onClick={onSignOut}
-              className='group bg-primary shadow-none hover:bg-primary'>
-              <CheckIcon className='mr-2 h-auto w-4 stroke-white  transition-colors group-hover:stroke-blue-400' />
-              <span className='text-white transition-colors group-hover:text-blue-400'>
-                Yes, log out.
-              </span>
-            </Button>
-          </AlertDialogAction>
           <AlertDialogCancel asChild>
-            <Button className='group border-none shadow-none' variant={"ghost"}>
-              <XIcon className='mr-2 h-auto w-4  transition-colors group-hover:stroke-destructive' />
-              <span className=' transition-colors group-hover:text-destructive'>
-                Cancel
-              </span>
+            <Button variant={"ghost"}>
+              <XIcon className='mr-2 h-auto w-4' />
+              <span>Cancel</span>
             </Button>
           </AlertDialogCancel>
+          <AlertDialogAction asChild>
+            <Button onClick={onSignOut}>
+              <LogOutIcon className='mr-2 h-auto w-4' />
+              <span>Yes, log out.</span>
+            </Button>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

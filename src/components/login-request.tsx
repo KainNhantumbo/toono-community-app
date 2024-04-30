@@ -6,26 +6,24 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTitle
 } from "@/components/ui/alert-dialog";
-import { Trash2Icon, XIcon } from "lucide-react";
+import { ArrowRight, XIcon } from "lucide-react";
+import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { TooltipWrapper } from "./tooltip-wrapper";
 import { Button } from "./ui/button";
 
-export const LoginRequest = () => {
+export const LoginRequest = ({
+  isOpen,
+  setIsOpen
+}: {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant={"ghost"}>
-          <TooltipWrapper content='Delete product'>
-            <Trash2Icon className='h-auto w-4' />
-          </TooltipWrapper>
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={isOpen} onOpenChange={(state) => setIsOpen(state)}>
       <AlertDialogContent className='font-sans-body'>
         <AlertDialogHeader>
           <AlertDialogTitle className='font-sans'>Login</AlertDialogTitle>
@@ -34,16 +32,16 @@ export const LoginRequest = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className='group flex items-center gap-2 rounded-lg border-none bg-transparent shadow-none'>
-            <XIcon className='w-4 transition-colors group-hover:stroke-blue-400 group-active:stroke-blue-400' />
-            <span className='capitalize transition-colors group-hover:text-blue-400'>
-              Cancel
-            </span>
+          <AlertDialogCancel asChild>
+            <Button variant={"ghost"}>
+              <XIcon className='mr-2 h-auto w-4' />
+              <span>Cancel</span>
+            </Button>
           </AlertDialogCancel>
           <AlertDialogAction onClick={() => navigate("/auth/sign-in")} asChild>
             <Button variant={"default"}>
-              <Trash2Icon className='stroke-muted' />
-              <span>Confirm</span>
+              <ArrowRight className='mr-2 h-auto w-4' />
+              <span>Go to login page</span>
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
