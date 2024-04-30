@@ -12,15 +12,19 @@
 }
 
 .post-content table {
-  @apply w-full;
+  @apply w-full overflow-x-auto;
+}
+
+.post-content code {
+  @apply break-words;
 }
 
 .post-content table thead tr {
-  @apply m-0 border-t p-0 even:bg-muted;
+  @apply m-0 overflow-x-auto border-t p-0 even:bg-muted;
 }
 .post-content table th,
 td {
-  @apply order-1 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+  @apply order-1 overflow-x-auto px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
 }
 
 .post-content h3,

@@ -103,3 +103,14 @@ export type PostList = Array<{
     profile_image: { url: string } | null;
   };
 }>;
+
+export type Comment = {
+  id: string;
+  created_at: Date;
+  updated_at: Date;
+  content: string;
+  user_id: string;
+  post_id: string;
+  reply_comment: string | null;
+  user: { id: string; name: string; profile_image: { url: string } | null };
+};

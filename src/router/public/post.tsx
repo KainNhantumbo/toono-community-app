@@ -1,4 +1,5 @@
 import { AlertMessage } from "@/components/alert-message";
+import { CommentsSection } from "@/components/comments-section";
 import { ContentRenderer } from "@/components/content-renderer";
 import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
@@ -42,6 +43,7 @@ export default function PostPage() {
   const params = useParams();
   const auth = useSelector((state: RootState) => state.auth);
   const [post, setPost] = React.useState<PublicPost>(initialPostState);
+  const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false)
 
   const { data, isError, isLoading, error, refetch } = useQuery({
     queryKey: ["community-posts"],
@@ -79,7 +81,7 @@ export default function PostPage() {
     // correct the scroll position on enter
     scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, []);
-const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false)
+
   return (
     <Layout>
       <main className='relative mx-auto w-full max-w-4xl space-y-5 px-3'>
@@ -203,6 +205,9 @@ const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(fals
             </article>
           </>
         ) : null}
+
+
+        <CommentsSection key={post.id} postId={post.id}/>
       </main>
     </Layout>
   );
