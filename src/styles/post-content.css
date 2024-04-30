@@ -4,7 +4,7 @@
 }
 
 .post-content h1 {
-  @apply scroll-m-20 my-6 text-2xl font-extrabold tracking-tight lg:text-3xl;
+  @apply my-6 scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl;
 }
 
 .post-content p {
@@ -67,4 +67,8 @@ td {
   margin: 0 auto;
   margin-top: 10px;
   border: 1px solid #00000015;
+}
+
+.post-content pre span {
+  @apply font-mono;
 }

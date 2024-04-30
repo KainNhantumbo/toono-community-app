@@ -44,7 +44,10 @@ export const ContentRenderer = ({ children }: { children: string }) => {
                 style={{ ...a11yDark }}
                 language={match[1]}
                 showLineNumbers={true}
-                customStyle={{ margin: 0, borderRadius: "0 0 8px 8px" }}>
+                customStyle={{
+                  margin: 0,
+                  borderRadius: "0 0 8px 8px"
+                }}>
                 {String(children).replace(/\n$/, "")}
               </SyntaxHighlighter>
             </div>

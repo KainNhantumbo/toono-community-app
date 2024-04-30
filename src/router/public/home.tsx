@@ -150,23 +150,23 @@ export default function HomePage() {
                     </div>
 
                     <div className='flex flex-wrap items-center gap-2'>
-                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all select-none'>
                         <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
                         <span> {post.comments.length} comments</span>
                       </div>
-                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all select-none'>
                         <Lucide.HandHeartIcon className='h-auto w-4 ' />
                         <span> {post.claps.length} claps</span>
                       </div>
-                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all select-none'>
                         <Lucide.EyeIcon className='h-auto w-4 ' />
                         <span>{post.visits ?? 0} views</span>
                       </div>
-                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all select-none'>
                         <Lucide.TextSelectIcon className='h-auto w-4 ' />
                         <span>{post.words ?? 0} words</span>
                       </div>
-                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all select-none'>
                         <Lucide.FileClockIcon className='h-auto w-4 ' />
                         <span>{post.read_time}</span>
                       </div>

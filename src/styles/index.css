@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* importing Geist Mono */
+@font-face {
+  font-family: "Geist Mono";
+  src: local("Geist Mono"), url("/fonts/GeistMono-Regular.woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: local("Geist Mono"), url("/fonts/GeistMono-Medium.woff2");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: local("Geist Mono"), url("/fonts/GeistMono-SemiBold.woff2");
+  font-weight: 600;
+}
+
 /* importing Geist Sans */
 @font-face {
   font-family: "Geist";
