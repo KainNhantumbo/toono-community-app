@@ -1,19 +1,25 @@
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import * as Lucide from "lucide-react";
-import { Layout } from "@/components/layout";
-import { errorTransformer } from "@/lib/error";
-import { useQuery } from "@tanstack/react-query";
-import client from "@/config/http-client";
-import { PublicPost } from "@/types";
-import * as React from "react";
-import { ContentRenderer } from "@/components/content-renderer";
-import { TableOfContents } from "@/components/table-of-contents-renderer";
-import { Link, useParams } from "react-router-dom";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import moment from "moment";
 import { AlertMessage } from "@/components/alert-message";
+import { ContentRenderer } from "@/components/content-renderer";
+import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
+import { LoginRequest } from "@/components/login-request";
+import { TableOfContents } from "@/components/table-of-contents-renderer";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LoadingButton } from "@/components/ui/loading-button";
+import { Skeleton } from "@/components/ui/skeleton";
+import client from "@/config/http-client";
+import { useClapsQuery } from "@/hooks/use-claps-query";
+import { errorTransformer } from "@/lib/error";
+import { cn } from "@/lib/utils";
+import { RootState } from "@/state/store";
+import { PublicPost } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import * as Lucide from "lucide-react";
+import moment from "moment";
+import * as React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 
 const initialPostState: PublicPost = {
   id: "",
@@ -33,8 +39,9 @@ const initialPostState: PublicPost = {
 };
 
 export default function PostPage() {
-  const [post, setPost] = React.useState<PublicPost>(initialPostState);
   const params = useParams();
+  const auth = useSelector((state: RootState) => state.auth);
+  const [post, setPost] = React.useState<PublicPost>(initialPostState);
 
   const { data, isError, isLoading, error, refetch } = useQuery({
     queryKey: ["community-posts"],
@@ -53,13 +60,29 @@ export default function PostPage() {
     }
   });
 
+  const { handleAddClap, handleRemoveClap, isClapsQueryLoading } = useClapsQuery({
+    reloadFn: () => refetch()
+  });
+
+  const isInClapsArray: boolean = React.useMemo(() => {
+    if (!auth.id) return false;
+    const exists = post.claps.find((clap) => clap.user_id === auth.id);
+    if (exists) return true;
+    return false;
+  }, [post]);
+
   React.useEffect(() => {
     if (data) setPost(data);
   }, [data]);
 
+  React.useEffect(() => {
+    // correct the scroll position on enter
+    scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, []);
+
   return (
     <Layout>
-      <main className='mx-auto w-full max-w-4xl space-y-5 px-3'>
+      <main className='relative mx-auto w-full max-w-4xl space-y-5 px-3'>
         {isError && !isLoading ? (
           <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
             <AlertMessage
@@ -135,27 +158,39 @@ export default function PostPage() {
                   </div>
 
                   <div className='flex flex-wrap items-center gap-2'>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                    <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
                       <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
                       <span> {post.comments.length} comments</span>
                     </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
-                      <Lucide.HandHeartIcon className='h-auto w-4 ' />
-                      <span> {post.claps.length} claps</span>
-                    </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+
+                    <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
                       <Lucide.EyeIcon className='h-auto w-4 ' />
                       <span>{post.visits ?? 0} views</span>
                     </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                    <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
                       <Lucide.TextSelectIcon className='h-auto w-4 ' />
                       <span>{post.words ?? 0} words</span>
                     </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
+                    <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
                       <Lucide.FileClockIcon className='h-auto w-4 ' />
                       <span>{post.read_time}</span>
                     </div>
                   </div>
+
+                  <LoadingButton
+                    loading={isClapsQueryLoading}
+                    variant={"outline"}
+                    className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'
+                    onClick={() => {
+                      if (!auth.token) return <LoginRequest />;
+                      if (isInClapsArray) return handleRemoveClap(post.id);
+                      return handleAddClap(post.id);
+                    }}>
+                    <Lucide.HandHeartIcon
+                      className={cn({ "stroke-primary": isInClapsArray })}
+                    />
+                    <span>{post.claps.length} claps!</span>
+                  </LoadingButton>
                 </section>
               </section>
 

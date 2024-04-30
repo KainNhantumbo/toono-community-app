@@ -74,7 +74,7 @@ export type PublicPost = {
   coverImage: { url: string } | null;
   created_at: string;
   updated_at: string;
-  claps: Array<{ id: string }>;
+  claps: Array<{ id: string, user_id: string, post_id: string }>;
   comments: Array<{ id: string }>;
   user: {
     id: string;
