@@ -1,5 +1,4 @@
 import { AlertMessage } from "@/components/alert-message";
-import { CommentsSection } from "@/components/comments-section";
 import { ContentRenderer } from "@/components/content-renderer";
 import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
@@ -22,6 +21,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
+const CommentsSection = React.lazy(() => import("@/components/comments-section"));
+
 const initialPostState: PublicPost = {
   id: "",
   title: "",
@@ -43,7 +44,7 @@ export default function PostPage() {
   const params = useParams();
   const auth = useSelector((state: RootState) => state.auth);
   const [post, setPost] = React.useState<PublicPost>(initialPostState);
-  const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false)
+  const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
 
   const { data, isError, isLoading, error, refetch } = useQuery({
     queryKey: ["community-posts"],
@@ -85,7 +86,7 @@ export default function PostPage() {
   return (
     <Layout>
       <main className='relative mx-auto w-full max-w-4xl space-y-5 px-3'>
-        <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen}/>
+        <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
 
         {isError && !isLoading ? (
           <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
@@ -93,7 +94,7 @@ export default function PostPage() {
               icon={Lucide.AlertTriangleIcon}
               message={errorTransformer(error).message}
               action={{ label: "Retry", handler: () => refetch() }}
-              />
+            />
           </div>
         ) : null}
 
@@ -206,8 +207,9 @@ export default function PostPage() {
           </>
         ) : null}
 
-
-        <CommentsSection key={post.id} postId={post.id}/>
+        <React.Suspense fallback={<Loader />}>
+          <CommentsSection key={post.id} postId={post.id} />
+        </React.Suspense>
       </main>
     </Layout>
   );

@@ -1,16 +1,17 @@
 import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
+import { cn } from "@/lib/utils";
 import { RootState } from "@/state/store";
+import { SubmitEvent } from "@/types";
 import { PartyPopperIcon, XIcon } from "lucide-react";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { LoginRequest } from "./login-request";
-import { AutosizeTextarea } from "./ui/auto-size-textarea";
-import { LoadingButton } from "./ui/loading-button";
-import { SubmitEvent } from "@/types";
-import { Label } from "./ui/label";
+import { AutosizeTextAreaRef, AutosizeTextarea } from "./ui/auto-size-textarea";
 import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { LoadingButton } from "./ui/loading-button";
 
 export type ReplyCommentProps = {
   commentId: string;
@@ -27,6 +28,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
   const [value, setValue] = React.useState<string>(_props.initialValue || "");
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
+
 
   const onSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
@@ -62,7 +64,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
         onSubmit={onSubmit}
         aria-disabled={!auth.id || isLoading}>
         <div className='flex flex-col gap-2'>
-          <Label htmlFor={"reply-comment"}>
+          <Label htmlFor={"reply-comment"} className='text-base'>
             {_props.initialValue ? `Editing your comment` : `Reply to ${_props.user.name}`}
           </Label>
           <AutosizeTextarea
@@ -72,6 +74,12 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
             onChange={(e) => setValue(e.target.value)}
             placeholder='Type your amazing reply here.'
           />
+          <span
+            className={cn("self-end text-sm font-medium", {
+              "text-destructive": value.length <= 3 || value.length > 512
+            })}>
+            {value.length} / 512
+          </span>
         </div>
         <div className=' flex w-fit flex-nowrap items-center gap-2 self-end'>
           <Button variant={"ghost"} onClick={_props.close} type='button'>
@@ -79,7 +87,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
             <span>Cancel</span>
           </Button>
           <LoadingButton
-            disabled={!auth.id}
+            disabled={!auth.id || value.length <= 3 || value.length > 512}
             loading={isLoading}
             type='submit'
             className='w-fit self-end'>

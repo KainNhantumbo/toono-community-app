@@ -1,24 +1,22 @@
 import { CommentForm } from "@/components/comment-form";
 import client from "@/config/http-client";
 import { errorTransformer } from "@/lib/error";
-import { RootState } from "@/state/store";
-import { Comment, CommentWithChildren } from "@/types";
+import { Comment } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangleIcon } from "lucide-react";
 import * as React from "react";
-import { useSelector } from "react-redux";
 import { AlertMessage } from "./alert-message";
 import { CommentsRenderer } from "./comment-renderer";
 import { Separator } from "./ui/separator";
 
-export function CommentsSection({ postId }: { postId: string }) {
-  const auth = useSelector((state: RootState) => state.auth);
+export default function CommentsSection({ postId }: { postId: string }) {
   const [comments, setComments] = React.useState<Comment[]>([]);
 
   const { data, refetch, error, isError, isLoading } = useQuery({
     queryKey: ["comments-section"],
     queryFn: async () => {
       try {
+        if (!postId) throw new Error("Post ID not loaded.");
         const { data } = await client.get<Comment[]>(`/api/v1/comments/public/${postId}`);
         return data;
       } catch (error) {
@@ -30,50 +28,9 @@ export function CommentsSection({ postId }: { postId: string }) {
     }
   });
 
-  const handleDeleteComment = async (commentId: string) => {};
-
-  const rootComments = React.useMemo(() => {
-    const byParent = new Map<string, Array<Comment>>();
-    for (const comment of comments) {
-      let children = byParent.get(comment.reply_comment || "root");
-      if (!children) {
-        children = [];
-        byParent.set(comment.reply_comment || "root", children);
-      }
-      children.push(comment);
-    }
-    return byParent;
-  }, [comments]);
-
-  function getChildren(comment: Comment): CommentWithChildren {
-    const currentComment = rootComments.get(comment.reply_comment || "root");
-    return {
-      ...comment,
-      children: currentComment ? currentComment.map(getChildren) : []
-    };
-  }
-
-  const formattedComments = React.useMemo(() => {
-    const group: { [index: string]: Comment[] } = {};
-
-    for (const comment of comments) {
-      group[comment.reply_comment || "root"] ||= [];
-      group[comment.reply_comment || "root"].push(comment);
-    }
-
-    return group;
-  }, [comments]);
-
-  // const getCommentReplies = (parentId: string) => rootComments[parentId];
-
   React.useEffect(() => {
     if (data && !isError) setComments(data);
   }, [data]);
-
-  React.useEffect(() => {
-    console.info("Map", rootComments);
-    console.info("Array", formattedComments);
-  }, [comments, rootComments, formattedComments]);
 
   return (
     <section

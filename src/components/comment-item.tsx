@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import * as Dropdown from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import { RootState } from "@/state/store";
 import { Comment } from "@/types";
 import * as Lucide from "lucide-react";
@@ -10,8 +11,8 @@ import { Link } from "react-router-dom";
 import { DeleteCommentAlert } from "./comment-delete-alert";
 import { ReplyComment } from "./comment-reply-form";
 import { ContentRenderer } from "./content-renderer";
-import { Button } from "./ui/button";
 import { LoginRequest } from "./login-request";
+import { Button } from "./ui/button";
 
 export type CommentItemProps = {
   comment: Comment;
@@ -27,7 +28,7 @@ export const CommentItem = (_props: CommentItemProps) => {
 
   return (
     <div className={"mt-3 w-full rounded-lg border bg-background p-3"}>
-      <div className='flex flex-col'>
+      <div className={cn("flex flex-col", { "mb-3": isEditing })}>
         <div className='flex flex-nowrap items-center justify-between'>
           <div className='flex w-full flex-nowrap items-center gap-2'>
             <Link to={`/community/users/${_props.comment.user.id}`}>
@@ -63,16 +64,23 @@ export const CommentItem = (_props: CommentItemProps) => {
                 <Lucide.MoreHorizontalIcon className='h-full w-4' />
               </Button>
             </Dropdown.DropdownMenuTrigger>
+
             <Dropdown.DropdownMenuContent>
-              <Dropdown.DropdownMenuItem
-                onClick={() => {
-                  if (!auth.id) return setIsRequestLoginOpen(true);
-                  setIsEditing(true);
-                }}
-                className='flex cursor-pointer items-center'>
-                <Lucide.Edit className='mr-2 h-auto w-4' />
-                <span>Edit</span>
-              </Dropdown.DropdownMenuItem>
+              <Dropdown.DropdownMenuLabel>
+                <span>Actions</span>
+              </Dropdown.DropdownMenuLabel>
+              <Dropdown.DropdownMenuSeparator />
+              {auth.id === _props.comment.user_id ? (
+                <Dropdown.DropdownMenuItem
+                  onClick={() => {
+                    if (!auth.id) return setIsRequestLoginOpen(true);
+                    setIsEditing(true);
+                  }}
+                  className='flex cursor-pointer items-center'>
+                  <Lucide.Edit className='mr-2 h-auto w-4' />
+                  <span>Edit</span>
+                </Dropdown.DropdownMenuItem>
+              ) : null}
               <Dropdown.DropdownMenuItem
                 onClick={() => {
                   if (!auth.id) return setIsRequestLoginOpen(true);
@@ -82,22 +90,27 @@ export const CommentItem = (_props: CommentItemProps) => {
                 <Lucide.Reply className='mr-2 h-auto w-4' />
                 <span>Reply</span>
               </Dropdown.DropdownMenuItem>
-              <Dropdown.DropdownMenuItem
-                onClick={() => {
-                  if (!auth.id) return setIsRequestLoginOpen(true);
-                  setIsDeleteAlertOpen(true);
-                }}
-                className='flex cursor-pointer items-center'>
-                <Lucide.Trash2 className='mr-2 h-auto w-4' />
-                <span>Delete</span>
-              </Dropdown.DropdownMenuItem>
+
+              {auth.id === _props.comment.user_id ? (
+                <Dropdown.DropdownMenuItem
+                  onClick={() => {
+                    if (!auth.id) return setIsRequestLoginOpen(true);
+                    setIsDeleteAlertOpen(true);
+                  }}
+                  className='flex cursor-pointer items-center'>
+                  <Lucide.Trash2 className='mr-2 h-auto w-4' />
+                  <span>Delete</span>
+                </Dropdown.DropdownMenuItem>
+              ) : null}
             </Dropdown.DropdownMenuContent>
           </Dropdown.DropdownMenu>
         </div>
 
-        <div className='w-full pl-10'>
-          <ContentRenderer>{_props.comment.content}</ContentRenderer>
-        </div>
+        {!isEditing ? (
+          <div className='mx-auto w-full max-w-[calc(100%-75px)]'>
+            <ContentRenderer>{_props.comment.content}</ContentRenderer>
+          </div>
+        ) : null}
       </div>
 
       <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
