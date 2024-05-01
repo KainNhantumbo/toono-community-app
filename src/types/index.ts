@@ -115,4 +115,11 @@ export type Comment = {
   user: { id: string; name: string; profile_image: { url: string } | null };
 };
 
-export type CommentWithChildren = Comment & { children: Comment[] };
+export type CommentsRendererProps = {
+  comments: Comment[];
+  handleReloadComments: () => void | Promise<unknown>;
+};
+
+export type CommentWithChildren = Comment & {
+  children?: Comment[];
+};

@@ -35,8 +35,9 @@ export default function CommentsSection({ postId }: { postId: string }) {
   return (
     <section
       key={postId}
-      className='mx-auto w-full max-w-[820px] rounded-lg border bg-input/30 p-3'>
+      className='mx-auto w-full max-w-[820px] mobile:rounded-lg mobile:border bg-input/30 p-3'>
       <h2>Comments ({comments.length})</h2>
+
       <Separator decorative className='my-3' />
       <CommentForm postId={postId} handleReloadComments={refetch} />
 

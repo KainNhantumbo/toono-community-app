@@ -7,76 +7,27 @@ import { TableOfContents } from "@/components/table-of-contents-renderer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { Skeleton } from "@/components/ui/skeleton";
-import client from "@/config/http-client";
 import { useClapsQuery } from "@/hooks/use-claps-query";
+import { usePublicPostQuery } from "@/hooks/use-public-post-query";
 import { errorTransformer } from "@/lib/error";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/state/store";
-import { PublicPost } from "@/types";
-import { useQuery } from "@tanstack/react-query";
 import * as Lucide from "lucide-react";
 import moment from "moment";
 import * as React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const CommentsSection = React.lazy(() => import("@/components/comments-section"));
 
-const initialPostState: PublicPost = {
-  id: "",
-  title: "",
-  slug: "",
-  content: "",
-  read_time: "",
-  words: 0,
-  visits: 0,
-  tags: [],
-  coverImage: null,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  claps: [],
-  comments: [],
-  user: { id: "", name: "", profile_image: null }
-};
-
 export default function PostPage() {
-  const params = useParams();
   const auth = useSelector((state: RootState) => state.auth);
-  const [post, setPost] = React.useState<PublicPost>(initialPostState);
   const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
-
-  const { data, isError, isLoading, error, refetch } = useQuery({
-    queryKey: ["community-posts"],
-    queryFn: async () => {
-      try {
-        const { data } = await client.get<PublicPost>(
-          `/api/v1/posts/public/${params["slug"]}`
-        );
-        return data;
-      } catch (error) {
-        const { message } = errorTransformer(error);
-        console.error(error);
-        console.warn(message);
-        throw error;
-      }
-    }
-  });
-
+  const { post, error, isLoading, isError, refetch, isInClapsArray } = usePublicPostQuery();
   const { handleAddClap, handleRemoveClap, isClapsQueryLoading } = useClapsQuery({
     reloadFn: () => refetch()
   });
-
-  const isInClapsArray: boolean = React.useMemo(() => {
-    if (!auth.id) return false;
-    const exists = post.claps.find((clap) => clap.user_id === auth.id);
-    if (exists) return true;
-    return false;
-  }, [post]);
-
-  React.useEffect(() => {
-    if (data) setPost(data);
-  }, [data]);
 
   React.useEffect(() => {
     // correct the scroll position on enter
@@ -85,7 +36,7 @@ export default function PostPage() {
 
   return (
     <Layout>
-      <main className='relative mx-auto w-full max-w-4xl space-y-5 px-3'>
+      <main className='mx-auto w-full max-w-4xl mobile:space-y-5 mobile:px-3'>
         <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
 
         {isError && !isLoading ? (
@@ -102,14 +53,14 @@ export default function PostPage() {
 
         {!isError && !isLoading ? (
           <>
-            <article className='mx-auto mb-3 flex w-full max-w-[820px] flex-col gap-2 rounded-lg border bg-input/30'>
+            <article className='mx-auto flex w-full max-w-[820px] flex-col gap-2 bg-input/30 mobile:mb-3 mobile:rounded-lg mobile:border'>
               <section>
                 <div className='w-full'>
                   {post.coverImage ? (
                     <LazyLoadImage
                       src={post.coverImage.url}
                       alt={`Cover image of ${post.title}`}
-                      className='h-full max-h-[300px] w-full rounded-t-lg object-cover'
+                      className='h-full max-h-[300px] w-full object-cover mobile:rounded-t-lg'
                     />
                   ) : (
                     <Skeleton className='h-[400] w-full' />
