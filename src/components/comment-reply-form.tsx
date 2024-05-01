@@ -8,7 +8,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { LoginRequest } from "./login-request";
-import { AutosizeTextAreaRef, AutosizeTextarea } from "./ui/auto-size-textarea";
+import { AutosizeTextarea } from "./ui/auto-size-textarea";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { LoadingButton } from "./ui/loading-button";
@@ -29,7 +29,6 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
 
-
   const onSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -39,7 +38,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
         url: _props.initialValue
           ? `/api/v1/comments/${_props.commentId}`
           : `/api/v1/comments/${_props.postId}`,
-        data: { content: value, replyId: _props.commentId }
+        data: { content: value, replyId: _props.initialValue ? null : _props.commentId }
       });
       setValue("");
       await _props.handleReloadComments();
@@ -60,7 +59,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
     <>
       <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
       <form
-        className='flex flex-col gap-3 rounded-lg border p-3'
+        className='flex flex-col gap-3 border-t pt-2 mobile:rounded-lg mobile:border mobile:p-3'
         onSubmit={onSubmit}
         aria-disabled={!auth.id || isLoading}>
         <div className='flex flex-col gap-2'>
@@ -81,7 +80,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
             {value.length} / 512
           </span>
         </div>
-        <div className=' flex w-fit flex-nowrap items-center gap-2 self-end'>
+        <div className=' flex w-fit flex-wrap-reverse items-center gap-2 self-end mobile:flex-nowrap'>
           <Button variant={"ghost"} onClick={_props.close} type='button'>
             <XIcon className='mr-2 h-auto w-4' />
             <span>Cancel</span>

@@ -56,7 +56,7 @@ export const ContentRenderer = ({ children }: { children: string }) => {
               {...rest}
               className={clsx(
                 className,
-                "font-monospace mx-1 rounded-[5px] bg-primary/10 px-[5px] py-[2px]"
+                "mx-1 rounded-sm border bg-input px-[5px] py-[2px] font-mono"
               )}>
               {children}
             </code>

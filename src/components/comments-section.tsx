@@ -16,12 +16,14 @@ export default function CommentsSection({ postId }: { postId: string }) {
     queryKey: ["comments-section"],
     queryFn: async () => {
       try {
-        if (!postId) throw new Error("Post ID not loaded.");
+        if (!postId)
+          throw new Error(
+            "Warning: request canceled beacause this post id is not yet loaded."
+          );
         const { data } = await client.get<Comment[]>(`/api/v1/comments/public/${postId}`);
         return data;
       } catch (error) {
         const { message } = errorTransformer(error);
-        console.error(error);
         console.warn(message);
         throw error;
       }
@@ -35,8 +37,11 @@ export default function CommentsSection({ postId }: { postId: string }) {
   return (
     <section
       key={postId}
-      className='mx-auto w-full max-w-[820px] mobile:rounded-lg mobile:border bg-input/30 p-3'>
+      className='mx-auto w-full max-w-[820px] p-1 mobile:rounded-lg mobile:border mobile:bg-input/30 mobile:p-3'>
       <h2>Comments ({comments.length})</h2>
+      <p className='text-sm text-muted-foreground'>
+        Feel free to contribute and share with our community!
+      </p>
 
       <Separator decorative className='my-3' />
       <CommentForm postId={postId} handleReloadComments={refetch} />

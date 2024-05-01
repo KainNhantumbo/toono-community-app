@@ -36,7 +36,7 @@ export default function PostPage() {
 
   return (
     <Layout>
-      <main className='mx-auto w-full max-w-4xl mobile:space-y-5 mobile:px-3'>
+      <main className='mx-auto w-full max-w-4xl mobile:mb-3 mobile:space-y-5 mobile:px-3'>
         <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
 
         {isError && !isLoading ? (
@@ -53,7 +53,7 @@ export default function PostPage() {
 
         {!isError && !isLoading ? (
           <>
-            <article className='mx-auto flex w-full max-w-[820px] flex-col gap-2 bg-input/30 mobile:mb-3 mobile:rounded-lg mobile:border'>
+            <article className='mx-auto flex w-full max-w-[820px] flex-col gap-2 mobile:mb-3 mobile:rounded-lg mobile:border mobile:bg-input/30'>
               <section>
                 <div className='w-full'>
                   {post.coverImage ? (

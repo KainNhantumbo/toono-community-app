@@ -7,6 +7,7 @@ const commentsByParent = (comments: CommentWithChildren[]): CommentWithChildren[
   const nestComments = (parentId: string): CommentWithChildren[] => {
     const children = comments.filter((comment) => comment.reply_comment === parentId);
     if (children.length === 0) return [];
+
     return children.map((child) => ({
       ...child,
       children: nestComments(child.id)
@@ -15,18 +16,21 @@ const commentsByParent = (comments: CommentWithChildren[]): CommentWithChildren[
 
   comments.forEach((comment) => {
     if (comment.reply_comment === null) {
-      group[comment.id] = { ...comment, children: nestComments(comment.id) };
+      group[comment.id] = {
+        ...comment,
+        children: Array.from(new Set(nestComments(comment.id)))
+      };
     }
   });
   return Object.values(group);
 };
 
 export const CommentsRenderer = (_props: CommentsRendererProps) => {
-  const groupedComments = commentsByParent(_props.comments);
+  const groupedComments = Array.from(new Set(commentsByParent(_props.comments)));
 
   const Render = ({ data }: { data: CommentWithChildren[] }) => (
-    <section className='flex flex-col' style={{ marginLeft: `${2 * 9}px` }}>
-      {data.map((item, index) => (
+    <section className='ml-3 flex flex-col'>
+      {Array.from(new Set(data)).map((item, index) => (
         <div key={index.toString().concat(crypto.randomUUID())}>
           <CommentItem
             key={item.id}
@@ -34,12 +38,10 @@ export const CommentsRenderer = (_props: CommentsRendererProps) => {
             comment={item}
           />
           {item.children && (
-            <div style={{ marginLeft: `${index * 18}px` }}>
-              <Render
-                key={index.toString().concat(crypto.randomUUID())}
-                data={item.children}
-              />
-            </div>
+            <Render
+              key={index.toString().concat(crypto.randomUUID())}
+              data={item.children}
+            />
           )}
         </div>
       ))}
@@ -47,8 +49,6 @@ export const CommentsRenderer = (_props: CommentsRendererProps) => {
   );
 
   return groupedComments.map((comment, index) => (
-    <div>
-      <Render key={index.toString().concat(crypto.randomUUID())} data={[comment]} />
-    </div>
+    <Render key={index.toString().concat(crypto.randomUUID())} data={[comment]} />
   ));
 };

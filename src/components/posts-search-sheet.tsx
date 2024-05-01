@@ -4,44 +4,46 @@ import { SubmitEvent } from "@/types";
 import { SearchIcon } from "lucide-react";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { TooltipWrapper } from "./tooltip-wrapper";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from "./ui/sheet";
+import * as SheetRoot from "./ui/sheet";
 
 export const PostsSearchSheet = () => {
   const filters = useSelector((state: RootState) => state.filters);
   const dispatch = useDispatch<AppDispatch>();
   const [value, setValue] = React.useState<string>(filters.search);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
     dispatch(mutateFilters({ ...filters, search: value }));
+    if (location.pathname !== "/") {
+      setValue("");
+      navigate("/");
+    }
   };
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <SheetRoot.Sheet>
+      <SheetRoot.SheetTrigger asChild>
         <Button size={"icon"} variant={"ghost"}>
           <TooltipWrapper content='Search posts'>
             <SearchIcon />
           </TooltipWrapper>
           <span className='sr-only'>Search</span>
         </Button>
-      </SheetTrigger>
+      </SheetRoot.SheetTrigger>
 
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Search Posts</SheetTitle>
-          <SheetDescription>Search and query post across all platform.</SheetDescription>
-        </SheetHeader>
+      <SheetRoot.SheetContent>
+        <SheetRoot.SheetHeader>
+          <SheetRoot.SheetTitle>Search Posts</SheetRoot.SheetTitle>
+          <SheetRoot.SheetDescription>
+            Search and query post across all platform.
+          </SheetRoot.SheetDescription>
+        </SheetRoot.SheetHeader>
 
         <form className='space-y-3 py-3' onSubmit={handleSubmit}>
           <Input
@@ -59,7 +61,7 @@ export const PostsSearchSheet = () => {
             </Button>
           </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </SheetRoot.SheetContent>
+    </SheetRoot.Sheet>
   );
 };

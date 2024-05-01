@@ -27,7 +27,10 @@ export const CommentItem = (_props: CommentItemProps) => {
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = React.useState<boolean>(false);
 
   return (
-    <div className={"mt-3 w-full rounded-lg border bg-background p-3"}>
+    <div
+      className={
+        "w-full border-l bg-background p-3 mobile:mt-3 mobile:rounded-lg mobile:border"
+      }>
       <div className={cn("flex flex-col", { "mb-3": isEditing })}>
         <div className='flex flex-nowrap items-center justify-between'>
           <div className='flex w-full flex-nowrap items-center gap-2'>
@@ -107,7 +110,7 @@ export const CommentItem = (_props: CommentItemProps) => {
         </div>
 
         {!isEditing ? (
-          <div className='mx-auto w-full max-w-[calc(100%-75px)]'>
+          <div className='mx-auto w-full text-sm mobile:max-w-[calc(100%-75px)] mobile:text-base'>
             <ContentRenderer>{_props.comment.content}</ContentRenderer>
           </div>
         ) : null}
