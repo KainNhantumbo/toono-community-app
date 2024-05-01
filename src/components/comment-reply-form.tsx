@@ -14,8 +14,9 @@ import { Button } from "./ui/button";
 
 export type ReplyCommentProps = {
   commentId: string;
+  postId: string;
   initialValue?: string;
-  handleCancel: () => void;
+  close: () => void;
   user: { id: string; name: string; profile_image: { url: string } | null };
   handleReloadComments: () => void | Promise<unknown>;
 };
@@ -33,11 +34,14 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
     try {
       await client({
         method: _props.initialValue ? "patch" : "post",
-        url: `/api/v1/comments/${_props.commentId}`,
+        url: _props.initialValue
+          ? `/api/v1/comments/${_props.commentId}`
+          : `/api/v1/comments/${_props.postId}`,
         data: { content: value, replyId: _props.commentId }
       });
       setValue("");
       await _props.handleReloadComments();
+      _props.close();
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(error);
@@ -58,7 +62,9 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
         onSubmit={onSubmit}
         aria-disabled={!auth.id || isLoading}>
         <div className='flex flex-col gap-2'>
-          <Label htmlFor={"reply-comment"}>Reply</Label>
+          <Label htmlFor={"reply-comment"}>
+            {_props.initialValue ? `Editing your comment` : `Reply to ${_props.user.name}`}
+          </Label>
           <AutosizeTextarea
             id='reply-comment'
             value={value}
@@ -68,7 +74,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
           />
         </div>
         <div className=' flex w-fit flex-nowrap items-center gap-2 self-end'>
-          <Button variant={"ghost"} onClick={_props.handleCancel} type="button">
+          <Button variant={"ghost"} onClick={_props.close} type='button'>
             <XIcon className='mr-2 h-auto w-4' />
             <span>Cancel</span>
           </Button>
@@ -78,7 +84,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
             type='submit'
             className='w-fit self-end'>
             <PartyPopperIcon className='mr-2 h-auto w-4' />
-            <span>Publish</span>
+            <span>{_props.initialValue ? `Save` : `Reply & Publish`}</span>
           </LoadingButton>
         </div>
       </form>

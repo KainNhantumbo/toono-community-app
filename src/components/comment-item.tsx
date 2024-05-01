@@ -1,19 +1,28 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn } from "@/lib/utils";
+import * as Dropdown from "@/components/ui/dropdown-menu";
+import { RootState } from "@/state/store";
 import { Comment } from "@/types";
 import * as Lucide from "lucide-react";
 import moment from "moment";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { DeleteCommentAlert } from "./comment-delete-alert";
 import { ReplyComment } from "./comment-reply-form";
-import * as Dropdown from "@/components/ui/dropdown-menu";
 import { ContentRenderer } from "./content-renderer";
 import { Button } from "./ui/button";
-import { DeleteCommentAlert } from "./comment-delete-alert";
+import { LoginRequest } from "./login-request";
 
-export type CommentItemProps = { comment: Comment; handleReloadComments: () => void };
+export type CommentItemProps = {
+  comment: Comment;
+  handleReloadComments: () => void;
+};
+
 export const CommentItem = (_props: CommentItemProps) => {
+  const auth = useSelector((state: RootState) => state.auth);
   const [isReply, setIsReply] = React.useState<boolean>(false);
+  const [isEditing, setIsEditing] = React.useState<boolean>(false);
+  const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = React.useState<boolean>(false);
 
   return (
@@ -56,13 +65,28 @@ export const CommentItem = (_props: CommentItemProps) => {
             </Dropdown.DropdownMenuTrigger>
             <Dropdown.DropdownMenuContent>
               <Dropdown.DropdownMenuItem
-                onClick={() => setIsReply(true)}
+                onClick={() => {
+                  if (!auth.id) return setIsRequestLoginOpen(true);
+                  setIsEditing(true);
+                }}
+                className='flex cursor-pointer items-center'>
+                <Lucide.Edit className='mr-2 h-auto w-4' />
+                <span>Edit</span>
+              </Dropdown.DropdownMenuItem>
+              <Dropdown.DropdownMenuItem
+                onClick={() => {
+                  if (!auth.id) return setIsRequestLoginOpen(true);
+                  setIsReply(true);
+                }}
                 className='flex cursor-pointer items-center'>
                 <Lucide.Reply className='mr-2 h-auto w-4' />
                 <span>Reply</span>
               </Dropdown.DropdownMenuItem>
               <Dropdown.DropdownMenuItem
-                onClick={() => setIsDeleteAlertOpen(true)}
+                onClick={() => {
+                  if (!auth.id) return setIsRequestLoginOpen(true);
+                  setIsDeleteAlertOpen(true);
+                }}
                 className='flex cursor-pointer items-center'>
                 <Lucide.Trash2 className='mr-2 h-auto w-4' />
                 <span>Delete</span>
@@ -76,19 +100,26 @@ export const CommentItem = (_props: CommentItemProps) => {
         </div>
       </div>
 
+      <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
+
       <DeleteCommentAlert
-      handleReloadComments={_props.handleReloadComments}
+        handleReloadComments={_props.handleReloadComments}
         isOpen={isDeleteAlertOpen}
         setIsOpen={setIsDeleteAlertOpen}
         commentId={_props.comment.id}
       />
 
-      {isReply ? (
+      {isReply || isEditing ? (
         <ReplyComment
           key={_props.comment.id}
+          postId={_props.comment.post_id}
           commentId={_props.comment.id}
           user={_props.comment.user}
-          handleCancel={() => setIsReply(false)}
+          initialValue={isEditing ? _props.comment.content : ""}
+          close={() => {
+            setIsReply(false);
+            setIsEditing(false);
+          }}
           handleReloadComments={_props.handleReloadComments}
         />
       ) : null}
