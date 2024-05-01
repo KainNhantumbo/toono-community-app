@@ -13,7 +13,7 @@ import { Label } from "./ui/label";
 
 export type CommentFormProps = {
   postId: string;
-  initialValues?:{value: string, commentId?:string};
+  initialValues?: { value: string; commentId?: string };
   handleReloadComments: () => void | Promise<unknown>;
 };
 
@@ -53,7 +53,7 @@ export const CommentForm = (_props: CommentFormProps) => {
     <>
       <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
       <form
-        className='flex flex-col gap-3 rounded-lg border p-3'
+        className='flex flex-col gap-3 rounded-lg border bg-background p-3'
         onSubmit={handleCreateComment}
         aria-disabled={!auth.id || isLoading}>
         <div className='flex flex-col gap-2'>

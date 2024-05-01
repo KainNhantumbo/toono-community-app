@@ -1,7 +1,7 @@
 import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
 import { RootState } from "@/state/store";
-import { PartyPopperIcon } from "lucide-react";
+import { PartyPopperIcon, XIcon } from "lucide-react";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -10,10 +10,12 @@ import { AutosizeTextarea } from "./ui/auto-size-textarea";
 import { LoadingButton } from "./ui/loading-button";
 import { SubmitEvent } from "@/types";
 import { Label } from "./ui/label";
+import { Button } from "./ui/button";
 
 export type ReplyCommentProps = {
   commentId: string;
   initialValue?: string;
+  handleCancel: () => void;
   user: { id: string; name: string; profile_image: { url: string } | null };
   handleReloadComments: () => void | Promise<unknown>;
 };
@@ -65,14 +67,20 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
             placeholder='Type your amazing reply here.'
           />
         </div>
-        <LoadingButton
-          disabled={!auth.id}
-          loading={isLoading}
-          type='submit'
-          className='w-fit self-end'>
-          <PartyPopperIcon className='mr-2 h-auto w-4' />
-          <span>Publish</span>
-        </LoadingButton>
+        <div className=' flex w-fit flex-nowrap items-center gap-2 self-end'>
+          <Button variant={"ghost"} onClick={_props.handleCancel} type="button">
+            <XIcon className='mr-2 h-auto w-4' />
+            <span>Cancel</span>
+          </Button>
+          <LoadingButton
+            disabled={!auth.id}
+            loading={isLoading}
+            type='submit'
+            className='w-fit self-end'>
+            <PartyPopperIcon className='mr-2 h-auto w-4' />
+            <span>Publish</span>
+          </LoadingButton>
+        </div>
       </form>
     </>
   );
