@@ -74,7 +74,7 @@ export type PublicPost = {
   coverImage: { url: string } | null;
   created_at: string;
   updated_at: string;
-  claps: Array<{ id: string, user_id: string, post_id: string }>;
+  claps: Array<{ id: string; user_id: string; post_id: string }>;
   comments: Array<{ id: string }>;
   user: {
     id: string;
@@ -114,3 +114,5 @@ export type Comment = {
   reply_comment: string | null;
   user: { id: string; name: string; profile_image: { url: string } | null };
 };
+
+export type CommentWithChildren = Comment & { children: Comment[] };

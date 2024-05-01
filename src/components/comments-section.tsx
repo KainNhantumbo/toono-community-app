@@ -1,18 +1,15 @@
-import * as React from "react";
+import { CommentForm } from "@/components/comment-form";
 import client from "@/config/http-client";
-import { LoginRequest } from "./login-request";
-import { RootState } from "@/state/store";
-import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
 import { errorTransformer } from "@/lib/error";
-import { toast } from "sonner";
+import { RootState } from "@/state/store";
+import { Comment, CommentWithChildren } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { AlertTriangleIcon } from "lucide-react";
+import * as React from "react";
+import { useSelector } from "react-redux";
+import { AlertMessage } from "./alert-message";
+import { CommentsRenderer } from "./comment-renderer";
 import { Separator } from "./ui/separator";
-import { Label } from "./ui/label";
-import { Textarea } from "./ui/textarea";
-import { LoadingButton } from "./ui/loading-button";
-import { PartyPopperIcon } from "lucide-react";
-import { useAppContext } from "@/context/app-context";
-import { SubmitEvent, Comment } from "@/types";
 
 export function CommentsSection({ postId }: { postId: string }) {
   const auth = useSelector((state: RootState) => state.auth);
@@ -28,22 +25,55 @@ export function CommentsSection({ postId }: { postId: string }) {
         const { message } = errorTransformer(error);
         console.error(error);
         console.warn(message);
-        toast.error(message, { action: { label: "Retry", onClick: () => refetch() } });
         throw error;
       }
     }
   });
 
-  const handleUpdateComment = async (commentId: string) => {};
   const handleDeleteComment = async (commentId: string) => {};
+
+  const rootComments = React.useMemo(() => {
+    const byParent = new Map<string, Array<Comment>>();
+    for (const comment of comments) {
+      let children = byParent.get(comment.reply_comment || "root");
+      if (!children) {
+        children = [];
+        byParent.set(comment.reply_comment || "root", children);
+      }
+      children.push(comment);
+    }
+    return byParent;
+  }, [comments]);
+
+  function getChildren(comment: Comment): CommentWithChildren {
+    const currentComment = rootComments.get(comment.reply_comment || "root");
+    return {
+      ...comment,
+      children: currentComment ? currentComment.map(getChildren) : []
+    };
+  }
+
+  const formattedComments = React.useMemo(() => {
+    const group: { [index: string]: Comment[] } = {};
+
+    for (const comment of comments) {
+      group[comment.reply_comment || "root"] ||= [];
+      group[comment.reply_comment || "root"].push(comment);
+    }
+
+    return group;
+  }, [comments]);
+
+  // const getCommentReplies = (parentId: string) => rootComments[parentId];
 
   React.useEffect(() => {
     if (data && !isError) setComments(data);
   }, [data]);
 
   React.useEffect(() => {
-    console.info("mounted", comments);
-  }, [postId, comments]);
+    console.info("Map", rootComments);
+    console.info("Array", formattedComments);
+  }, [comments, rootComments, formattedComments]);
 
   return (
     <section
@@ -53,72 +83,17 @@ export function CommentsSection({ postId }: { postId: string }) {
       <Separator decorative className='my-3' />
       <CommentForm postId={postId} handleReloadComments={refetch} />
 
-      <section></section>
+      {isError && !isLoading ? (
+        <AlertMessage
+          icon={AlertTriangleIcon}
+          message={errorTransformer(error).message}
+          action={{ label: "Retry", handler: () => refetch() }}
+        />
+      ) : null}
+
+      {comments.length > 0 ? (
+        <CommentsRenderer comments={comments} handleReloadComments={() => refetch()} />
+      ) : null}
     </section>
   );
 }
-
-export const CommentForm = ({
-  postId,
-  handleReloadComments
-}: {
-  postId: string;
-  handleReloadComments: () => void | Promise<unknown>;
-}) => {
-  const auth = useSelector((state: RootState) => state.auth);
-  const { client } = useAppContext();
-  const [value, setValue] = React.useState<string>("");
-  const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-  const handleCreateComment = async (e: SubmitEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      await client({
-        method: "post",
-        url: `/api/v1/comments/${postId}`,
-        data: { content: value }
-      });
-      setValue("");
-      await handleReloadComments();
-    } catch (error) {
-      const { message } = errorTransformer(error);
-      console.error(error);
-      console.warn(message);
-      toast.error(message, {
-        action: { label: "Retry", onClick: () => handleCreateComment(e) }
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <>
-      <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
-      <form
-        className='flex flex-col gap-3 rounded-lg border p-3'
-        onSubmit={handleCreateComment}
-        aria-disabled={!auth.id || isLoading}>
-        <div className='flex flex-col gap-2'>
-          <Label htmlFor={`new-comment`}>Add comment</Label>
-          <Textarea
-            disabled={!auth.id || isLoading}
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-            id='new-comment'
-          />
-        </div>
-        <LoadingButton
-          disabled={!auth.id}
-          loading={isLoading}
-          type='submit'
-          className='w-fit self-end'>
-          <PartyPopperIcon className='mr-2 h-auto w-4' />
-          <span>Publish</span>
-        </LoadingButton>
-      </form>
-    </>
-  );
-};
