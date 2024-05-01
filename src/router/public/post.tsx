@@ -3,6 +3,7 @@ import { ContentRenderer } from "@/components/content-renderer";
 import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
 import { LoginRequest } from "@/components/login-request";
+import { SharePost } from "@/components/share-post";
 import { TableOfContents } from "@/components/table-of-contents-renderer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LoadingButton } from "@/components/ui/loading-button";
@@ -115,8 +116,8 @@ export default function PostPage() {
 
                   <div className='flex flex-wrap items-center gap-2'>
                     <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                      <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
-                      <span> {post.comments.length} comments</span>
+                      <Lucide.MessageSquareTextIcon className='h-auto w-4' />
+                      <span>{post.comments.length} comments</span>
                     </div>
 
                     <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
@@ -133,20 +134,23 @@ export default function PostPage() {
                     </div>
                   </div>
 
-                  <LoadingButton
-                    loading={isClapsQueryLoading}
-                    variant={"outline"}
-                    className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'
-                    onClick={() => {
-                      if (!auth.token) return setIsRequestLoginOpen(true);
-                      if (isInClapsArray) return handleRemoveClap(post.id);
-                      return handleAddClap(post.id);
-                    }}>
-                    <Lucide.HandHeartIcon
-                      className={cn({ "stroke-primary": isInClapsArray })}
-                    />
-                    <span>{post.claps.length} claps!</span>
-                  </LoadingButton>
+                  <div className='flex w-full flex-col gap-3 mobile:flex-row'>
+                    <LoadingButton
+                      loading={isClapsQueryLoading}
+                      variant={"outline"}
+                      className='flex w-full select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'
+                      onClick={() => {
+                        if (!auth.token) return setIsRequestLoginOpen(true);
+                        if (isInClapsArray) return handleRemoveClap(post.id);
+                        return handleAddClap(post.id);
+                      }}>
+                      <Lucide.HandHeartIcon
+                        className={cn({ "stroke-primary": isInClapsArray })}
+                      />
+                      <span>{post.claps.length} claps!</span>
+                    </LoadingButton>
+                    <SharePost slug={post.slug} title={post.title} />
+                  </div>
                 </section>
               </section>
 
