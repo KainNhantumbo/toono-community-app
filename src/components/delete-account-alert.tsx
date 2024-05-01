@@ -57,14 +57,16 @@ export const DeleteAccountAlert = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className='group flex items-center gap-2 rounded-lg border-none bg-transparent shadow-none'>
+          <AlertDialogCancel className='flex items-center gap-2 shadow-none'>
             <XIcon className='mr-2 h-auto w-4' />
             <span>Cancel</span>
           </AlertDialogCancel>
           <AlertDialogAction onClick={onDelete} asChild>
-            <Button >
-              <UserXIcon className='mr-2 h-auto w-4' />
-              <span>Confirm</span>
+            <Button
+              variant={"destructive"}
+              className='bg-destructive hover:bg-destructive/60'>
+              <UserXIcon className='mr-2 h-auto w-4 stroke-destructive-foreground' />
+              <span className='text-destructive-foreground'>Confirm</span>
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

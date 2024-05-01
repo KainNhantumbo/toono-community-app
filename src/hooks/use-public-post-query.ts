@@ -57,5 +57,5 @@ export const usePublicPostQuery = () => {
     if (data) setPost(data);
   }, [data]);
 
-  return { isError,error,  isLoading, post, refetch, isInClapsArray };
+  return { isError, error, isLoading, post, refetch, isInClapsArray };
 };
