@@ -2,28 +2,45 @@ import { DeleteAccountAlert } from "@/components/delete-account-alert";
 import { Layout } from "@/components/layout";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter
-} from "@/components/ui/card";
+import * as CardRoot from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Label } from "@/components/ui/label";
+import { LoadingButton } from "@/components/ui/loading-button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAppContext } from "@/context/app-context";
 import { ThemeVariants, useThemeContext } from "@/context/theme-context";
+import { errorTransformer } from "@/lib/error";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, MoonStarIcon, SunDimIcon } from "lucide-react";
+import { RiFileExcel2Line } from "@remixicon/react";
+import { ArrowLeft, FileJson, MoonStarIcon, SunDimIcon } from "lucide-react";
+import * as React from "react";
+import { toast } from "sonner";
 
 export default function Configurations() {
+  const { client } = useAppContext();
   const { theme, handleChangeTheme } = useThemeContext();
+  const [isDownloadLoading, setIsDownloadLoading] = React.useState<boolean>(false);
+
+  const handleDownloadBackup = async (type: "csv" | "json" | "text") => {
+    try {
+      setIsDownloadLoading(true);
+      await client({ method: "get", url: `/api/v1/backup/${type}` });
+    } catch (error) {
+      const { message } = errorTransformer(error);
+      console.error(error);
+      console.warn(message);
+      toast.error(message, {
+        action: { label: "Retry Download", onClick: () => handleDownloadBackup(type) }
+      });
+    } finally {
+      setIsDownloadLoading(false);
+    }
+  };
 
   return (
     <Layout>
-      <main className='mx-auto w-full max-w-4xl space-y-5 px-3'>
+      <main className='mx-auto mb-3 w-full max-w-4xl space-y-5 px-3'>
         <div className='flex items-center gap-5'>
           <TooltipWrapper content='Back'>
             <Button
@@ -38,12 +55,12 @@ export default function Configurations() {
         </div>
 
         <section className='flex w-full flex-col gap-3'>
-          <Card className='shadow-none'>
-            <CardHeader>
-              <CardTitle>Appearance</CardTitle>
-              <CardDescription>Customize the UI colors</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <CardRoot.Card className='shadow-none'>
+            <CardRoot.CardHeader>
+              <CardRoot.CardTitle>Appearance</CardRoot.CardTitle>
+              <CardRoot.CardDescription>Customize the UI colors</CardRoot.CardDescription>
+            </CardRoot.CardHeader>
+            <CardRoot.CardContent>
               <RadioGroup
                 defaultValue={theme}
                 onValueChange={(value) => handleChangeTheme(value as ThemeVariants)}
@@ -89,21 +106,51 @@ export default function Configurations() {
                   </Label>
                 </div>
               </RadioGroup>
-            </CardContent>
-          </Card>
-          <Card className='border-destructive bg-destructive/10'>
-            <CardHeader>
-              <CardTitle className='text-destructive'>Danger Zone</CardTitle>
-              <CardDescription>Delete your account</CardDescription>
-            </CardHeader>
-            <CardContent>
+            </CardRoot.CardContent>
+          </CardRoot.Card>
+
+          <CardRoot.Card className='shadow-none'>
+            <CardRoot.CardHeader>
+              <CardRoot.CardTitle>Backup</CardRoot.CardTitle>
+              <CardRoot.CardDescription>
+                Download and backup your saved posts
+              </CardRoot.CardDescription>
+            </CardRoot.CardHeader>
+            <CardRoot.CardContent>
+              Your can backup your posts data by selecting one of the data formats you may
+              want below.
+            </CardRoot.CardContent>
+            <CardRoot.CardFooter className='flex flex-wrap items-center gap-3'>
+              <LoadingButton
+                loading={isDownloadLoading}
+                onClick={() => handleDownloadBackup("csv")}>
+                <RiFileExcel2Line className='mr-2 h-auto w-4 text-green-800' />
+                <span>Download as CSV</span>
+              </LoadingButton>
+              <LoadingButton
+                loading={isDownloadLoading}
+                onClick={() => handleDownloadBackup("json")}>
+                <FileJson className='mr-2 h-auto w-4 text-rose-500' />
+                <span>Download as JSON</span>
+              </LoadingButton>
+            </CardRoot.CardFooter>
+          </CardRoot.Card>
+
+          <CardRoot.Card className='border-destructive bg-destructive/10'>
+            <CardRoot.CardHeader>
+              <CardRoot.CardTitle className='text-destructive'>
+                Danger Zone
+              </CardRoot.CardTitle>
+              <CardRoot.CardDescription>Delete your account</CardRoot.CardDescription>
+            </CardRoot.CardHeader>
+            <CardRoot.CardContent>
               By clicking here, you will delete your user account and remove all associated
               with it. Proceed carefully.
-            </CardContent>
-            <CardFooter>
+            </CardRoot.CardContent>
+            <CardRoot.CardFooter>
               <DeleteAccountAlert />
-            </CardFooter>
-          </Card>
+            </CardRoot.CardFooter>
+          </CardRoot.Card>
         </section>
       </main>
     </Layout>
