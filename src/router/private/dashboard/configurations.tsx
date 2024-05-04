@@ -29,11 +29,27 @@ export default function Configurations() {
   }>({ status: false, type: "csv" });
 
   const handleDownloadBackup = async (type: "csv" | "json" | "text") => {
-    const filename = `${auth.name.toUpperCase()} [${auth.id}] [${new Date().toISOString()}].json`;
+    let filename = `${auth.name.toUpperCase()} [${auth.id}] [${new Date().toISOString()}]`;
     try {
       setIsDownloadLoading({ status: false, type });
-      const { data } = await client({ method: "get", url: `/api/v1/backup/${type}` });
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const { data } = await client<string>({
+        method: "get",
+        url: `/api/v1/backup/${type}`
+      });
+
+      let blob = new Blob();
+
+      if (type === "csv") {
+        blob = new Blob([data], { type: "text/csv" });
+        filename = filename.concat(".csv");
+      } else if (type === "text") {
+        blob = new Blob([data], { type: "text/plain" });
+        filename = filename.concat(".txt");
+      } else if (type === "json") {
+        blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        filename = filename.concat(".json");
+      }
+
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -148,6 +164,12 @@ export default function Configurations() {
                 onClick={() => handleDownloadBackup("json")}>
                 <FileJson className='mr-2 h-auto w-4 text-rose-500' />
                 <span>Download as JSON</span>
+              </LoadingButton>
+              <LoadingButton
+                loading={isDownloadLoading.status && isDownloadLoading.type === "text"}
+                onClick={() => handleDownloadBackup("text")}>
+                <FileJson className='mr-2 h-auto w-4 text-rose-500' />
+                <span>Download as Plain Text</span>
               </LoadingButton>
             </CardRoot.CardFooter>
           </CardRoot.Card>
