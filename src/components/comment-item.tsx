@@ -55,7 +55,7 @@ export const CommentItem = (_props: CommentItemProps) => {
                 )}
               </Avatar>
             </Link>
-            <div className='text-sm'>
+            <div className='text-sm select-none'>
               <span className='font-medium'>{_props.comment.user.name}</span>
               {" - "}
               <span>
@@ -123,7 +123,7 @@ export const CommentItem = (_props: CommentItemProps) => {
         </div>
 
         {!isEditing ? (
-          <div className='mx-auto w-full text-sm mobile:max-w-[calc(100%-75px)] mobile:text-base'>
+          <div className='mx-auto w-full text-sm mobile:max-w-[calc(100%-75px)] mobile:text-base select-none'>
             <ContentRenderer>{_props.comment.content}</ContentRenderer>
           </div>
         ) : null}

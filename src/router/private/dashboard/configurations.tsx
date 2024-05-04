@@ -12,20 +12,36 @@ import { useAppContext } from "@/context/app-context";
 import { ThemeVariants, useThemeContext } from "@/context/theme-context";
 import { errorTransformer } from "@/lib/error";
 import { cn } from "@/lib/utils";
+import { RootState } from "@/state/store";
 import { RiFileExcel2Line } from "@remixicon/react";
 import { ArrowLeft, FileJson, MoonStarIcon, SunDimIcon } from "lucide-react";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 export default function Configurations() {
   const { client } = useAppContext();
+  const auth = useSelector((state: RootState) => state.auth);
   const { theme, handleChangeTheme } = useThemeContext();
-  const [isDownloadLoading, setIsDownloadLoading] = React.useState<boolean>(false);
+  const [isDownloadLoading, setIsDownloadLoading] = React.useState<{
+    status: boolean;
+    type: "csv" | "json" | "text";
+  }>({ status: false, type: "csv" });
 
   const handleDownloadBackup = async (type: "csv" | "json" | "text") => {
+    const filename = `${auth.name.toUpperCase()} [${auth.id}] [${new Date().toISOString()}].json`;
     try {
-      setIsDownloadLoading(true);
-      await client({ method: "get", url: `/api/v1/backup/${type}` });
+      setIsDownloadLoading({ status: false, type });
+      const { data } = await client({ method: "get", url: `/api/v1/backup/${type}` });
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(error);
@@ -34,7 +50,7 @@ export default function Configurations() {
         action: { label: "Retry Download", onClick: () => handleDownloadBackup(type) }
       });
     } finally {
-      setIsDownloadLoading(false);
+      setIsDownloadLoading({ status: false, type });
     }
   };
 
@@ -122,13 +138,13 @@ export default function Configurations() {
             </CardRoot.CardContent>
             <CardRoot.CardFooter className='flex flex-wrap items-center gap-3'>
               <LoadingButton
-                loading={isDownloadLoading}
+                loading={isDownloadLoading.status && isDownloadLoading.type === "csv"}
                 onClick={() => handleDownloadBackup("csv")}>
                 <RiFileExcel2Line className='mr-2 h-auto w-4 text-green-800' />
                 <span>Download as CSV</span>
               </LoadingButton>
               <LoadingButton
-                loading={isDownloadLoading}
+                loading={isDownloadLoading.status && isDownloadLoading.type === "json"}
                 onClick={() => handleDownloadBackup("json")}>
                 <FileJson className='mr-2 h-auto w-4 text-rose-500' />
                 <span>Download as JSON</span>
