@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import * as Dropdown from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { cn, clipboard } from "@/lib/utils";
 import { RootState } from "@/state/store";
 import { Comment } from "@/types";
 import * as Lucide from "lucide-react";
@@ -13,6 +13,7 @@ import { ReplyComment } from "./comment-reply-form";
 import { ContentRenderer } from "./content-renderer";
 import { LoginRequest } from "./login-request";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 export type CommentItemProps = {
   comment: Comment;
@@ -25,6 +26,11 @@ export const CommentItem = (_props: CommentItemProps) => {
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = React.useState<boolean>(false);
+
+  const handleCopyContent = (content: string) => {
+    clipboard(content);
+    toast.success("Comment text copied.");
+  };
 
   return (
     <div
@@ -105,6 +111,13 @@ export const CommentItem = (_props: CommentItemProps) => {
                   <span>Delete</span>
                 </Dropdown.DropdownMenuItem>
               ) : null}
+
+              <Dropdown.DropdownMenuItem
+                onClick={() => handleCopyContent(_props.comment.content)}
+                className='flex cursor-pointer items-center'>
+                <Lucide.Copy className='mr-2 h-auto w-4' />
+                <span>Copy content</span>
+              </Dropdown.DropdownMenuItem>
             </Dropdown.DropdownMenuContent>
           </Dropdown.DropdownMenu>
         </div>
