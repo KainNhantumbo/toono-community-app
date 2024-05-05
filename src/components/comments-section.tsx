@@ -9,7 +9,19 @@ import { AlertMessage } from "./alert-message";
 import { CommentsRenderer } from "./comment-renderer";
 import { Separator } from "./ui/separator";
 
-export default function CommentsSection({ postId }: { postId: string }) {
+const context = React.createContext<{
+  refetch: () => void | Promise<unknown>;
+  comments: Comment[];
+  postId: string;
+}>({
+  refetch: () => {},
+  comments: [],
+  postId: ""
+});
+
+export type CommentsSectionProps = { postId: string };
+
+export default function CommentsSection({ postId }: CommentsSectionProps) {
   const [comments, setComments] = React.useState<Comment[]>([]);
 
   const { data, refetch, error, isError, isLoading } = useQuery({
@@ -18,7 +30,7 @@ export default function CommentsSection({ postId }: { postId: string }) {
       try {
         if (!postId)
           throw new Error(
-            "Warning: request canceled beacause this post id is not yet loaded."
+            "Warning: request canceled because this post id is not yet loaded."
           );
         const { data } = await client.get<Comment[]>(`/api/v1/comments/public/${postId}`);
         return data;
@@ -35,28 +47,28 @@ export default function CommentsSection({ postId }: { postId: string }) {
   }, [data]);
 
   return (
-    <section
-      key={postId}
-      className='mx-auto w-full max-w-[820px] p-1 mobile:rounded-lg mobile:border mobile:bg-input/30 mobile:p-3'>
-      <h2>Comments ({comments.length})</h2>
-      <p className='text-sm text-muted-foreground'>
-        Feel free to contribute and share with our community!
-      </p>
+    <context.Provider value={{ refetch, comments, postId }}>
+      <section
+        key={postId}
+        className='mx-auto w-full max-w-[820px] p-1 mobile:rounded-lg mobile:border mobile:bg-input/30 mobile:p-3'>
+        {isError && !isLoading ? (
+          <AlertMessage
+            icon={AlertTriangleIcon}
+            message={errorTransformer(error).message}
+            action={{ label: "Retry", handler: () => refetch() }}
+          />
+        ) : null}
 
-      <Separator decorative className='my-3' />
-      <CommentForm postId={postId} handleReloadComments={refetch} />
-
-      {isError && !isLoading ? (
-        <AlertMessage
-          icon={AlertTriangleIcon}
-          message={errorTransformer(error).message}
-          action={{ label: "Retry", handler: () => refetch() }}
-        />
-      ) : null}
-
-      {comments.length > 0 ? (
-        <CommentsRenderer comments={comments} handleReloadComments={() => refetch()} />
-      ) : null}
-    </section>
+        <h2>Comments ({comments.length})</h2>
+        <p className='text-sm text-muted-foreground'>
+          Feel free to contribute and share with our community!
+        </p>
+        <Separator decorative className='my-3' />
+        <CommentForm />
+        <CommentsRenderer />
+      </section>
+    </context.Provider>
   );
 }
+
+export const useCommentsSectionContext = () => React.useContext(context);

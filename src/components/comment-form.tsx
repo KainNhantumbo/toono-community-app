@@ -11,13 +11,10 @@ import { AutosizeTextarea } from "./ui/auto-size-textarea";
 import { Label } from "./ui/label";
 import { LoadingButton } from "./ui/loading-button";
 import { cn } from "@/lib/utils";
+import { useCommentsSectionContext } from "./comments-section";
 
-export type CommentFormProps = {
-  postId: string;
-  handleReloadComments: () => void | Promise<unknown>;
-};
-
-export const CommentForm = (_props: CommentFormProps) => {
+export const CommentForm = () => {
+  const { postId, refetch } = useCommentsSectionContext();
   const auth = useSelector((state: RootState) => state.auth);
   const { client } = useAppContext();
   const [value, setValue] = React.useState<string>("");
@@ -30,11 +27,11 @@ export const CommentForm = (_props: CommentFormProps) => {
     try {
       await client({
         method: "post",
-        url: `/api/v1/comments/${_props.postId}`,
+        url: `/api/v1/comments/${postId}`,
         data: { content: value }
       });
       setValue("");
-      await _props.handleReloadComments();
+      await refetch();
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(error);
@@ -77,7 +74,7 @@ export const CommentForm = (_props: CommentFormProps) => {
           loading={isLoading}
           type='submit'
           className='w-fit self-end'>
-          <PartyPopperIcon className='mr-2 h-auto w-4' />
+          <PartyPopperIcon className='mr-2 h-auto w-4 dark:stroke-slate-800' />
           <span>Publish</span>
         </LoadingButton>
       </form>

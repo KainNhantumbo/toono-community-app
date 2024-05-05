@@ -14,18 +14,23 @@ import { ContentRenderer } from "./content-renderer";
 import { LoginRequest } from "./login-request";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import { useCommentsSectionContext } from "./comments-section";
 
-export type CommentItemProps = {
-  comment: Comment;
-  handleReloadComments: () => void;
-};
-
-export const CommentItem = (_props: CommentItemProps) => {
+export const CommentItem = (_props: { comment: Comment }) => {
+  const { refetch, comments } = useCommentsSectionContext();
   const auth = useSelector((state: RootState) => state.auth);
   const [isReply, setIsReply] = React.useState<boolean>(false);
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = React.useState<boolean>(false);
+
+  const replyingTo = React.useMemo(() => {
+    if (!_props.comment.reply_comment) return null;
+    const record = comments.find((comment) => comment.id == _props.comment.reply_comment);
+
+    if (!record) return null;
+    return record.user.name;
+  }, [_props.comment, comments]);
 
   const handleCopyContent = (content: string) => {
     clipboard(content);
@@ -55,15 +60,21 @@ export const CommentItem = (_props: CommentItemProps) => {
                 )}
               </Avatar>
             </Link>
-            <div className='text-sm select-none'>
-              <span className='font-medium'>{_props.comment.user.name}</span>
-              {" - "}
-              <span>
-                {moment(_props.comment.created_at).format("LL")}{" "}
-                {_props.comment.created_at !== _props.comment.updated_at
-                  ? `: Edited at ${moment(_props.comment.updated_at).format("LL")}`
-                  : null}
-              </span>
+            <div className='flex select-none flex-col text-sm'>
+              <div>
+                <span className='font-medium'>{_props.comment.user.name} </span>
+                <span className='text-muted-foreground'>
+                  {moment(_props.comment.created_at).fromNow()}{" "}
+                  {_props.comment.created_at !== _props.comment.updated_at
+                    ? `: Edited`
+                    : null}
+                </span>
+              </div>
+              {replyingTo ? (
+                <span className='text-[0.78rem] font-medium text-muted-foreground'>
+                  Replying to - {replyingTo}
+                </span>
+              ) : null}
             </div>
           </div>
 
@@ -123,7 +134,7 @@ export const CommentItem = (_props: CommentItemProps) => {
         </div>
 
         {!isEditing ? (
-          <div className='mx-auto w-full text-sm mobile:max-w-[calc(100%-75px)] mobile:text-base select-none'>
+          <div className='mx-auto w-full select-none text-sm mobile:max-w-[calc(100%-75px)] mobile:text-base'>
             <ContentRenderer>{_props.comment.content}</ContentRenderer>
           </div>
         ) : null}
@@ -132,7 +143,7 @@ export const CommentItem = (_props: CommentItemProps) => {
       <LoginRequest isOpen={isRequestLoginOpen} setIsOpen={setIsRequestLoginOpen} />
 
       <DeleteCommentAlert
-        handleReloadComments={_props.handleReloadComments}
+        handleReloadComments={refetch}
         isOpen={isDeleteAlertOpen}
         setIsOpen={setIsDeleteAlertOpen}
         commentId={_props.comment.id}
@@ -141,7 +152,6 @@ export const CommentItem = (_props: CommentItemProps) => {
       {isReply || isEditing ? (
         <ReplyComment
           key={_props.comment.id}
-          postId={_props.comment.post_id}
           commentId={_props.comment.id}
           user={_props.comment.user}
           initialValue={isEditing ? _props.comment.content : ""}
@@ -149,7 +159,6 @@ export const CommentItem = (_props: CommentItemProps) => {
             setIsReply(false);
             setIsEditing(false);
           }}
-          handleReloadComments={_props.handleReloadComments}
         />
       ) : null}
     </div>

@@ -1,5 +1,6 @@
-import type { CommentWithChildren, CommentsRendererProps } from "@/types";
+import type { CommentWithChildren } from "@/types";
 import { CommentItem } from "./comment-item";
+import { useCommentsSectionContext } from "./comments-section";
 
 const commentsByParent = (comments: CommentWithChildren[]): CommentWithChildren[] => {
   const group: { [key: string]: CommentWithChildren } = {};
@@ -25,30 +26,24 @@ const commentsByParent = (comments: CommentWithChildren[]): CommentWithChildren[
   return Object.values(group);
 };
 
-export const CommentsRenderer = (_props: CommentsRendererProps) => {
-  const groupedComments = Array.from(new Set(commentsByParent(_props.comments)));
+export const CommentsRenderer = () => {
+  const { comments } = useCommentsSectionContext();
+
+  if (comments.length < 1) return null;
+  const groupedComments = Array.from(new Set(commentsByParent(comments)));
 
   const Render = ({ data }: { data: CommentWithChildren[] }) => (
     <section className='ml-3 flex flex-col'>
       {Array.from(new Set(data)).map((item, index) => (
-        <div key={index.toString().concat(crypto.randomUUID())}>
-          <CommentItem
-            key={item.id}
-            handleReloadComments={_props.handleReloadComments}
-            comment={item}
-          />
-          {item.children && (
-            <Render
-              key={index.toString().concat(crypto.randomUUID())}
-              data={item.children}
-            />
-          )}
+        <div key={crypto.randomUUID()}>
+          <CommentItem key={crypto.randomUUID()} comment={item} />
+          {item.children && <Render key={item.id} data={item.children} />}
         </div>
       ))}
     </section>
   );
 
   return groupedComments.map((comment, index) => (
-    <Render key={index.toString().concat(crypto.randomUUID())} data={[comment]} />
+    <Render key={comment.id.concat(index.toString())} data={[comment]} />
   ));
 };

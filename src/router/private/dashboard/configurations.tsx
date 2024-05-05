@@ -40,8 +40,8 @@ export default function Configurations() {
       let blob = new Blob();
 
       if (type === "csv") {
-        blob = new Blob([data], { type: "text/csv" });
-        filename = filename.concat(".csv");
+        blob = new Blob([data], { type: "application/xlsx" });
+        filename = filename.concat(".xlsx");
       } else if (type === "text") {
         blob = new Blob([data], { type: "text/plain" });
         filename = filename.concat(".txt");

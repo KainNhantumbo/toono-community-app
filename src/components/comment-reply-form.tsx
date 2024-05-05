@@ -12,17 +12,17 @@ import { AutosizeTextarea } from "./ui/auto-size-textarea";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { LoadingButton } from "./ui/loading-button";
+import { useCommentsSectionContext } from "./comments-section";
 
 export type ReplyCommentProps = {
   commentId: string;
-  postId: string;
   initialValue?: string;
   close: () => void;
   user: { id: string; name: string; profile_image: { url: string } | null };
-  handleReloadComments: () => void | Promise<unknown>;
 };
 
 export const ReplyComment = (_props: ReplyCommentProps) => {
+  const { postId, refetch } = useCommentsSectionContext();
   const auth = useSelector((state: RootState) => state.auth);
   const { client } = useAppContext();
   const [value, setValue] = React.useState<string>(_props.initialValue || "");
@@ -37,11 +37,11 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
         method: _props.initialValue ? "patch" : "post",
         url: _props.initialValue
           ? `/api/v1/comments/${_props.commentId}`
-          : `/api/v1/comments/${_props.postId}`,
+          : `/api/v1/comments/${postId}`,
         data: { content: value, replyId: _props.initialValue ? null : _props.commentId }
       });
       setValue("");
-      await _props.handleReloadComments();
+      await refetch();
       _props.close();
     } catch (error) {
       const { message } = errorTransformer(error);
@@ -90,7 +90,7 @@ export const ReplyComment = (_props: ReplyCommentProps) => {
             loading={isLoading}
             type='submit'
             className='w-fit self-end'>
-            <PartyPopperIcon className='mr-2 h-auto w-4' />
+            <PartyPopperIcon className='mr-2 h-auto w-4 dark:stroke-slate-800' />
             <span>{_props.initialValue ? `Save` : `Reply & Publish`}</span>
           </LoadingButton>
         </div>
