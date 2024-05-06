@@ -1,5 +1,5 @@
 import { DEFAULT_ERROR_MESSAGE } from "@/shared/constants";
-import { HttpError } from "@/types";
+import type { HttpError } from "@/types";
 
 export const errorTransformer = (_props: unknown) => {
   const { status, response } = _props as HttpError;
@@ -7,10 +7,10 @@ export const errorTransformer = (_props: unknown) => {
 
   if (response?.data && response.data.message) {
     if (Array.isArray(response.data.message)) {
-      message = response.data.message.reduce((value, current) => {
-        const message = value.concat(current.toUpperCase(), ". ");
-        return message;
-      }, "");
+      message = response.data.message.reduce(
+        (value, current) => value.concat(current.toUpperCase(), ". "),
+        ""
+      );
     } else {
       message = response?.data?.message;
     }

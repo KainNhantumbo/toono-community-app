@@ -15,6 +15,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const auth = useSelector((state: RootState) => state.auth);
 
+  const isHomePage = React.useMemo(() => {
+    if (location.pathname === "/") return true;
+    return false;
+  }, [location.pathname]);
+
   React.useEffect(() => {
     const instance = setTimeout(() => {
       if (location.pathname.includes("dashboard") && !auth.id) {
@@ -29,7 +34,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       <LazyMotion strict={true} features={domAnimation}>
         <Header />
         {children}
-        <Footer />
+        {!isHomePage ? <Footer /> : null}
         <Toaster
           closeButton
           duration={10000}

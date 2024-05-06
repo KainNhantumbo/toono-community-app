@@ -155,10 +155,6 @@
     @apply border-border;
   }
 
-  svg {
-    @apply text-card-foreground;
-  }
-
   main {
     min-height: 100vh;
     padding-top: 65px;

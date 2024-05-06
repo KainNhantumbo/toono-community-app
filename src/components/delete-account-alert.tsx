@@ -1,14 +1,4 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
+import * as Alert from "@/components/ui/alert-dialog";
 import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
 import { DEFAULT_ERROR_MESSAGE } from "@/shared/constants";
@@ -41,36 +31,38 @@ export const DeleteAccountAlert = () => {
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
+    <Alert.AlertDialog>
+      <Alert.AlertDialogTrigger asChild>
         <Button variant={"destructive"}>
           <Trash2Icon className='mr-2 h-auto w-4 stroke-destructive-foreground' />
           <span>Delete Account</span>
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent className='font-sans-body'>
-        <AlertDialogHeader>
-          <AlertDialogTitle className='font-sans'>Delete User Account</AlertDialogTitle>
-          <AlertDialogDescription>
+      </Alert.AlertDialogTrigger>
+      <Alert.AlertDialogContent className='font-sans-body'>
+        <Alert.AlertDialogHeader>
+          <Alert.AlertDialogTitle className='font-sans'>
+            Delete User Account
+          </Alert.AlertDialogTitle>
+          <Alert.AlertDialogDescription>
             This will permanently delete your account and all data related to it. This
             action cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className='flex items-center gap-2 shadow-none'>
+          </Alert.AlertDialogDescription>
+        </Alert.AlertDialogHeader>
+        <Alert.AlertDialogFooter>
+          <Alert.AlertDialogCancel className='flex items-center gap-2 shadow-none'>
             <XIcon className='mr-2 h-auto w-4' />
             <span>Cancel</span>
-          </AlertDialogCancel>
-          <AlertDialogAction onClick={onDelete} asChild>
+          </Alert.AlertDialogCancel>
+          <Alert.AlertDialogAction onClick={onDelete} asChild>
             <Button
               variant={"destructive"}
               className='bg-destructive hover:bg-destructive/60'>
               <UserXIcon className='mr-2 h-auto w-4 stroke-destructive-foreground' />
               <span className='text-destructive-foreground'>Confirm</span>
             </Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Alert.AlertDialogAction>
+        </Alert.AlertDialogFooter>
+      </Alert.AlertDialogContent>
+    </Alert.AlertDialog>
   );
 };

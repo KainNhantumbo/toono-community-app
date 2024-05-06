@@ -1,55 +1,21 @@
 import { AlertMessage } from "@/components/alert-message";
-import { ContentRenderer } from "@/components/content-renderer";
 import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
+import { renderParagraphs } from "@/components/paragraph-render";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import client from "@/config/http-client";
 import { initialUserState } from "@/hooks/use-user-data-query";
 import { errorTransformer } from "@/lib/error";
+import { createUserConnection } from "@/lib/utils";
 import { PostList, User } from "@/types";
-import {
-  GitHubLogoIcon,
-  GlobeIcon,
-  InstagramLogoIcon,
-  LinkedInLogoIcon
-} from "@radix-ui/react-icons";
-import { RiFacebookCircleFill } from "@remixicon/react";
 import { useQuery } from "@tanstack/react-query";
 import * as Lucide from "lucide-react";
 import moment from "moment";
 import * as React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link, useParams } from "react-router-dom";
-
-export const renderParagraphs = (text: string) => {
-  if (!text.includes("\n")) return <p className='w-full'>{text}</p>;
-  return (
-    <div className='w-full'>
-      {text.split("\n").map((phrase, i) => (
-        <p key={i}>{phrase}</p>
-      ))}
-    </div>
-  );
-};
-
-const createUserConnection = (type: string) => {
-  switch (type) {
-    case "github":
-      return { icon: GitHubLogoIcon, name: "Github" };
-    case "linkedin":
-      return { icon: LinkedInLogoIcon, name: "LinkedIn" };
-    case "website":
-      return { icon: GlobeIcon, name: "Website" };
-    case "instagram":
-      return { icon: InstagramLogoIcon, name: "Instagram" };
-    case "facebook":
-      return { icon: RiFacebookCircleFill, name: "Facebook" };
-    default:
-      return { icon: GlobeIcon, name: "Internet" };
-  }
-};
 
 export default function UserPage() {
   const params = useParams();

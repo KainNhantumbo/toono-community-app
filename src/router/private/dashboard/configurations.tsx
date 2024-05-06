@@ -13,8 +13,7 @@ import { ThemeVariants, useThemeContext } from "@/context/theme-context";
 import { errorTransformer } from "@/lib/error";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/state/store";
-import { RiFileExcel2Line } from "@remixicon/react";
-import { ArrowLeft, FileJson, MoonStarIcon, SunDimIcon } from "lucide-react";
+import * as Lucide from "lucide-react";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -80,7 +79,7 @@ export default function Configurations() {
               variant={"outline"}
               size={"icon"}
               className='rounded-full'>
-              <ArrowLeft className='h-auto w-6' />
+              <Lucide.ArrowLeft className='h-auto w-6' />
             </Button>
           </TooltipWrapper>
           <Heading title='Configurations' description='Manage common configurations' />
@@ -108,7 +107,7 @@ export default function Configurations() {
                         "flex h-36 w-48 flex-col items-center justify-around rounded-lg border-4 p-2"
                       )}>
                       <div className='flex w-full items-center gap-2'>
-                        <SunDimIcon className='h-auto w-8 stroke-muted-foreground' />
+                        <Lucide.SunDimIcon className='h-auto w-8 stroke-muted-foreground' />
                         <Skeleton className='h-2 w-full animate-none rounded-full bg-muted-foreground/50' />
                       </div>
                       <Skeleton className='h-2 w-full animate-none rounded-full bg-muted-foreground/50' />
@@ -128,7 +127,7 @@ export default function Configurations() {
                         "flex h-36 w-48 flex-col items-center justify-around rounded-lg border-4 p-2"
                       )}>
                       <div className='flex w-full items-center gap-2'>
-                        <MoonStarIcon className='h-auto w-8 stroke-muted-foreground' />
+                        <Lucide.MoonStarIcon className='h-auto w-8 stroke-muted-foreground' />
                         <Skeleton className='h-2 w-full animate-none rounded-full bg-primary/40' />
                       </div>
                       <Skeleton className='h-2 w-full animate-none rounded-full bg-primary/40' />
@@ -154,21 +153,24 @@ export default function Configurations() {
             </CardRoot.CardContent>
             <CardRoot.CardFooter className='flex flex-wrap items-center gap-3'>
               <LoadingButton
+                variant={"outline"}
                 loading={isDownloadLoading.status && isDownloadLoading.type === "csv"}
                 onClick={() => handleDownloadBackup("csv")}>
-                <RiFileExcel2Line className='mr-2 h-auto w-4 text-green-800' />
+                <Lucide.FileSpreadsheet className='mr-2 h-auto w-4 text-green-500' />
                 <span>Download as CSV</span>
               </LoadingButton>
               <LoadingButton
+                variant={"outline"}
                 loading={isDownloadLoading.status && isDownloadLoading.type === "json"}
                 onClick={() => handleDownloadBackup("json")}>
-                <FileJson className='mr-2 h-auto w-4 text-rose-500' />
+                <Lucide.FileJson className='mr-2 h-auto w-4 text-rose-500' />
                 <span>Download as JSON</span>
               </LoadingButton>
               <LoadingButton
+                variant={"outline"}
                 loading={isDownloadLoading.status && isDownloadLoading.type === "text"}
                 onClick={() => handleDownloadBackup("text")}>
-                <FileJson className='mr-2 h-auto w-4 text-rose-500' />
+                <Lucide.FileText className='mr-2 h-auto w-4 text-blue-500' />
                 <span>Download as Plain Text</span>
               </LoadingButton>
             </CardRoot.CardFooter>

@@ -1,29 +1,24 @@
-import { TableOfContents } from "@/components/table-of-contents-renderer";
+import { AlertMessage } from "@/components/alert-message";
 import { ContentEditor } from "@/components/content-editor";
+import { ContentRenderer } from "@/components/content-renderer";
 import { DropzoneArea } from "@/components/dropzone";
 import { Layout } from "@/components/layout";
 import MultipleSelector from "@/components/multiple-selector";
+import { TableOfContents } from "@/components/table-of-contents-renderer";
 import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingButton } from "@/components/ui/loading-button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
+import * as SelectRoot from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
 import type { PostDraft, PublicPost } from "@/types";
 import { isUUID } from "class-validator";
-import { ArrowLeft, Edit2, Eye, Trash2 } from "lucide-react";
+import { ArrowLeft, Edit2, Eye, Snowflake, Trash2 } from "lucide-react";
 import * as React from "react";
-import { ContentRenderer } from "@/components/content-renderer";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -146,12 +141,22 @@ export default function PostsEditor() {
 
         <Separator decorative />
 
-        {!isEditing ? (
+        {!isEditing && postDraft.content ? (
           <div className={"w-full overflow-auto rounded-lg border bg-input/30 p-3"}>
             <TableOfContents content={postDraft.content} />
             <ContentRenderer>{postDraft.content}</ContentRenderer>
           </div>
         ) : null}
+
+        {!isEditing && !postDraft.content ? (
+          <div className={"w-full overflow-auto rounded-lg border bg-input/30 p-3"}>
+            <AlertMessage
+              icon={Snowflake}
+              message='No content to show. Start editing your post content to preview.'
+            />
+          </div>
+        ) : null}
+
         {isEditing ? (
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -234,21 +239,25 @@ export default function PostsEditor() {
                 <span>{isUpdate ? "Update Post" : "Create Post"}</span>
               </LoadingButton>
 
-              <Select
+              <SelectRoot.Select
                 value={String(postDraft.public)}
                 onValueChange={(option) => {
                   let bool = false;
                   if (option === "true") bool = true;
                   setPostDraft((state) => ({ ...state, public: bool }));
                 }}>
-                <SelectTrigger className='w-fit'>
-                  <SelectValue placeholder='Select the post visibility' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='true'>Public (visible to anyone)</SelectItem>
-                  <SelectItem value='false'>Private (only visible to you)</SelectItem>
-                </SelectContent>
-              </Select>
+                <SelectRoot.SelectTrigger className='w-fit'>
+                  <SelectRoot.SelectValue placeholder='Select the post visibility' />
+                </SelectRoot.SelectTrigger>
+                <SelectRoot.SelectContent>
+                  <SelectRoot.SelectItem value='true'>
+                    Public (visible to anyone)
+                  </SelectRoot.SelectItem>
+                  <SelectRoot.SelectItem value='false'>
+                    Private (only visible to you)
+                  </SelectRoot.SelectItem>
+                </SelectRoot.SelectContent>
+              </SelectRoot.Select>
             </div>
           </form>
         ) : null}
