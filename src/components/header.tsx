@@ -75,11 +75,20 @@ export const Header = () => {
                   </Dropdown.DropdownMenuLabel>
                   <Dropdown.DropdownMenuSeparator />
                   <Dropdown.DropdownMenuItem
+                    className='cursor-pointer'
                     onClick={() => navigate("/users/dashboard/overview")}>
                     <DashboardIcon className='mr-2 h-auto w-4 ' />
                     <span>Dashboard</span>
                   </Dropdown.DropdownMenuItem>
-                  <Dropdown.DropdownMenuItem onClick={() => setIsLogoutAlertOpen(true)}>
+                  <Dropdown.DropdownMenuItem
+                    className='cursor-pointer'
+                    onClick={() => navigate(`/community/users/${auth.id}`)}>
+                    <Lucide.UserCircle className='mr-2 h-auto w-4 ' />
+                    <span>My Profile</span>
+                  </Dropdown.DropdownMenuItem>
+                  <Dropdown.DropdownMenuItem
+                    className='cursor-pointer'
+                    onClick={() => setIsLogoutAlertOpen(true)}>
                     <Lucide.LogOutIcon className='mr-2 h-auto w-4' />
                     <span>Log out</span>
                   </Dropdown.DropdownMenuItem>

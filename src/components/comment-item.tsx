@@ -127,7 +127,7 @@ export const CommentItem = (_props: { comment: Comment }) => {
                 onClick={() => handleCopyContent(_props.comment.content)}
                 className='flex cursor-pointer items-center'>
                 <Lucide.Copy className='mr-2 h-auto w-4' />
-                <span>Copy content</span>
+                <span>Copy text</span>
               </Dropdown.DropdownMenuItem>
             </Dropdown.DropdownMenuContent>
           </Dropdown.DropdownMenu>

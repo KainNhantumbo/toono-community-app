@@ -1,18 +1,55 @@
+import { AlertMessage } from "@/components/alert-message";
+import { ContentRenderer } from "@/components/content-renderer";
 import { Layout } from "@/components/layout";
+import { Loader } from "@/components/loader";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
+import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
 import client from "@/config/http-client";
+import { initialUserState } from "@/hooks/use-user-data-query";
+import { errorTransformer } from "@/lib/error";
+import { PostList, User } from "@/types";
+import {
+  GitHubLogoIcon,
+  GlobeIcon,
+  InstagramLogoIcon,
+  LinkedInLogoIcon
+} from "@radix-ui/react-icons";
+import { RiFacebookCircleFill } from "@remixicon/react";
+import { useQuery } from "@tanstack/react-query";
+import * as Lucide from "lucide-react";
+import moment from "moment";
 import * as React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Separator } from "@/components/ui/separator";
-import * as Lucide from "lucide-react";
-import { PostList, User } from "@/types";
-import { initialUserState } from "@/hooks/use-user-data-query";
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { errorTransformer } from "@/lib/error";
-import { AlertMessage } from "@/components/alert-message";
-import { Loader } from "@/components/loader";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import moment from "moment";
+
+export const renderParagraphs = (text: string) => {
+  if (!text.includes("\n")) return <p className='w-full'>{text}</p>;
+  return (
+    <div className='w-full'>
+      {text.split("\n").map((phrase, i) => (
+        <p key={i}>{phrase}</p>
+      ))}
+    </div>
+  );
+};
+
+const createUserConnection = (type: string) => {
+  switch (type) {
+    case "github":
+      return { icon: GitHubLogoIcon, name: "Github" };
+    case "linkedin":
+      return { icon: LinkedInLogoIcon, name: "LinkedIn" };
+    case "website":
+      return { icon: GlobeIcon, name: "Website" };
+    case "instagram":
+      return { icon: InstagramLogoIcon, name: "Instagram" };
+    case "facebook":
+      return { icon: RiFacebookCircleFill, name: "Facebook" };
+    default:
+      return { icon: GlobeIcon, name: "Internet" };
+  }
+};
 
 export default function UserPage() {
   const params = useParams();
@@ -25,9 +62,9 @@ export default function UserPage() {
     queryKey: ["community-users"],
     queryFn: async () => {
       try {
-        const { data } = await client.get<User & { posts: PostList }>(
-          `/api/v1/users/${params["userId"]}`
-        );
+        const { data } = await client.get<
+          User & { posts: Omit<PostList, "user" | "coverImage"> }
+        >(`/api/v1/users/${params["userId"]}`);
         return data;
       } catch (error) {
         const { message } = errorTransformer(error);
@@ -44,7 +81,7 @@ export default function UserPage() {
 
   return (
     <Layout>
-      <main>
+      <main className='mx-auto w-full max-w-4xl mobile:mb-3 mobile:space-y-5 mobile:px-3'>
         {isError && !isLoading ? (
           <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
             <AlertMessage
@@ -57,7 +94,13 @@ export default function UserPage() {
 
         {!isError && isLoading ? <Loader /> : null}
 
-        <section>
+        {!isError && !isLoading && user.posts.length < 1 ? (
+          <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
+            <AlertMessage icon={Lucide.WindIcon} message='No posts to show.' />
+          </div>
+        ) : null}
+
+        <section className='flex w-full flex-col items-center gap-3'>
           {user.profile_image ? (
             <LazyLoadImage
               src={user.profile_image.url}
@@ -66,121 +109,108 @@ export default function UserPage() {
             />
           ) : null}
 
-          <div>
-            <h1>{user.name}</h1>
-            {user.user_name ? <h3>{user.user_name}</h3> : null}
+          <div className='flex flex-col items-center gap-2'>
+            <h1 className='font-bold'>{user.name}</h1>
+            {user.user_name ? (
+              <h3 className='text-muted-foreground'>{user.user_name}</h3>
+            ) : null}
+            {user.biography ? (
+              <h4 className='text-muted-foreground'>{user.biography}</h4>
+            ) : null}
           </div>
 
-          {Object.entries(user.network).map(([key, value], index) => {
-            if (key && value) {
-              return (
-                <div key={index} className='flex flex-wrap items-center gap-3'>
-                  <Link to={value}>
-                    <span>@{key}</span>
-                  </Link>
-                </div>
-              );
-            }
-            return null;
-          })}
+          <div className='my-3 flex items-center justify-center gap-3'>
+            {Object.entries(user.network)
+              .sort((a, b) => (a[0] > b[0] ? 1 : -1))
+              .map(([key, value], index) => {
+                if (key && value) {
+                  const { icon: Icon, name } = createUserConnection(key);
+                  return (
+                    <a
+                      href={value}
+                      key={index}
+                      target='_blank'
+                      className='group'
+                      rel='noopener noreferrer'>
+                      <TooltipWrapper content={`Find me on ${name}`}>
+                        <Icon className='h-auto w-6 group-hover:text-primary group-hover:transition-colors' />
+                      </TooltipWrapper>
+                      <span className='sr-only'>{name}</span>
+                    </a>
+                  );
+                }
+                return null;
+              })}
+          </div>
+          <p className='text-center'>
+            Active since {moment(user.created_at).format("MMMM, YYYY")}
+          </p>
+          <Separator decorative />
+
+          <div className='w-full max-w-2xl space-y-3 text-center'>
+            {renderParagraphs(user.work)}
+            {renderParagraphs(user.learning)}
+            {renderParagraphs(user.education)}
+            {renderParagraphs(user.available)}
+          </div>
+          <Separator decorative />
         </section>
 
-        <Separator decorative />
-
-        {!isError && !isLoading && user.posts.length < 1 ? (
-          <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
-            <AlertMessage icon={Lucide.WindIcon} message='No posts to show.' />
-          </div>
-        ) : null}
-
         {!isLoading && !isError && user.posts.length > 0 ? (
-          <ul className='flex w-full flex-col gap-2'>
-            {user.posts.map((post, index) => (
-              <li
-                key={post.id}
-                className='group flex list-none flex-col gap-2 rounded-lg border bg-input/30'>
-                {post.coverImage ? (
-                  <Link to={`/community/posts/${post.slug}`}>
-                    <LazyLoadImage
-                      src={post.coverImage.url}
-                      className='max-h-[120px] w-full rounded-t-lg object-cover'
-                    />
-                  </Link>
-                ) : null}
-
-                <section className='mx-auto w-full max-w-3xl space-y-3 p-3'>
-                  <div className='flex flex-nowrap items-center gap-2'>
-                    <Link to={`/community/users/${post.user.id}`}>
-                      <Avatar>
-                        {post.user.profile_image ? (
-                          <AvatarImage
-                            loading='lazy'
-                            decoding='async'
-                            className='border'
-                            src={post.user.profile_image.url}
-                            alt={`${post.user.name} profile image`}
-                          />
-                        ) : (
-                          <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
-                            <Lucide.User className='h-auto w-5' />
-                            <span className='sr-only'>user icon</span>
-                          </AvatarFallback>
-                        )}
-                      </Avatar>
+          <>
+            <Heading title='Posts' description={`See ${user.name} published articles!`} />
+            <ul className='flex w-full select-none flex-col gap-2'>
+              {user.posts.map((post) => (
+                <li
+                  key={post.id}
+                  className='group flex list-none flex-col gap-2 rounded-lg bg-input/30'>
+                  <section className='mx-auto w-full max-w-3xl space-y-3 p-3'>
+                    <Link to={`/community/posts/${post.slug}`}>
+                      <h3 className='my-2 font-display text-xl font-semibold transition-all hover:underline hover:underline-offset-2'>
+                        {post.title}
+                      </h3>
                     </Link>
-                    <div className='space-y-1'>
-                      <p>{post.user.name}</p>
-                      <span className='text-[.75rem]'>
-                        {moment(post.created_at).format("LL")}
-                      </span>
-                    </div>
-                  </div>
 
-                  <Link to={`/community/posts/${post.slug}`}>
-                    <h3 className='my-2 font-display text-xl font-semibold transition-all hover:underline hover:underline-offset-2'>
-                      {post.title}
-                    </h3>
-                  </Link>
+                    <div className='flex flex-wrap items-center gap-2'>
+                      {post.tags.length > 0
+                        ? post.tags.map((tag, index) => (
+                            <div
+                              key={index}
+                              className='flex cursor-pointer select-none flex-nowrap items-center'>
+                              <Lucide.HashIcon className='mr-1 h-auto w-4' />
+                              <span className='text-sm'>{tag}</span>
+                            </div>
+                          ))
+                        : null}
+                    </div>
 
-                  <div className='flex flex-wrap items-center gap-2'>
-                    {post.tags.length > 0
-                      ? post.tags.map((tag, index) => (
-                          <div
-                            key={index}
-                            className='flex cursor-pointer select-none flex-nowrap items-center rounded-sm border p-1 px-2'>
-                            <Lucide.HashIcon className='mr-1 h-auto w-4' />
-                            <span className='text-sm'>{tag}</span>
-                          </div>
-                        ))
-                      : null}
-                  </div>
-
-                  <div className='flex flex-wrap items-center gap-2'>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
-                      <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
-                      <span> {post.comments.length} comments</span>
+                    <div className='flex flex-wrap items-center gap-2'>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm'>
+                        <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
+                        <span> {post.comments.length} comments</span>
+                      </div>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm'>
+                        <Lucide.HandHeartIcon className='h-auto w-4 ' />
+                        <span> {post.claps.length} claps</span>
+                      </div>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm'>
+                        <Lucide.EyeIcon className='h-auto w-4 ' />
+                        <span>{post.visits ?? 0} views</span>
+                      </div>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm'>
+                        <Lucide.TextSelectIcon className='h-auto w-4 ' />
+                        <span>{post.words ?? 0} words</span>
+                      </div>
+                      <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm'>
+                        <Lucide.FileClockIcon className='h-auto w-4 ' />
+                        <span>{post.read_time}</span>
+                      </div>
                     </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
-                      <Lucide.HandHeartIcon className='h-auto w-4 ' />
-                      <span> {post.claps.length} claps</span>
-                    </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
-                      <Lucide.EyeIcon className='h-auto w-4 ' />
-                      <span>{post.visits ?? 0} views</span>
-                    </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
-                      <Lucide.TextSelectIcon className='h-auto w-4 ' />
-                      <span>{post.words ?? 0} words</span>
-                    </div>
-                    <div className='flex flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all hover:cursor-pointer hover:bg-primary/40'>
-                      <Lucide.FileClockIcon className='h-auto w-4 ' />
-                      <span>{post.read_time}</span>
-                    </div>
-                  </div>
-                </section>
-              </li>
-            ))}
-          </ul>
+                  </section>
+                </li>
+              ))}
+            </ul>
+          </>
         ) : null}
 
         {!isLoading && !isError && (
