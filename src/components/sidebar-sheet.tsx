@@ -4,7 +4,14 @@ import * as Lucide from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import * as SheetRoot from "./ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from "./ui/sheet";
 
 export const sidebarPaths = [
   { label: "Home", path: "/", icon: Lucide.Home },
@@ -19,26 +26,26 @@ export const sidebarPaths = [
 
 export const SidebarSheet = () => {
   return (
-    <Lucide.Sheet>
-      <SheetRoot.SheetTrigger asChild>
+    <Sheet>
+      <SheetTrigger asChild>
         <Button variant={"ghost"} size={"icon"}>
           <Lucide.MenuIcon className='h-auto w-4' />
         </Button>
-      </SheetRoot.SheetTrigger>
-      <SheetRoot.SheetContent side={"left"} className='overflow-y-auto'>
-        <SheetRoot.SheetHeader>
-          <SheetRoot.SheetTitle>
+      </SheetTrigger>
+      <SheetContent side={"left"} className='overflow-y-auto px-4'>
+        <SheetHeader>
+          <SheetTitle>
             <Link
               className='cursor-pointer select-none rounded-lg bg-foreground p-1 px-2 text-lg font-semibold'
               to={"/"}
               replace={false}>
               <span>{metadata.appName}</span>
             </Link>
-          </SheetRoot.SheetTitle>
-          <SheetRoot.SheetDescription className='text-muted-foreground'>
+          </SheetTitle>
+          <SheetDescription className='text-muted-foreground'>
             A inclusive the open source community for developers.
-          </SheetRoot.SheetDescription>
-        </SheetRoot.SheetHeader>
+          </SheetDescription>
+        </SheetHeader>
         <Separator decorative className='my-3' />
         <div className='flex w-full flex-col gap-3'>
           {sidebarPaths.map((_path, i) => (
@@ -58,7 +65,7 @@ export const SidebarSheet = () => {
           ))}
         </div>
         <Separator decorative className='my-3' />
-      </SheetRoot.SheetContent>
-    </Lucide.Sheet>
+      </SheetContent>
+    </Sheet>
   );
 };

@@ -15,6 +15,7 @@ import moment from "moment";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { sidebarPaths } from "@/components/sidebar-sheet";
 
 export default function HomePage() {
   const { error, isLoading, hasNextPage, inViewRef, isError, refetch } =
