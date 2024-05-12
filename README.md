@@ -1,6 +1,10 @@
 # Toono Community (social content oriented platform)
 
-🎉 Welcome to **toono community** app repository, a social content oriented platform inspired by [DEV](dev.to) that allows developers to share their experience and grow by writing valuable content.
+🎉 Welcome to **toono community** app repository, I am so excited to have you here!
+
+Meet a social constructive content oriented platform inspired by [DEV](dev.to) that allows people around the globe to share their career experience and grow by writing valuable content, build their professional profiles and take part in social discussions. All mates are welcome to find a place within our community.
+
+A platform made for everyone who wants to share, contribute and learn something.
 
 > **Access this app live at: [https://toono-community.vercel.app](https://toono-community.vercel.app)**
 
@@ -11,6 +15,7 @@ Note: This project is in active development and still unfinished. You can expect
 For now, here are the major features:
 
 > - ✨ **Backup data:** users can backup their data by downloading it.
+> - ✨ **Profiles:** separated dedicated profile page for user profiles, info and images.
 > - ✨ **Built-in Comments System:** users can comment and vote posts (through the claps system).
 > - ✨ **Built-in CMS:** internal custom CMS for data management, with a customized markdown editor.
 > - ✨ **Share:** users can share posts in other social platforms.
@@ -46,6 +51,8 @@ $ROOT
 
 ## 🐾 Project Stack (and main packages)
 
+This app run on a React.JS and a backend with Express.JS described [here](https://github.com/KainNhantumbo/toono-community-server).
+
 - **React.JS** - library used to build big, fast Web apps with JavaScript.
 - **Typescript** - a superset language of Javascript that provides typechecking.
 - **Vite.JS** - Hot Module Replacement (HMR) that stays fast regardless of app size.
@@ -76,7 +83,7 @@ npm ci && npm run dev
 npm run build
 ```
 
-Don't forget to put the following environment variables:
+Don't forget to put the following environment variables on your `.env.local` file:
 
 ```bash
 # THE SERVER API BASE URL
@@ -95,7 +102,7 @@ My Blog: [https://codenut-dev.vercel.app/en/blog](https://codenut-dev.vercel.app
 #### If you like this project, let me know by leaving a star on this repository so I can keep improving this app or [send support](https://www.buymeacoffee.com/nhantumbokU/)!\*\* .😊😘
 
 Best regards, Kain Nhantumbo.\
-✌️🇲🇿 **Made with ❤ Next.JS and Typescript**
+✌️🇲🇿 **Made with ❤ Vite.JS and Typescript**
 
 ## Contributing
 
@@ -109,3 +116,5 @@ Copyright &copy; 2024 Kain Nhantumbo.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+Happy Coding
