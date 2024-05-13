@@ -16,7 +16,7 @@ import { useWindowSize } from "@uidotdev/usehooks";
 
 export const Header = () => {
   const auth = useSelector((state: RootState) => state.auth);
-  const { width: innerWindowWidth } = useWindowSize();
+
   const [isLogoutAlertOpen, setIsLogoutAlertOpen] = React.useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export const Header = () => {
       <UserLogoutAlert isOpen={isLogoutAlertOpen} setOpen={setIsLogoutAlertOpen} />
       <nav className='mx-auto flex w-full max-w-4xl items-center justify-between gap-2'>
         <div>
-          {Number(innerWindowWidth) < 400 ? <SidebarSheet /> : null}
+          <SidebarSheet />
           <Link
             className='cursor-pointer select-none rounded-lg bg-foreground p-1 px-2 text-lg font-semibold'
             to={"/"}

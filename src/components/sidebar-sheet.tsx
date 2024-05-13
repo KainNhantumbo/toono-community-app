@@ -1,5 +1,6 @@
 import { metadata } from "@/shared/constants";
 import { RiAccountCircleLine } from "@remixicon/react";
+import { useWindowSize } from "@uidotdev/usehooks";
 import * as Lucide from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -25,6 +26,9 @@ export const sidebarPaths = [
 ];
 
 export const SidebarSheet = () => {
+  const { width: innerWindowWidth } = useWindowSize();
+  if (typeof innerWindowWidth === "number" && innerWindowWidth > 640) return null;
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -32,7 +36,7 @@ export const SidebarSheet = () => {
           <Lucide.MenuIcon className='h-auto w-4' />
         </Button>
       </SheetTrigger>
-      <SheetContent side={"left"} className='overflow-y-auto px-4'>
+      <SheetContent side={"left"} className='w-full max-w-[240px] overflow-y-auto px-4'>
         <SheetHeader>
           <SheetTitle>
             <Link
@@ -47,12 +51,12 @@ export const SidebarSheet = () => {
           </SheetDescription>
         </SheetHeader>
         <Separator decorative className='my-3' />
-        <div className='flex w-full flex-col gap-3'>
+        <div className='flex w-fit flex-col gap-3'>
           {sidebarPaths.map((_path, i) => (
             <Button
               key={i}
               asChild
-              className='group w-full justify-start'
+              className=' group w-full  justify-start'
               variant={"ghost"}
               size={"lg"}>
               <Link to={_path.path} className='items-start justify-start'>

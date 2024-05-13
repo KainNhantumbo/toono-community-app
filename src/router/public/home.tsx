@@ -38,7 +38,23 @@ export default function HomePage() {
         {!isError && isLoading ? <Loader /> : null}
 
         {!isLoading && !isError ? (
-          <main className='mx-auto mb-3 w-full max-w-4xl space-y-5 px-3'>
+          <main className='relative mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>
+            <aside className='sticky left-0 top-0 hidden w-fit flex-col gap-3 sm:flex'>
+              {sidebarPaths.map((_path, i) => (
+                <Button
+                  key={i}
+                  asChild
+                  className='group w-full justify-start'
+                  variant={"ghost"}>
+                  <Link to={_path.path} className='items-start justify-start'>
+                    <_path.icon className='mr-2 h-auto w-4' />
+                    <span className='group-hover:underline group-hover:underline-offset-2'>
+                      {_path.label}
+                    </span>
+                  </Link>
+                </Button>
+              ))}
+            </aside>
             <article className='flex w-full flex-col gap-3'>
               {filters.search ? (
                 <div className='flex flex-wrap justify-between gap-2 rounded-lg border bg-input/30 p-2'>
