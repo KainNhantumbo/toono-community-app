@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Toono Developer Community Website",
   "websiteName": "Toono Community",
-  "url": "",
+  "url": "https://toono-community.vercel.app",
   "author": {
     "name": "Kain Nhantumbo",
     "email": "nhantumbok@gmail.com",
