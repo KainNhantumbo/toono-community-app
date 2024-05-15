@@ -1,4 +1,5 @@
 import type { AxiosError } from "axios";
+import { HugeiconsProps } from "hugeicons-react";
 import { LucideIcon } from "lucide-react";
 import type { ChangeEvent, FormEvent } from "react";
 import * as React from "react";
@@ -118,3 +119,7 @@ export type Comment = {
 export type CommentWithChildren = Comment & {
   children?: Comment[];
 };
+
+export type HugeIconType = React.FC<
+  Omit<HugeiconsProps, "ref"> & React.RefAttributes<SVGSVGElement>
+>;

@@ -1,6 +1,7 @@
 import { FOOTER_URLS, metadata } from "@/shared/constants";
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { Separator } from "./ui/separator";
 
 export const Footer = (): React.JSX.Element => {
   return (
@@ -23,10 +24,13 @@ export const Footer = (): React.JSX.Element => {
           </div>
         ))}
       </nav>
-      <p className='my-3 font-medium'>
-        Made Made with love and React.JS + Typescript. Copyright © {metadata.appName}{" "}
-        Community {new Date().getFullYear()}{" "}
-      </p>
+      <Separator decorative />
+      <div className='my-1 font-medium'>
+        <p>Made Made with love and React.JS + Typescript.</p>
+        <p className="text-sm">
+          Copyright © {metadata.appName} Community {new Date().getFullYear()}{" "}
+        </p>
+      </div>
     </footer>
   );
 };

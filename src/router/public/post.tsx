@@ -19,6 +19,7 @@ import * as React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import * as Huge from 'hugeicons-react'
 
 const CommentsSection = React.lazy(() => import("@/components/comments-section"));
 
@@ -82,7 +83,7 @@ export default function PostPage() {
                           />
                         ) : (
                           <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
-                            <Lucide.User className='h-auto w-5' />
+                            <Huge.UserAdd01Icon className='h-auto w-5' />
                             <span className='sr-only'>user icon</span>
                           </AvatarFallback>
                         )}
@@ -97,39 +98,39 @@ export default function PostPage() {
                     </div>
                   </div>
 
-                  <h1 className='my-6 scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl'>
+                  <h1 className='my-6 scroll-m-20 text-3xl sm:text-center font-extrabold tracking-tight lg:text-4xl'>
                     {post.title}
                   </h1>
 
-                  <div className='flex flex-wrap items-center gap-2'>
+                  <div className='flex flex-wrap items-center gap-2 sm:justify-center'>
                     {post.tags.length > 0
                       ? post.tags.map((tag, index) => (
                           <div
                             key={index}
                             className='flex cursor-pointer select-none flex-nowrap items-center rounded-sm border p-1 px-2'>
-                            <Lucide.HashIcon className='mr-1 h-auto w-4' />
+                            <Huge.GridIcon className='mr-1 h-auto w-4' />
                             <span className='text-sm'>{tag}</span>
                           </div>
                         ))
                       : null}
                   </div>
 
-                  <div className='flex flex-wrap items-center gap-2'>
+                  <div className='flex flex-wrap items-center gap-2 sm:justify-center'>
                     <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                      <Lucide.MessageSquareTextIcon className='h-auto w-4' />
+                      <Huge.Comment01Icon className='h-auto w-4' />
                       <span>{post.comments.length} comments</span>
                     </div>
 
                     <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                      <Lucide.EyeIcon className='h-auto w-4 ' />
+                      <Huge.ViewIcon className='h-auto w-4 ' />
                       <span>{post.visits ?? 0} views</span>
                     </div>
                     <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                      <Lucide.TextSelectIcon className='h-auto w-4 ' />
+                      <Huge.AnalysisTextLinkIcon className='h-auto w-4 ' />
                       <span>{post.words ?? 0} words</span>
                     </div>
                     <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                      <Lucide.FileClockIcon className='h-auto w-4 ' />
+                      <Huge.Clock05Icon className='h-auto w-4 ' />
                       <span>{post.read_time}</span>
                     </div>
                   </div>
@@ -144,8 +145,8 @@ export default function PostPage() {
                         if (isInClapsArray) return handleRemoveClap(post.id);
                         return handleAddClap(post.id);
                       }}>
-                      <Lucide.HandHeartIcon
-                        className={cn({ "stroke-primary": isInClapsArray })}
+                      <Huge.Clapping02Icon
+                        className={cn({ "text-primary": isInClapsArray })}
                       />
                       <span>{post.claps.length} claps!</span>
                     </LoadingButton>

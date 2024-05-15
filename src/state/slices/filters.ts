@@ -1,9 +1,10 @@
 import type { Filters } from "@/types";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import * as Huge from "hugeicons-react";
 
 export const sortOptions = [
-  { label: "Latest", value: "latest" },
-  { label: "Popular", value: "popular" }
+  { label: "Latest", value: "latest", icon: Huge.FallingStarIcon },
+  { label: "Popular", value: "popular", icon: Huge.CrownIcon }
 ];
 
 const initialState: Filters = { search: "", sort: sortOptions[0].value };

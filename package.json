@@ -60,6 +60,7 @@
     "compressorjs": "^1.2.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.0.28",
+    "hugeicons-react": "^0.2.0",
     "lucide-react": "^0.368.0",
     "marked": "^12.0.2",
     "moment": "^2.30.1",

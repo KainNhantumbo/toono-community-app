@@ -1,6 +1,7 @@
 import { AlertMessage } from "@/components/alert-message";
 import { Layout } from "@/components/layout";
 import { Loader } from "@/components/loader";
+import { sidebarPaths } from "@/components/sidebar-sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -10,12 +11,11 @@ import { errorTransformer } from "@/lib/error";
 import { cn } from "@/lib/utils";
 import { mutateFilters, sortOptions } from "@/state/slices/filters";
 import { AppDispatch, RootState } from "@/state/store";
-import * as Lucide from "lucide-react";
+import * as Huge from "hugeicons-react";
 import moment from "moment";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { sidebarPaths } from "@/components/sidebar-sheet";
 
 export default function HomePage() {
   const { error, isLoading, hasNextPage, inViewRef, isError, refetch } =
@@ -29,7 +29,7 @@ export default function HomePage() {
       <>
         {isError && !isLoading ? (
           <AlertMessage
-            icon={Lucide.AlertTriangleIcon}
+            icon={Huge.Alert02Icon}
             message={errorTransformer(error).message}
             action={{ label: "Retry", handler: () => refetch() }}
           />
@@ -39,7 +39,7 @@ export default function HomePage() {
 
         {!isLoading && !isError ? (
           <main className='relative mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>
-            <aside className='sticky left-0 top-0 hidden w-fit flex-col gap-3 sm:flex'>
+            <aside className='hidden w-fit flex-col gap-3 sm:flex'>
               {sidebarPaths.map((_path, i) => (
                 <Button
                   key={i}
@@ -47,7 +47,7 @@ export default function HomePage() {
                   className='group w-full justify-start'
                   variant={"ghost"}>
                   <Link to={_path.path} className='items-start justify-start'>
-                    <_path.icon className='mr-2 h-auto w-4' />
+                    <_path.icon className='mr-2 h-auto w-5' />
                     <span className='group-hover:underline group-hover:underline-offset-2'>
                       {_path.label}
                     </span>
@@ -66,7 +66,7 @@ export default function HomePage() {
                   <Button
                     variant={"destructive"}
                     onClick={() => dispatch(mutateFilters({ ...filters, search: "" }))}>
-                    <Lucide.Trash className='mr-2 h-auto w-4 stroke-white' />
+                    <Huge.Delete03Icon className='mr-2 h-auto w-4 stroke-white' />
                     <span>Clear</span>
                   </Button>
                 </div>
@@ -74,7 +74,7 @@ export default function HomePage() {
 
               <RadioGroup
                 defaultValue={filters.sort}
-                className='my-1 flex w-full flex-wrap items-center'
+                className='mb-1 flex w-full flex-wrap items-center'
                 onValueChange={(selected) =>
                   dispatch(mutateFilters({ ...filters, sort: selected }))
                 }>
@@ -88,12 +88,20 @@ export default function HomePage() {
                     <Label
                       htmlFor={option.value}
                       className={cn(
-                        "text-md cursor-pointer select-none rounded-sm p-2 px-4 font-display text-muted-foreground transition-all hover:bg-input/30",
+                        "text-md flex cursor-pointer select-none flex-nowrap gap-2 rounded-sm p-2 px-4 font-display text-muted-foreground transition-all hover:bg-input/30",
                         {
                           "font-bold text-card-foreground": filters.sort == option.value
                         }
                       )}>
-                      {option.label}
+                      <option.icon
+                        className={cn(
+                          {
+                            "text-card-foreground": filters.sort == option.value
+                          },
+                          "h-auto w-5"
+                        )}
+                      />
+                      <span>{option.label}</span>
                     </Label>
                   </div>
                 ))}
@@ -101,7 +109,7 @@ export default function HomePage() {
 
               {!isError && !isLoading && posts.length < 1 ? (
                 <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
-                  <AlertMessage icon={Lucide.WindIcon} message='No posts to show.' />
+                  <AlertMessage icon={Huge.StarIcon} message='No posts to show.' />
                 </div>
               ) : null}
 
@@ -134,7 +142,7 @@ export default function HomePage() {
                               />
                             ) : (
                               <AvatarFallback className='cursor-pointer rounded-lg border bg-transparent hover:bg-muted'>
-                                <Lucide.User className='h-auto w-5' />
+                                <Huge.UserAdd01Icon className='h-auto w-5' />
                                 <span className='sr-only'>user icon</span>
                               </AvatarFallback>
                             )}
@@ -160,7 +168,7 @@ export default function HomePage() {
                               <div
                                 key={index}
                                 className='flex cursor-pointer select-none flex-nowrap items-center rounded-sm border p-1 px-2'>
-                                <Lucide.HashIcon className='mr-1 h-auto w-4' />
+                                <Huge.GridIcon className='mr-1 h-auto w-4' />
                                 <span className='text-sm'>{tag}</span>
                               </div>
                             ))
@@ -169,23 +177,23 @@ export default function HomePage() {
 
                       <div className='flex flex-wrap items-center gap-2'>
                         <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                          <Lucide.MessageSquareTextIcon className='h-auto w-4 ' />
+                          <Huge.Comment01Icon className='h-auto w-4 ' />
                           <span> {post.comments.length} comments</span>
                         </div>
                         <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                          <Lucide.HandHeartIcon className='h-auto w-4 ' />
+                          <Huge.Clapping02Icon className='h-auto w-4 ' />
                           <span> {post.claps.length} claps</span>
                         </div>
                         <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                          <Lucide.EyeIcon className='h-auto w-4 ' />
+                          <Huge.ViewIcon className='h-auto w-4 ' />
                           <span>{post.visits ?? 0} views</span>
                         </div>
                         <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                          <Lucide.TextSelectIcon className='h-auto w-4 ' />
+                          <Huge.AnalysisTextLinkIcon className='h-auto w-4 ' />
                           <span>{post.words ?? 0} words</span>
                         </div>
                         <div className='flex select-none flex-nowrap items-center gap-2 rounded-sm p-1 px-2 text-sm transition-all'>
-                          <Lucide.FileClockIcon className='h-auto w-4 ' />
+                          <Huge.Clock05Icon className='h-auto w-4 ' />
                           <span>{post.read_time}</span>
                         </div>
                       </div>

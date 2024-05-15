@@ -1,10 +1,11 @@
+import { HugeIconType } from "@/types";
 import type { LucideIcon } from "lucide-react";
 import type { FC } from "react";
 import { Button } from "./ui/button";
 
 export type Props = {
   message: string;
-  icon: LucideIcon;
+  icon: LucideIcon | HugeIconType;
   action?: { handler: () => void | Promise<unknown>; label: string };
 };
 

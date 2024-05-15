@@ -1,6 +1,6 @@
 import { metadata } from "@/shared/constants";
-import { RiAccountCircleLine } from "@remixicon/react";
 import { useWindowSize } from "@uidotdev/usehooks";
+import * as Huge from "hugeicons-react";
 import * as Lucide from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -15,14 +15,14 @@ import {
 } from "./ui/sheet";
 
 export const sidebarPaths = [
-  { label: "Home", path: "/", icon: Lucide.Home },
-  { label: "About", path: "/about", icon: Lucide.BookMarked },
-  { label: "Contact", path: "/contact", icon: Lucide.Contact },
-  { label: "Terms of Use", path: "/terms-of-use", icon: Lucide.LucideHammer },
-  { label: "Privacy  Policy", path: "/privacy-policy", icon: Lucide.FileKey },
-  { label: "Code of Conduct", path: "/code-of-conduct", icon: Lucide.UserCheck },
-  { label: "Sign In", path: "/auth/sign-in", icon: Lucide.LogInIcon },
-  { label: "Sign Up", path: "/auth/sign-up", icon: RiAccountCircleLine }
+  { label: "Home", path: "/", icon: Huge.Home01Icon },
+  { label: "About", path: "/about", icon: Huge.UserListIcon },
+  { label: "Contact", path: "/contact", icon: Huge.ContactBookIcon },
+  { label: "Terms of Use", path: "/terms-of-use", icon: Huge.PolicyIcon },
+  { label: "Privacy  Policy", path: "/privacy-policy", icon: Huge.ViewOffIcon },
+  { label: "Code of Conduct", path: "/code-of-conduct", icon: Huge.CourtLawIcon },
+  { label: "Sign In", path: "/auth/sign-in", icon: Huge.Login03Icon },
+  { label: "Sign Up", path: "/auth/sign-up", icon: Huge.UserAccountIcon }
 ];
 
 export const SidebarSheet = () => {
@@ -60,7 +60,7 @@ export const SidebarSheet = () => {
               variant={"ghost"}
               size={"lg"}>
               <Link to={_path.path} className='items-start justify-start'>
-                <_path.icon className='mr-2 h-auto w-4' />
+                <_path.icon className='mr-2 h-auto' />
                 <span className='group-hover:underline group-hover:underline-offset-2'>
                   {_path.label}
                 </span>
