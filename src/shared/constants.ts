@@ -66,5 +66,5 @@ export const FOOTER_URLS: { path: string; label: string }[][] = [
   ]
 ];
 
-export const PUBLIC_POSTS_LIMIT_PER_PAGE = 15;
-export const POSTS_LIMIT_PER_PAGE = 10;
+export const PUBLIC_POSTS_LIMIT_PER_PAGE:number = 15;
+export const POSTS_LIMIT_PER_PAGE:number = 10;

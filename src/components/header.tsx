@@ -12,7 +12,6 @@ import { TooltipWrapper } from "./tooltip-wrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { UserLogoutAlert } from "./user-logout-alert";
-import * as Huge from "hugeicons-react";
 
 export const Header = () => {
   const navigate = useNavigate();
