@@ -3,11 +3,10 @@ import { Layout } from "@/components/layout";
 export default function TermsOfUsePage() {
   return (
     <Layout>
-      <main className='relative mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>
-        <article>
-          <div className='mx-auto max-w-3xl p-6'>
+      <main className='mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>
+          <article className='mx-auto max-w-3xl p-6'>
             <h1 className='mb-4 text-3xl font-bold'>Terms of Use</h1>
-            <p className='mb-6'>Effective Date: June, 2024</p>
+            <p className='mb-6'>June, 2024</p>
 
             <p className='mb-4'>
               Welcome to Toono Community! By accessing and using our website
@@ -96,8 +95,7 @@ export default function TermsOfUsePage() {
             </p>
 
             <p className='mb-4'>Thank you for using Toono Community!</p>
-          </div>
-        </article>
+          </article>
       </main>
     </Layout>
   );
