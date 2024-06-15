@@ -10,6 +10,7 @@ const SignupSuccessPage = React.lazy(() => import("./router/public/auth/sign-up-
 const SigninPage = React.lazy(() => import("./router/public/auth/sign-in"));
 const PrivacyPolicyPage = React.lazy(() => import("./router/public/docs/privacy-policy"));
 const TermsOfUsePage = React.lazy(() => import("./router/public/docs/terms-of-use"));
+const ContactUsPage = React.lazy(() => import("./router/public/contact"));
 const CodeOfConductPage = React.lazy(() => import("./router/public/docs/code-of-conduct"));
 const Overview = React.lazy(() => import("./router/private/dashboard/overview"));
 const Posts = React.lazy(() => import("./router/private/dashboard/posts"));
@@ -25,6 +26,7 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: HomePage, path: "/" },
   { element: SigninPage, path: "/auth/sign-in" },
   { element: SignupPage, path: "/auth/sign-up" },
+  { element: ContactUsPage, path: "/contact" },
   { element: PrivacyPolicyPage, path: "/privacy-policy" },
   { element: TermsOfUsePage, path: "/terms-of-use" },
   { element: CodeOfConductPage, path: "/code-of-conduct" },
