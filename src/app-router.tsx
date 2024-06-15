@@ -7,6 +7,7 @@ const NotFoundPage = React.lazy(() => import("@/router/404"));
 const HomePage = React.lazy(() => import("./router/public/home"));
 const SignupPage = React.lazy(() => import("./router/public/auth/sign-up"));
 const SignupSuccessPage = React.lazy(() => import("./router/public/auth/sign-up-success"));
+const AboutPage = React.lazy(() => import("./router/public/docs/about"));
 const SigninPage = React.lazy(() => import("./router/public/auth/sign-in"));
 const PrivacyPolicyPage = React.lazy(() => import("./router/public/docs/privacy-policy"));
 const TermsOfUsePage = React.lazy(() => import("./router/public/docs/terms-of-use"));
@@ -37,6 +38,7 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: PostsEditor, path: "/users/dashboard/posts/post-editor/:id" },
   { element: Configurations, path: "/users/dashboard/configurations" },
   { element: Account, path: "/users/dashboard/account" },
+  { element: AboutPage, path: "/about" },
   { element: SignupSuccessPage, path: "/auth/sign-up-success" },
   { element: NotFoundPage, path: "*" }
 ];
