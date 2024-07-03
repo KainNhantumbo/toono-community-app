@@ -19,7 +19,7 @@ import { LockIcon, LockOpen, MailIcon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function SigninPage() {
@@ -55,6 +55,35 @@ export default function SigninPage() {
     }
   };
 
+  // github auth flow
+  const [githubCode, setGithubCode] = React.useState("");
+  const [params] = useSearchParams(window.location.search);
+  const code = params.get("code");
+
+  const onGithubAuth = async () => {
+    try {
+      if (code) {
+        const scope = "read:user";
+        await httpClient.get(`/api/v1/auth/oauth/github/${code}/${scope}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  React.useEffect(() => {
+    onGithubAuth();
+  }, [code]);
+
+  const handleRedirectToGitHub = () => {
+    const queryParams = new URLSearchParams({
+      client_id: import.meta.env.VITE_GITHUB_CLIENT_ID,
+      scope: "read:user"
+    });
+    const authUrl = `https://github.com/login/oauth/authorize?${queryParams.toString()}`;
+    window.location.href = authUrl;
+  };
+
   return (
     <Layout>
       <main className='flex w-full flex-col gap-12 px-4'>
@@ -69,7 +98,7 @@ export default function SigninPage() {
           </h2>
 
           <div className='my-5 flex flex-col space-y-3'>
-            <Button variant={"default"}>
+            <Button variant={"default"} onClick={handleRedirectToGitHub}>
               <GitHubLogoIcon className='mr-2 h-4 w-4' />
               <span className='text-sm'>Login with GitHub</span>
             </Button>
