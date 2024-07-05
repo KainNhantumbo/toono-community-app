@@ -1,6 +1,5 @@
 import { Layout } from "@/components/layout";
 import { Spotlight } from "@/components/spotlight-effect";
-import { Button } from "@/components/ui/button";
 import * as CoreForm from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingButton } from "@/components/ui/loading-button";
@@ -11,7 +10,6 @@ import { errorTransformer } from "@/lib/error";
 import { UserSignupType, userSignupSchema } from "@/schemas";
 import { metadata } from "@/shared/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { LockIcon, MailIcon, User2Icon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -55,18 +53,11 @@ export default function SignupPage() {
             Welcome to {metadata.appName} Community
           </h2>
 
-          <div className='my-4 flex flex-col'>
-            <Button variant={"default"}>
-              <GitHubLogoIcon className='mr-2 h-4 w-4' />
-              <span className='text-sm'>Login with GitHub</span>
-            </Button>
-          </div>
+          <p className='my-3 max-w-sm space-y-6 text-center text-sm'>
+            Complete the form below to create your account.
+          </p>
 
           <Separator decorative className='my-5' />
-
-          <p className='my-3 max-w-sm space-y-6 text-center text-sm'>
-            Or complete the form below to create your account.
-          </p>
 
           <CoreForm.Form {...form}>
             <form

@@ -19,14 +19,14 @@ import { LockIcon, LockOpen, MailIcon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function SigninPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { theme } = useThemeContext();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   const form = useForm<UserLoginType>({
     resolver: zodResolver(userLoginSchema),
@@ -56,7 +56,6 @@ export default function SigninPage() {
   };
 
   // github auth flow
-  const [githubCode, setGithubCode] = React.useState("");
   const [params] = useSearchParams(window.location.search);
   const code = params.get("code");
 
@@ -64,25 +63,33 @@ export default function SigninPage() {
     try {
       if (code) {
         const scope = "read:user";
-        await httpClient.get(`/api/v1/auth/oauth/github/${code}/${scope}`);
+        const { data } = await httpClient<Auth>({
+          method: "get",
+          url: `/api/v1/auth/oauth/github/${code}/${scope}`,
+          withCredentials: true
+        });
+
+        dispatch(mutateAuth({ ...data }));
+        navigate(`/users/dashboard/overview`, { replace: true });
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  React.useEffect(() => {
-    onGithubAuth();
-  }, [code]);
-
   const handleRedirectToGitHub = () => {
     const queryParams = new URLSearchParams({
       client_id: import.meta.env.VITE_GITHUB_CLIENT_ID,
       scope: "read:user"
     });
-    const authUrl = `https://github.com/login/oauth/authorize?${queryParams.toString()}`;
-    window.location.href = authUrl;
+    window.location.replace(
+      `https://github.com/login/oauth/authorize?${queryParams.toString()}`
+    );
   };
+
+  React.useEffect(() => {
+    onGithubAuth();
+  }, [code]);
 
   return (
     <Layout>
