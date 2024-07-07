@@ -36,7 +36,7 @@ export const SidebarSheet = () => {
           <Lucide.MenuIcon className='h-auto w-4' />
         </Button>
       </SheetTrigger>
-      <SheetContent side={"left"} className='w-full max-w-[240px] overflow-y-auto px-4'>
+      <SheetContent side={"left"} className='w-full max-w-[245px] overflow-y-auto px-4'>
         <SheetHeader>
           <SheetTitle>
             <Link

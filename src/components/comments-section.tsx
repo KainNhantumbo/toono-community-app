@@ -13,10 +13,12 @@ const context = React.createContext<{
   refetch: () => void | Promise<unknown>;
   comments: Comment[];
   postId: string;
+  isInitialFetchLoading: boolean;
 }>({
   refetch: () => {},
   comments: [],
-  postId: ""
+  postId: "",
+  isInitialFetchLoading: false
 });
 
 export type CommentsSectionProps = { postId: string };
@@ -47,7 +49,8 @@ export default function CommentsSection({ postId }: CommentsSectionProps) {
   }, [data]);
 
   return (
-    <context.Provider value={{ refetch, comments, postId }}>
+    <context.Provider
+      value={{ refetch, comments, postId, isInitialFetchLoading: isLoading }}>
       <section
         key={postId}
         className='mx-auto w-full max-w-[820px] p-1 mobile:rounded-lg mobile:border mobile:bg-input/30 mobile:p-3'>
@@ -59,13 +62,17 @@ export default function CommentsSection({ postId }: CommentsSectionProps) {
           />
         ) : null}
 
-        <h2>Comments ({comments.length})</h2>
-        <p className='text-sm text-muted-foreground'>
-          Feel free to contribute and share with our community!
-        </p>
-        <Separator decorative className='my-3' />
-        <CommentForm />
-        <CommentsRenderer />
+        {!isLoading && !isError ? (
+          <>
+            <h2>Comments ({comments.length})</h2>
+            <p className='text-sm text-muted-foreground'>
+              Feel free to contribute and share with our community!
+            </p>
+            <Separator decorative className='my-3' />
+            <CommentForm />
+            <CommentsRenderer />
+          </>
+        ) : null}
       </section>
     </context.Provider>
   );

@@ -19,14 +19,17 @@ import * as React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import * as Huge from 'hugeicons-react'
+import * as Huge from "hugeicons-react";
 
 const CommentsSection = React.lazy(() => import("@/components/comments-section"));
 
 export default function PostPage() {
+  const queryKey = window.location.pathname;
   const auth = useSelector((state: RootState) => state.auth);
   const [isRequestLoginOpen, setIsRequestLoginOpen] = React.useState<boolean>(false);
-  const { post, error, isLoading, isError, refetch, isInClapsArray } = usePublicPostQuery();
+  const { post, error, isLoading, isError, refetch, isInClapsArray } = usePublicPostQuery({
+    queryKey
+  });
   const { handleAddClap, handleRemoveClap, isClapsQueryLoading } = useClapsQuery({
     reloadFn: () => refetch()
   });
@@ -51,7 +54,7 @@ export default function PostPage() {
           </div>
         ) : null}
 
-        {!isError && isLoading ? <Loader /> : null}
+        {!isError && isLoading ? <Loader className='h-full w-full' /> : null}
 
         {!isError && !isLoading ? (
           <>
@@ -98,7 +101,7 @@ export default function PostPage() {
                     </div>
                   </div>
 
-                  <h1 className='my-6 scroll-m-20 text-3xl sm:text-center font-extrabold tracking-tight lg:text-4xl'>
+                  <h1 className='my-6 scroll-m-20 text-3xl font-extrabold tracking-tight sm:text-center lg:text-4xl'>
                     {post.title}
                   </h1>
 

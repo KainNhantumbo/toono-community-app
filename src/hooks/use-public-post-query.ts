@@ -24,13 +24,13 @@ const initialPostState: PublicPost = {
   user: { id: "", name: "", profile_image: null }
 };
 
-export const usePublicPostQuery = () => {
+export const usePublicPostQuery = ({ queryKey }: { queryKey: string }) => {
   const params = useParams();
   const auth = useSelector((state: RootState) => state.auth);
 
   const [post, setPost] = React.useState<PublicPost>(initialPostState);
   const { data, isError, isLoading, error, refetch } = useQuery({
-    queryKey: ["community-posts"],
+    queryKey: [queryKey],
     queryFn: async () => {
       try {
         const { data } = await client.get<PublicPost>(

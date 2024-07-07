@@ -33,7 +33,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     <MotionConfig reducedMotion='user'>
       <LazyMotion strict={true} features={domAnimation}>
         <Header />
-        <div>{children}</div>
+        <div className="relative">{children}</div>
         {!isHomePage ? <Footer /> : null}
         <Toaster
           closeButton
