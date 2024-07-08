@@ -1,6 +1,9 @@
 import { Layout } from "@/components/layout";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 
 export default function AboutPage() {
+  useDocumentTitle("About - Toono Community");
+  
   return (
     <Layout>
       <main className='mx-auto mb-3 flex w-full max-w-3xl gap-3 px-3'>

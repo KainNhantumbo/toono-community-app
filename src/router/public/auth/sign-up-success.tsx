@@ -1,10 +1,13 @@
+import { Layout } from "@/components/layout";
+import { Meteors } from "@/components/meteors-effect";
 import { Button } from "@/components/ui/button";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Meteors } from "@/components/meteors-effect";
-import { Layout } from "@/components/layout";
 
 export default function SignupSuccessPage() {
+  useDocumentTitle("Signup Successful - Toono Community");
+
   return (
     <Layout>
       <main className=' flex min-h-[80vh] w-full flex-col gap-12 px-4 '>

@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAppContext } from "@/context/app-context";
 import { errorTransformer } from "@/lib/error";
 import type { PostDraft, PublicPost } from "@/types";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import { isUUID } from "class-validator";
 import { ArrowLeft, Edit2, Eye, Snowflake, Trash2 } from "lucide-react";
 import * as React from "react";
@@ -106,6 +107,8 @@ export default function PostsEditor() {
       handleGetPost();
     }
   }, []);
+
+  useDocumentTitle("Post Content Editor - Toono Community");
 
   return (
     <Layout>

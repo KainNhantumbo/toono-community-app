@@ -13,6 +13,7 @@ import { ThemeVariants, useThemeContext } from "@/context/theme-context";
 import { errorTransformer } from "@/lib/error";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/state/store";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import * as Lucide from "lucide-react";
 import * as React from "react";
 import { useSelector } from "react-redux";
@@ -68,6 +69,8 @@ export default function Configurations() {
       setIsDownloadLoading({ status: false, type });
     }
   };
+
+  useDocumentTitle("Account Configuration - Toono Community");
 
   return (
     <Layout>

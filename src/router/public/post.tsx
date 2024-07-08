@@ -20,6 +20,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as Huge from "hugeicons-react";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 
 const CommentsSection = React.lazy(() => import("@/components/comments-section"));
 
@@ -38,6 +39,8 @@ export default function PostPage() {
     // correct the scroll position on enter
     scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, []);
+
+  useDocumentTitle(post.title);
 
   return (
     <Layout>

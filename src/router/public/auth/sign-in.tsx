@@ -15,6 +15,7 @@ import { AppDispatch } from "@/state/store";
 import { Auth } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import { LockIcon, LockOpen, MailIcon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -90,6 +91,8 @@ export default function SigninPage() {
   React.useEffect(() => {
     onGithubAuth();
   }, [code]);
+
+  useDocumentTitle("Sign In - Toono Community");
 
   return (
     <Layout>

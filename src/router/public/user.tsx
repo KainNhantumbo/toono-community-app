@@ -11,6 +11,7 @@ import { errorTransformer } from "@/lib/error";
 import { createUserConnection } from "@/lib/utils";
 import { PostList, User } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import * as Lucide from "lucide-react";
 import moment from "moment";
 import * as React from "react";
@@ -18,11 +19,14 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link, useParams } from "react-router-dom";
 
 export default function UserPage() {
+
   const params = useParams();
   const [user, setUser] = React.useState<User & { posts: PostList }>({
     ...initialUserState,
     posts: []
   });
+  
+  useDocumentTitle(`Users - ${user.name}`);
 
   const { data, isError, isLoading, refetch, error } = useQuery({
     queryKey: ["community-users"],

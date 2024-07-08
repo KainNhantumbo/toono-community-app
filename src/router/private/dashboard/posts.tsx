@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { useUserPostsQuery } from "@/hooks/use-user-posts-query";
 import { errorTransformer } from "@/lib/error";
 import { RootState } from "@/state/store";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -16,6 +17,8 @@ import { Link } from "react-router-dom";
 export default function PostsPage() {
   const posts = useSelector((state: RootState) => state.posts);
   const { refetch, isError, isLoading, error } = useUserPostsQuery();
+
+  useDocumentTitle("User Posts - Toono Community");
 
   return (
     <Layout>

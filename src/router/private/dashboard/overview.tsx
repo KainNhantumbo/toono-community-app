@@ -1,5 +1,5 @@
-import * as React from "react";
 import { Layout } from "@/components/layout";
+import { TooltipWrapper } from "@/components/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,10 +13,11 @@ import { Separator } from "@/components/ui/separator";
 import { ResultData, useOverviewQuery } from "@/hooks/use-overview-query";
 import { RootState } from "@/state/store";
 import { DashboardActions } from "@/types";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import { ArrowLeft, ArrowRight, CogIcon, FilePenIcon, UserIcon } from "lucide-react";
+import * as React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { TooltipWrapper } from "@/components/tooltip-wrapper";
 
 const actions: DashboardActions = [
   {
@@ -50,6 +51,8 @@ export default function OverviewPage() {
     }
     return 0;
   }, [data]);
+
+  useDocumentTitle("Overview - Toono Community");
 
   return (
     <Layout>

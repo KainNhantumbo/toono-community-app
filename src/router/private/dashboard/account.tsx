@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
 import * as Ri from "@remixicon/react";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import * as Lucide from "lucide-react";
 import moment from "moment";
 import * as React from "react";
@@ -92,6 +93,8 @@ export default function Account() {
       setProfileImage(initialUserState.profile_image.url);
     }
   }, [initialUserState]);
+
+  useDocumentTitle("User Account - Toono Community");
 
   return (
     <Layout>

@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 
 export default function ContactUsPage() {
+  useDocumentTitle("Contact - Toono Community")
+
   return (
     <Layout>
       <main className='mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>

@@ -1,6 +1,9 @@
 import { Layout } from "@/components/layout";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 
 export default function PrivacyPolicyPage() {
+  useDocumentTitle("Privacy Policy - Toono Community");
+
   return (
     <Layout>
       <main className='relative mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>

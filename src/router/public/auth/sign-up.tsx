@@ -10,6 +10,7 @@ import { errorTransformer } from "@/lib/error";
 import { UserSignupType, userSignupSchema } from "@/schemas";
 import { metadata } from "@/shared/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import { LockIcon, MailIcon, User2Icon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -40,6 +41,8 @@ export default function SignupPage() {
       setLoading(false);
     }
   };
+
+  useDocumentTitle("Signup - Toono Community");
 
   return (
     <Layout>
