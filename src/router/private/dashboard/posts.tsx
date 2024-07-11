@@ -46,7 +46,7 @@ export default function PostsPage() {
         <section>
           {!isLoading && !isError ? <PostsTableRender data={posts} /> : null}
 
-          {isLoading && !isError ? <Loader /> : null}
+          {isLoading && !isError ? <Loader className="w-full h-full" /> : null}
           {!isLoading && isError ? (
             <AlertMessage
               icon={AlertTriangle}

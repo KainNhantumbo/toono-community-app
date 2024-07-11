@@ -124,7 +124,7 @@ export default function Account() {
         <Separator decorative />
 
         <section className='space-y-5 rounded-lg border bg-input/30 p-3'>
-          {isLoading && !isError ? <Loader /> : null}
+          {isLoading && !isError ? <Loader className="w-full h-full" /> : null}
           {!isLoading && isError ? (
             <AlertMessage
               icon={Lucide.AlertTriangle}

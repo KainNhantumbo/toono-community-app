@@ -36,7 +36,7 @@ export default function HomePage() {
       ) : null}
 
       <main className='mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>
-        <aside className='hidden w-fit flex-col gap-3 sticky top-0 sm:flex'>
+        <aside className='hidden w-fit h-fit flex-col gap-3 sticky top-[70px] sm:flex'>
           {sidebarPaths.map((_path, i) => (
             <Button
               key={i}

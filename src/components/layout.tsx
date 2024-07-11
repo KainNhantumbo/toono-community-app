@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Footer } from "./footer";
 import { Header } from "./header";
+import { Greet } from "./greet";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useThemeContext();
@@ -35,6 +36,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Header />
         <div className="relative">{children}</div>
         {!isHomePage ? <Footer /> : null}
+        <Greet/>
         <Toaster
           closeButton
           duration={10000}

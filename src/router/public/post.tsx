@@ -169,7 +169,7 @@ export default function PostPage() {
           </>
         ) : null}
 
-        <React.Suspense fallback={<Loader />}>
+        <React.Suspense fallback={<Loader className="w-full h-full" />}>
           <CommentsSection key={post.id} postId={post.id} />
         </React.Suspense>
       </main>

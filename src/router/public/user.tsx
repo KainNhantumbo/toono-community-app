@@ -19,21 +19,14 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link, useParams } from "react-router-dom";
 
 export default function UserPage() {
-
   const params = useParams();
-  const [user, setUser] = React.useState<User & { posts: PostList }>({
-    ...initialUserState,
-    posts: []
-  });
-  
-  useDocumentTitle(`Users - ${user.name}`);
 
   const { data, isError, isLoading, refetch, error } = useQuery({
     queryKey: ["community-users"],
     queryFn: async () => {
       try {
         const { data } = await client.get<
-          User & { posts: Omit<PostList, "user" | "coverImage"> }
+        User & { posts: Omit<PostList, "user" | "coverImage"> }
         >(`/api/v1/users/${params["userId"]}`);
         return data;
       } catch (error) {
@@ -45,10 +38,16 @@ export default function UserPage() {
     }
   });
 
-  React.useEffect(() => {
-    if (data) setUser(data);
+  const user = React.useMemo<User & { posts: PostList }>(() => {
+    if (data) return data;
+    return {
+      ...initialUserState,
+      posts: []
+    };
   }, [data]);
 
+  useDocumentTitle(`Users - ${user.name}`);
+  
   return (
     <Layout>
       <main className='mx-auto w-full max-w-4xl mobile:mb-3 mobile:space-y-5 mobile:px-3'>
@@ -62,7 +61,7 @@ export default function UserPage() {
           </div>
         ) : null}
 
-        {!isError && isLoading ? <Loader /> : null}
+        {!isError && isLoading ? <Loader className="w-full h-full" /> : null}
 
         {!isError && !isLoading && user.posts.length < 1 ? (
           <div className='grid min-h-28 w-full grid-cols-1 place-content-center place-items-center'>
