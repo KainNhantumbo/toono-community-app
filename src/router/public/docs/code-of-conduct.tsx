@@ -10,7 +10,7 @@ export default function CodeOfConductPage() {
         <article className='mx-auto w-full max-w-3xl'>
           <h1 className='text-3xl font-bold'>Code of Conduct</h1>
 
-          <p className=' mb-4'>
+          <p className='mb-4'>
             Welcome to Toono Community! We are committed to providing a friendly, safe, and
             welcoming environment for all, regardless of gender, sexual orientation,
             disability, ethnicity, or religion.
@@ -39,7 +39,7 @@ export default function CodeOfConductPage() {
           <h2 className='text-2xl font-semibold'>4. Respect Privacy</h2>
           <p className=' mb-4'>
             Respect the privacy of others. Do not share personal information, photos, or any
-            content that could violate someone’s privacy without their explicit permission.
+            content that could violate someone's privacy without their explicit permission.
           </p>
 
           <h2 className='text-2xl font-semibold'>5. Be Inclusive</h2>

@@ -184,6 +184,15 @@ export default function SigninPage() {
               </LoadingButton>
             </form>
           </CoreForm.Form>
+
+          <Button
+            variant={"link"}
+            asChild
+            className='my-3 w-full text-end text-card-foreground'>
+            <Link to={"/auth/password-recovery"}>
+              <span>Forgot password?</span>
+            </Link>
+          </Button>
         </div>
       </main>
     </Layout>
