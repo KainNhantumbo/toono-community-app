@@ -6,10 +6,10 @@ import { LoadingButton } from "@/components/ui/loading-button";
 import httpClient from "@/config/http-client";
 import { useThemeContext } from "@/context/theme-context";
 import { errorTransformer } from "@/lib/error";
-import { UserPasswordRecoveryType, userLoginSchema } from "@/schemas";
+import { UpdateUserCredentialsSchemaType, updateUserCredentialsSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDocumentTitle } from "@uidotdev/usehooks";
-import { MailIcon, SendHorizontalIcon } from "lucide-react";
+import { LockIcon, MailIcon, SendHorizontalIcon } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -20,18 +20,18 @@ export default function PasswordRecoveryPage() {
   const { theme } = useThemeContext();
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  const form = useForm<UserPasswordRecoveryType>({
-    resolver: zodResolver(userLoginSchema),
-    defaultValues: { email: "" }
+  const form = useForm<UpdateUserCredentialsSchemaType>({
+    resolver: zodResolver(updateUserCredentialsSchema),
+    defaultValues: { password: "", confirm_password: "" }
   });
 
-  const onSubmit = async (formData: UserPasswordRecoveryType) => {
+  const onSubmit = async (formData: UpdateUserCredentialsSchemaType) => {
     setLoading(true);
     try {
       await httpClient({
         method: "post",
-        url: "/api/v1/auth/password-recovery",
-        data: formData,
+        url: "/api/v1/auth/password-recovery-request",
+        data: formData
       });
       navigate(`/users/dashboard/password-recovery-success`);
     } catch (error) {
@@ -45,7 +45,7 @@ export default function PasswordRecoveryPage() {
     }
   };
 
-  useDocumentTitle("Password Recovery - Toono Community");
+  useDocumentTitle("Password Recovery Request - Toono Community");
 
   return (
     <Layout>
@@ -57,14 +57,11 @@ export default function PasswordRecoveryPage() {
           />
 
           <section className='my-2 mb-4 space-y-3 text-center'>
-            <h1>Recovery your account</h1>
+            <h1>Update Credentials</h1>
 
-            <h2 className="text-lg">Forgot your password? We got you covered.</h2>
-
-            <p className="my-2">
-              No worries... We'll email you instructions to recover your account by
-              resetting the password.
-            </p>
+            <h2 className='text-lg'>
+              Complete the form below to update your account password.
+            </h2>
           </section>
 
           <CoreForm.Form {...form}>
@@ -73,18 +70,40 @@ export default function PasswordRecoveryPage() {
               className='max my-auto h-full w-full space-y-8'>
               <CoreForm.FormField
                 control={form.control}
-                name='email'
+                name='password'
                 render={({ field }) => (
                   <CoreForm.FormItem>
                     <CoreForm.FormLabel className='flex items-center gap-2'>
                       <MailIcon className='h-5 w-auto' />
-                      <span>Email</span>
+                      <span>Password</span>
                     </CoreForm.FormLabel>
                     <CoreForm.FormControl>
                       <Input
                         disabled={loading}
-                        placeholder='Enter your email'
-                        type='email'
+                        placeholder='Enter your new password'
+                        type='password'
+                        {...field}
+                      />
+                    </CoreForm.FormControl>
+                    <CoreForm.FormMessage />
+                  </CoreForm.FormItem>
+                )}
+              />
+
+              <CoreForm.FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <CoreForm.FormItem>
+                    <CoreForm.FormLabel className='flex items-center gap-2'>
+                      <LockIcon className='h-5 w-auto' />
+                      <span>Confirm Password</span>
+                    </CoreForm.FormLabel>
+                    <CoreForm.FormControl>
+                      <Input
+                        disabled={loading}
+                        placeholder='Confirm your password'
+                        type='password'
                         {...field}
                       />
                     </CoreForm.FormControl>

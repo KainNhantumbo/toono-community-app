@@ -13,8 +13,7 @@ import { Button } from "./ui/button";
 
 export const RouteErrorBoundary = () => {
   const error = useRouteError();
-
-  console.log(error);
+  console.error(error);
 
   if (error instanceof Error) {
     return (

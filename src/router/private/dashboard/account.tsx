@@ -37,25 +37,16 @@ export default function Account() {
     resolver: zodResolver(UpdateUserSchema),
     disabled: loading,
     values: {
-      name: initialUserState.name,
-      available: initialUserState.available,
-      biography: initialUserState.biography,
+      ...initialUserState,
       birthday: initialUserState.birthday
         ? new Date(initialUserState.birthday).toISOString()
         : null,
-      network: initialUserState.network,
-      education: initialUserState.education,
-      learning: initialUserState.learning,
-      location: initialUserState.location,
-      user_name: initialUserState.user_name,
-      work: initialUserState.work,
       confirm_password: "",
       password: ""
     }
   });
 
   const handleSubmit = async (data: UpdateUserDataType) => {
-    console.info("submitted", data);
     setLoading(true);
     try {
       if (data.password && data.password.length > 0) {

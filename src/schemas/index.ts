@@ -108,6 +108,30 @@ export const UpdateUserSchema = z
     message: "Password don't match"
   });
 
+export const updateUserCredentialsSchema = z
+  .object({
+    password: z
+      .string({
+        invalid_type_error: "Password field must be of type string",
+        message: "Please insert your password."
+      })
+      .trim()
+      .max(20, { message: "Your password must have less than 20 characters." }),
+    confirm_password: z
+      .string({
+        invalid_type_error: "Confirm password field must be of type string",
+        required_error: "Please confirm the password."
+      })
+      .trim()
+      .max(20, { message: "Your password must have less than 20 characters." })
+      .optional()
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    path: ["confirmPassword"],
+    message: "Password don't match"
+  });
+
+export type UpdateUserCredentialsSchemaType = z.infer<typeof updateUserCredentialsSchema>;
 export type UpdateUserDataType = z.infer<typeof UpdateUserSchema>;
 export type UserLoginType = z.infer<typeof userLoginSchema>;
 export type UserSignupType = z.infer<typeof userSignupSchema>;

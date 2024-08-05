@@ -22,7 +22,7 @@ export const clipboard = async (content: string) => {
   try {
     await navigator.clipboard.writeText(content);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

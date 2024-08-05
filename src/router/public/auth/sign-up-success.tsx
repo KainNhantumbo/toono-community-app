@@ -10,7 +10,7 @@ export default function SignupSuccessPage() {
 
   return (
     <Layout>
-      <main className=' flex min-h-[80vh] w-full flex-col gap-12 px-4 '>
+      <main className='flex min-h-[80vh] w-full flex-col gap-12 px-4 '>
         <section className='m-auto w-full max-w-5xl p-4 mobile-x:p-8'>
           <div className=' mx-auto flex w-full flex-col justify-between gap-12 pt-10 md:p-0'>
             <div className='relative flex w-full flex-col gap-4'>
