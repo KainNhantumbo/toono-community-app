@@ -42,7 +42,7 @@ export const Greet = () => {
           </section>
 
           <DrawerFooter>
-            <DrawerClose asChild>
+            <DrawerClose asChild onClick={()=> setCanGreet(false)}>
               <Button variant='outline'>Get Started!</Button>
             </DrawerClose>
           </DrawerFooter>

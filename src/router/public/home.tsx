@@ -27,16 +27,8 @@ export default function HomePage() {
 
   return (
     <Layout>
-      {isError && !isLoading ? (
-        <AlertMessage
-          icon={Huge.Alert02Icon}
-          message={errorTransformer(error).message}
-          action={{ label: "Retry", handler: () => refetch() }}
-        />
-      ) : null}
-
       <main className='mx-auto mb-3 flex w-full max-w-4xl gap-3 px-3'>
-        <aside className='hidden w-fit h-fit flex-col gap-3 sticky top-[70px] sm:flex'>
+        <aside className='sticky top-[70px] hidden h-fit w-fit flex-col gap-3 sm:flex'>
           {sidebarPaths.map((_path, i) => (
             <Button
               key={i}
@@ -71,6 +63,15 @@ export default function HomePage() {
           ) : null}
 
           {!isError && isLoading ? <Loader className='h-full w-full' /> : null}
+
+          {isError && !isLoading ? (
+            <AlertMessage
+              icon={Huge.Alert02Icon}
+              message={errorTransformer(error).message}
+              className='h-full w-full'
+              action={{ label: "Retry", handler: () => refetch() }}
+            />
+          ) : null}
 
           {posts.length > 0 ? (
             <RadioGroup
