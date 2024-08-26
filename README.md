@@ -83,7 +83,7 @@ npm ci && npm run dev
 npm run build
 ```
 
-Don't forget to put the following environment variables on your `.env.local` file:
+Make sure to include the following environment variables in your ``.env.local`` or ``.env`` file. For a complete list of required variables, refer to the .env.example file.
 
 ```bash
 # THE SERVER API BASE URL
