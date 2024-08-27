@@ -6,7 +6,8 @@ Meet a social constructive content oriented platform inspired by [DEV](dev.to) t
 
 A platform made for everyone who wants to share, contribute and learn something.
 
-> **Access this app live at: [https://toono-community.vercel.app](https://toono-community.vercel.app)**
+> **Access this app live at: [https://toono-community.vercel.app](https://toono-community.vercel.app)**.\
+**Disclaimer**: This build might perform _slower requests_ to the server, because is hosted on a free tier server and database, please consider a local build for performance tests.
 
 ## 🌠 Project status
 
@@ -88,9 +89,12 @@ Make sure to include the following environment variables in your ``.env.local`` 
 ```bash
 # THE SERVER API BASE URL
 VITE_BASE_URL=
+
+# GITHUB CLIENT ID (OPTIONAL): GENERATE THIS ON YOUR GITHUB OAUTH APP IN ORDER TO BE ABLE TO LOGIN USING GITHUB ACCOUNT. DON'T FORGET TO SETUP THE "GITHUB PRIVATE ID" ON THE SERVER OR IT WILL NOT WORK.
+VITE_GITHUB_CLIENT_ID=
 ```
 
-All done, feel deploy if you wish!
+All done, feel free to deploy and preview if you wish!
 
 ## ☘️ Find me!
 
@@ -99,7 +103,7 @@ Github: [https://github.com/KainNhantumbo](https://github.com/KainNhantumbo "See
 Portfolio: [https://codenut-dev.vercel.app](https://codenut-dev.vercel.app "See my portfolio website")\
 My Blog: [https://codenut-dev.vercel.app/en/blog](https://codenut-dev.vercel.app/en/blog "Visit my blog site")
 
-#### If you like this project, let me know by leaving a star on this repository so I can keep improving this app or [send support](https://www.buymeacoffee.com/nhantumbokU/)!\*\* .😊😘
+#### If you like this project, let me know by leaving a star on this repository so I can keep improving this app or [send support](https://www.buymeacoffee.com/nhantumbokU/)!😊😘
 
 Best regards, Kain Nhantumbo.\
 ✌️🇲🇿 **Made with ❤ Vite.JS and Typescript**
