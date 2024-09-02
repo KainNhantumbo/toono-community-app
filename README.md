@@ -109,8 +109,7 @@ Best regards, Kain Nhantumbo.\
 ✌️🇲🇿 **Made with ❤ Vite.JS and Typescript**
 
 ## Contributing
-
-I will be accepting no contributions to this project, due it's purposes.
+See this [Contributing Guide](CONTRIBUTING.md).
 
 ## 📜 License
 
