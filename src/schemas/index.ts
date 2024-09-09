@@ -13,7 +13,7 @@ export const userLoginSchema = z.object({
     .trim()
 });
 
-export const userPasswordRecoverySchema = userLoginSchema.pick({ email: true });
+export const forgotPasswordEmailSchema = userLoginSchema.pick({ email: true });
 
 export const userSignupSchema = z
   .object({
@@ -135,4 +135,4 @@ export type UpdateUserCredentialsSchemaType = z.infer<typeof updateUserCredentia
 export type UpdateUserDataType = z.infer<typeof UpdateUserSchema>;
 export type UserLoginType = z.infer<typeof userLoginSchema>;
 export type UserSignupType = z.infer<typeof userSignupSchema>;
-export type UserPasswordRecoveryType = z.infer<typeof userPasswordRecoverySchema>;
+export type ForgotPasswordEmailSchemaType = z.infer<typeof forgotPasswordEmailSchema>;

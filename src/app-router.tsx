@@ -15,6 +15,7 @@ const PasswordRecoveryRequestPage = React.lazy(
 const SignupSuccessPage = React.lazy(() => import("./router/public/auth/sign-up-success"));
 const AboutPage = React.lazy(() => import("./router/public/docs/about"));
 const SigninPage = React.lazy(() => import("./router/public/auth/sign-in"));
+const ForgotPasswordPage = React.lazy(() => import("./router/public/auth/forgot-password"));
 const PrivacyPolicyPage = React.lazy(() => import("./router/public/docs/privacy-policy"));
 const TermsOfUsePage = React.lazy(() => import("./router/public/docs/terms-of-use"));
 const ContactUsPage = React.lazy(() => import("./router/public/contact"));
@@ -34,6 +35,7 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: SigninPage, path: "/auth/sign-in" },
   { element: SignupPage, path: "/auth/sign-up" },
   { element: PasswordRecoveryPage, path: "/auth/password-recovery" },
+  { element: ForgotPasswordPage, path: "/auth/forgot-password" },
   { element: PasswordRecoveryRequestPage, path: "/auth/password-recovery-request" },
   { element: ContactUsPage, path: "/contact" },
   { element: PrivacyPolicyPage, path: "/privacy-policy" },

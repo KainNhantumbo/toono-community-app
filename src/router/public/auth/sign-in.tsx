@@ -176,6 +176,7 @@ export default function SigninPage() {
               <LoadingButton
                 variant={"default"}
                 loading={loading}
+                disabled={loading}
                 size={"lg"}
                 className='flex w-full items-center gap-2'
                 type='submit'>
@@ -189,7 +190,7 @@ export default function SigninPage() {
             variant={"link"}
             asChild
             className='my-3 w-full text-end text-card-foreground'>
-            <Link to={"/auth/password-recovery"}>
+            <Link to={"/auth/forgot-password"}>
               <span>Forgot password?</span>
             </Link>
           </Button>

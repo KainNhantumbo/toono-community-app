@@ -153,6 +153,7 @@ export default function SignupPage() {
 
               <LoadingButton
                 loading={loading}
+                disabled={loading}
                 variant={"default"}
                 size={"lg"}
                 className='flex w-full items-center gap-2'
