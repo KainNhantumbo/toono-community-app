@@ -20,7 +20,7 @@ import { LockIcon, LockOpen, MailIcon, UserPlus } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function SigninPage() {
@@ -55,7 +55,6 @@ export default function SigninPage() {
       setLoading(false);
     }
   };
-
 
   const handleRedirectToGitHub = () => {
     const queryParams = new URLSearchParams({
@@ -164,7 +163,7 @@ export default function SigninPage() {
           <Button
             variant={"link"}
             asChild
-            className='my-3 w-full text-end text-card-foreground'>
+            className='my-3 text-end self-end text-card-foreground'>
             <Link to={"/auth/forgot-password"}>
               <span>Forgot password?</span>
             </Link>

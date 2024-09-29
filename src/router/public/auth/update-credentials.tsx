@@ -37,7 +37,7 @@ export default function UpdateCredentialsPage() {
           token: searchParams.get("token")
         }
       });
-      navigate(`/users/dashboard/password-recovery-success`);
+      navigate(`/auth/update-credentials-success`);
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(message);
