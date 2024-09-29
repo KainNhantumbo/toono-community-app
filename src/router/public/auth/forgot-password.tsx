@@ -12,11 +12,13 @@ import { useDocumentTitle } from "@uidotdev/usehooks";
 import { MailIcon, SendHorizontalIcon } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function ForgotPasswordPage() {
   const { theme } = useThemeContext();
   const [loading, setLoading] = React.useState<boolean>(false);
+  const navigate = useNavigate();
 
   const form = useForm<ForgotPasswordEmailSchemaType>({
     resolver: zodResolver(forgotPasswordEmailSchema),
@@ -32,9 +34,7 @@ export default function ForgotPasswordPage() {
         data: formData
       });
 
-      toast.success(
-        "Your request wast sent successfully! Check your mail and follow the instructions we sent."
-      );
+      // navigate("/auth/password-recovery-success");
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(message);

@@ -19,7 +19,7 @@ export default function UpdateCredentialsPage() {
   const navigate = useNavigate();
   const { theme } = useThemeContext();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams(window.location.search);
 
   const form = useForm<UpdateUserCredentialsSchemaType>({
     resolver: zodResolver(updateUserCredentialsSchema),
@@ -31,10 +31,9 @@ export default function UpdateCredentialsPage() {
     try {
       await httpClient({
         method: "post",
-        url: "/api/v1/auth/password-recovery-request",
+        url: "/api/v1/auth/update-credentials",
         data: {
-          ...formData,
-          userId: searchParams.get("user"),
+          password: formData.password,
           token: searchParams.get("token")
         }
       });

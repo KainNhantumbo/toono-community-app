@@ -8,7 +8,9 @@ const randomMessage = (): string => {
   ];
 };
 
-export const Loader = ({ className }: { className?: string }) => (
+type Props = { message?: string; className?: string };
+
+export const Loader = ({ className, message }: Props) => (
   <div
     className={cn(
       "grid h-[100vh] w-[100vw] place-content-center place-items-center",
@@ -17,7 +19,7 @@ export const Loader = ({ className }: { className?: string }) => (
     <section className='flex h-full w-full items-center gap-3 p-[calc(25%_-_1px)_12px] font-medium'>
       <Spinner show size={"medium"} />
       <h3 className='base-border font-sans-display rounded-3xl p-1 px-2 text-center text-sm font-semibold uppercase'>
-        {randomMessage()}
+        {message ?? randomMessage()}
       </h3>
     </section>
   </div>

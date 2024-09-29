@@ -56,27 +56,6 @@ export default function SigninPage() {
     }
   };
 
-  // github auth flow
-  const [params] = useSearchParams(window.location.search);
-  const code = params.get("code");
-
-  const onGithubAuth = async () => {
-    try {
-      if (code) {
-        const scope = "read:user";
-        const { data } = await httpClient<Auth>({
-          method: "get",
-          url: `/api/v1/auth/oauth/github/${code}/${scope}`,
-          withCredentials: true
-        });
-
-        dispatch(mutateAuth({ ...data }));
-        navigate(`/users/dashboard/overview`, { replace: true });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleRedirectToGitHub = () => {
     const queryParams = new URLSearchParams({
@@ -87,10 +66,6 @@ export default function SigninPage() {
       `https://github.com/login/oauth/authorize?${queryParams.toString()}`
     );
   };
-
-  React.useEffect(() => {
-    onGithubAuth();
-  }, [code]);
 
   useDocumentTitle("Sign In - Toono Community");
 
