@@ -12,13 +12,14 @@ import { useDocumentTitle } from "@uidotdev/usehooks";
 import { LockIcon, MailIcon, SendHorizontalIcon } from "lucide-react";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
-export default function PasswordRecoveryPage() {
+export default function UpdateCredentialsPage() {
   const navigate = useNavigate();
   const { theme } = useThemeContext();
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [searchParams] = useSearchParams();
 
   const form = useForm<UpdateUserCredentialsSchemaType>({
     resolver: zodResolver(updateUserCredentialsSchema),
@@ -31,7 +32,11 @@ export default function PasswordRecoveryPage() {
       await httpClient({
         method: "post",
         url: "/api/v1/auth/password-recovery-request",
-        data: formData
+        data: {
+          ...formData,
+          userId: searchParams.get("user"),
+          token: searchParams.get("token")
+        }
       });
       navigate(`/users/dashboard/password-recovery-success`);
     } catch (error) {

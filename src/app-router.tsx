@@ -6,8 +6,8 @@ import { RouteErrorBoundary } from "./components/route-error";
 const NotFoundPage = React.lazy(() => import("@/router/404"));
 const HomePage = React.lazy(() => import("./router/public/home"));
 const SignupPage = React.lazy(() => import("./router/public/auth/sign-up"));
-const PasswordRecoveryPage = React.lazy(
-  () => import("./router/public/auth/password-recovery")
+const UpdateCredentialsPage = React.lazy(
+  () => import("./router/public/auth/update-credentials")
 );
 const PasswordRecoveryRequestPage = React.lazy(
   () => import("./router/public/auth/password-recovery-request")
@@ -34,7 +34,7 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: HomePage, path: "/" },
   { element: SigninPage, path: "/auth/sign-in" },
   { element: SignupPage, path: "/auth/sign-up" },
-  { element: PasswordRecoveryPage, path: "/auth/password-recovery" },
+  { element: UpdateCredentialsPage, path: "/auth/update-credentials" },
   { element: ForgotPasswordPage, path: "/auth/forgot-password" },
   { element: PasswordRecoveryRequestPage, path: "/auth/password-recovery-request" },
   { element: ContactUsPage, path: "/contact" },
