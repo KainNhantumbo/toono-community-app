@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
         data: formData
       });
 
-      // navigate("/auth/password-recovery-success");
+      navigate("/auth/forgot-password-request-success");
     } catch (error) {
       const { message } = errorTransformer(error);
       console.error(message);

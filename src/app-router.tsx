@@ -9,6 +9,9 @@ const SignupPage = React.lazy(() => import("./router/public/auth/sign-up"));
 const UpdateCredentialsPage = React.lazy(
   () => import("./router/public/auth/update-credentials")
 );
+const ForgotPasswordRequestSuccessPage = React.lazy(
+  () => import("./router/public/auth/forgot-password-request-success")
+);
 const PasswordRecoveryRequestPage = React.lazy(
   () => import("./router/public/auth/password-recovery-request")
 );
@@ -40,6 +43,7 @@ const routes: Array<{ path: string; element: React.JSX.ElementType }> = [
   { element: SignupPage, path: "/auth/sign-up" },
   { element: UpdateCredentialsPage, path: "/auth/update-credentials" },
   { element: ForgotPasswordPage, path: "/auth/forgot-password" },
+  { element: ForgotPasswordRequestSuccessPage, path: "/auth/forgot-password-request-success" },
   { element: PasswordRecoveryRequestPage, path: "/auth/password-recovery-request" },
   { element: ContactUsPage, path: "/contact" },
   { element: PrivacyPolicyPage, path: "/privacy-policy" },

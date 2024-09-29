@@ -30,8 +30,8 @@ export default function UpdateCredentialsPage() {
     setLoading(true);
     try {
       await httpClient({
-        method: "post",
-        url: "/api/v1/auth/update-credentials",
+        method: "patch",
+        url: "/api/v1/accounts/update-credentials",
         data: {
           password: formData.password,
           token: searchParams.get("token")
@@ -96,7 +96,7 @@ export default function UpdateCredentialsPage() {
 
               <CoreForm.FormField
                 control={form.control}
-                name='password'
+                name='confirm_password'
                 render={({ field }) => (
                   <CoreForm.FormItem>
                     <CoreForm.FormLabel className='flex items-center gap-2'>
