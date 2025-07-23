@@ -52,7 +52,7 @@
     "@tanstack/react-table": "^8.16.0",
     "@uidotdev/usehooks": "^2.4.1",
     "@uiw/react-markdown-editor": "^6.1.1",
-    "axios": "^1.6.8",
+    "axios": "^1.8.2",
     "class-validator": "^0.14.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
