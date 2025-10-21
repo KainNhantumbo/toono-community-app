@@ -102,7 +102,7 @@
     "prettier-plugin-tailwindcss": "^0.5.13",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
-    "vite": "^7.1.5",
+    "vite": "^7.1.11",
     "vite-tsconfig-paths": "^4.3.2"
   }
 }
