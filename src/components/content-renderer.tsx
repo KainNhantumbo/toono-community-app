@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { ClipboardCopy } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { a11yDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGFM from "remark-gfm";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
